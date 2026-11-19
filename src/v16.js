@@ -514,7 +514,7 @@ allyUpdate=function(dt){if(!playing)return;officerAI(dt);const op=officer,active
   const threat=nearest(p,72),tg=threat.e,apo=a.role==='Apoyo',scout=a.role==='Fusilero';
   let tx=leader?leader.x+(a.i-1)*3.2:P.g.position.x+(a.i-1)*3.2,tz=leader?leader.z+3.5+(a.i%2?1.6:-1.6):P.g.position.z+5;
   if(level===2||level===4){tx=WC.x+(a.i-1)*13;tz=-1.6}if(level===5){tx=8000+[-7.5,7.5,-4][a.i];tz=[-6.5,-6.5,2][a.i]}
-  let desired=apo?11:scout?7:8;if(op&&op.mode==='protect'){tx=P.g.position.x+(a.i-1)*2.3;tz=P.g.position.z+2.8;desired=5}
+  const pk=a.pk||{des:1,sp:1,rate:1,spr:1};let desired=(apo?11:scout?7:8)*pk.des;if(op&&op.mode==='protect'){tx=P.g.position.x+(a.i-1)*2.3;tz=P.g.position.z+2.8;desired=5}
   if(tg&&op&&op.mode==='flank'){tx=tg.g.position.x+(tg.g.position.z-p.z)*a.flankSide*.9;tz=tg.g.position.z-(tg.g.position.x-p.x)*a.flankSide*.9;desired=apo?13:7}
   else if(tg&&op&&op.mode==='assault'){tx=tg.g.position.x+(a.i-1)*2.3;tz=tg.g.position.z+3+(a.i%2)*1.2;desired=apo?10:4.5}
   else if(tg&&op&&op.mode==='cover'){const cv=a.cvT>0&&a.cv?a.cv:coverNear(p.x,p.z,tg.g.position.x,tg.g.position.z,12);a.cv=cv;a.cvT=(a.cvT>0?a.cvT:3)-dt;if(cv){tx=cv.x;tz=cv.z;desired=.8}else{tx=leader?leader.x+(a.i-1)*4.2:p.x;tz=leader?leader.z+5+(a.i%2)*2:p.z;desired=apo?13:9}}
@@ -522,10 +522,11 @@ allyUpdate=function(dt){if(!playing)return;officerAI(dt);const op=officer,active
   {const w=route8(a,tx,tz);if(w){tx=w[0];tz=w[1];desired=.5}}let dx=tx-p.x,dz=tz-p.z,d=Math.hypot(dx,dz),mx=0,mz=0;if(d>desired){mx=dx/(d||1);mz=dz/(d||1)}
   if(tg&&scout&&op&&op.mode!=='assault'){const side=a.flankSide;mx+=-((tg.g.position.z-p.z)*side)*.009;mz+=(tg.g.position.x-p.x)*side*.009}
   {const dpl=Math.hypot(p.x-P.g.position.x,p.z-P.g.position.z);if(dpl<1.4){mx+=(p.x-P.g.position.x)/(dpl||1);mz+=(p.z-P.g.position.z)/(dpl||1)}}
+  if(pk.flee&&tg&&threat.d<pk.flee){const fx=p.x-tg.g.position.x,fz=p.z-tg.g.position.z,fl=Math.hypot(fx,fz)||1;mx=fx/fl;mz=fz/fl;if(R()<dt*.4)feed(a.name+': ¡Me retiro, me retiro!')}if(pk.rush&&tg&&threat.d<pk.rush){mx=(tg.g.position.x-p.x)/threat.d;mz=(tg.g.position.z-p.z)/threat.d}
   const ml=Math.hypot(mx,mz);if(ml>1){mx/=ml;mz/=ml}if(ml>.05){const s=steer(a,mx,mz,dt);const m2=Math.min(1,ml);mx=s[0]*m2;mz=s[1]*m2}
-  const sp=apo?3.6:scout?5.0:4.3,accel=Math.min(1,dt*(apo?2.7:scout?5.5:4));a.vx=a.vx||0;a.vz=a.vz||0;a.vx+=(mx*sp-a.vx)*accel;a.vz+=(mz*sp-a.vz)*accel;p.x+=a.vx*dt;p.z+=a.vz*dt;resolve(p,.5);
+  const sp=(apo?3.6:scout?5.0:4.3)*pk.sp,accel=Math.min(1,dt*(apo?2.7:scout?5.5:4));a.vx=a.vx||0;a.vz=a.vz||0;a.vx+=(mx*sp-a.vx)*accel;a.vz+=(mz*sp-a.vz)*accel;p.x+=a.vx*dt;p.z+=a.vz*dt;resolve(p,.5);
   const ftg=(V16.focus&&active.indexOf(V16.focus)>=0&&Math.hypot(V16.focus.g.position.x-p.x,V16.focus.g.position.z-p.z)<50)?V16.focus:tg,fd=ftg?Math.hypot(ftg.g.position.x-p.x,ftg.g.position.z-p.z):99;
-  if(ftg){const range=apo?45:scout?39:36;if(a.rel<=0&&a.cd<=0&&fd<range){if(a.mag<=0){a.rel=apo?2.8:2.1;a.wasReload=true;feed(a.name+': ¡Recargando!')}else{a.mag--;a.aim=.35;a.cd=(apo?.13:scout?.82:1.05)+R()*.3;const o=p.clone();o.y=1.4;const t2=ftg.g.position.clone();t2.y=1.2*ftg.s;const v=t2.sub(o).normalize(),spread=apo?.035:scout?.025:.05;v.x+=(R()-.5)*spread;v.y+=(R()-.5)*spread*.6;v.z+=(R()-.5)*spread;v.normalize().multiplyScalar(apo?70:62);const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.3,dmg:apo?9:scout?34:30,by:a,pen:apo?0:1});if(R()<.55){SFXV=clamp(1-Math.hypot(p.x-cam.position.x,p.z-cam.position.z)/80,.15,1);weaponSfx(apo?'smg':'rifle')}}}}
+  if(ftg){const range=apo?45:scout?39:36;if(a.rel<=0&&a.cd<=0&&fd<range){if(a.mag<=0){a.rel=apo?2.8:2.1;a.wasReload=true;feed(a.name+': ¡Recargando!')}else{a.mag--;a.aim=.35;a.cd=((apo?.13:scout?.82:1.05)+R()*.3)*pk.rate;const o=p.clone();o.y=1.4;const t2=ftg.g.position.clone();t2.y=1.2*ftg.s;const v=t2.sub(o).normalize(),spread=(apo?.035:scout?.025:.05)*pk.spr;v.x+=(R()-.5)*spread;v.y+=(R()-.5)*spread*.6;v.z+=(R()-.5)*spread;v.normalize().multiplyScalar(apo?70:62);const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.3,dmg:apo?9:scout?34:30,by:a,pen:apo?0:1});if(R()<.55){SFXV=clamp(1-Math.hypot(p.x-cam.position.x,p.z-cam.position.z)/80,.15,1);weaponSfx(apo?'smg':'rifle')}}}}
   if(apo&&a.ammoT<=0&&playing){a.ammoT=42+R()*18;pick(P.g.position.x+(R()-.5)*4,P.g.position.z+(R()-.5)*4,'a')}
   const face=ftg?Math.atan2(ftg.g.position.x-p.x,ftg.g.position.z-p.z):(Math.hypot(a.vx,a.vz)>.2?Math.atan2(a.vx,a.vz):a.g.rotation.y);a.g.rotation.y=angL(a.g.rotation.y,face,Math.min(1,dt*(scout?8:apo?4.5:6)));
   const mv=Math.hypot(a.vx,a.vz)>.35,ph=a.t*(scout?13:apo?8.5:10),k=Math.min(1,dt*10),gait=mv?Math.sin(ph)*(scout?.72:apo?.42:.58):0,cr=op&&op.mode==='cover'&&!mv&&ftg?1:0;
@@ -565,7 +566,7 @@ function bunker8(x,z,side,label){const W=12,D=8,H=3.1,t=.8;sBegin();
  const o={x:x+sx,z,hw:.42,hd:.85,h:2.3};obstB.push(o);
  const b={x,z,W,D,side,label,door:{g:dg,a:0,open:false,o,t:0,x:x+sx,z,side},inside:q=>Math.abs(q.x-x)<W/2-t-.1&&Math.abs(q.z-z)<D/2-t-.1,out:{x:x+side*(W/2+1.7),z},inn:{x:x+side*(W/2-t-1.3),z}};
  covers.push({x,z:z-D/2-1,r:6});BK.push(b);return b}
-function doorsUpd(dt){for(const b of BK){const d=b.door;let near=Math.hypot(P.g.position.x-d.x,P.g.position.z-d.z)<3.2;if(!near)for(const s of GAR)if(s.alive&&s.g.visible&&Math.hypot(s.g.position.x-d.x,s.g.position.z-d.z)<3){near=true;break}
+function doorsUpd(dt){for(const b of BK){if(b.dead)continue;const d=b.door;let near=Math.hypot(P.g.position.x-d.x,P.g.position.z-d.z)<3.2;if(!near)for(const s of GAR)if(s.alive&&s.g.visible&&Math.hypot(s.g.position.x-d.x,s.g.position.z-d.z)<3){near=true;break}
  if(!near&&officer&&Math.hypot(officer.g.position.x-d.x,officer.g.position.z-d.z)<3)near=true;if(!near)for(const a of allies)if(a.name&&Math.hypot(a.g.position.x-d.x,a.g.position.z-d.z)<3){near=true;break}if(!near)for(const e of enemies)if(Math.hypot(e.g.position.x-d.x,e.g.position.z-d.z)<3){near=true;break}
  if(near)d.t=2.2;else d.t-=dt;const want=d.t>0;if(want!==d.open){d.open=want;const i=obstB.indexOf(d.o);if(want&&i>=0)obstB.splice(i,1);else if(!want&&i<0)obstB.push(d.o);snd(want?160:120,.35,'square',.03)}
  d.a+=((d.open?-1.45*d.side:0)-d.a)*Math.min(1,dt*4);d.g.rotation.y=d.a}}

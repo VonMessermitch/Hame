@@ -162,3 +162,41 @@ Sectores fusionados por separado y ocultos por distancia, árboles, hierba, roca
 - Las voces son subtítulos.
 - Probado en Chromium sin interfaz con renderizado por software, no en un teléfono Android real.
 - Los caballos no tienen ragdoll completo: caen de lado y el jinete sale despedido.
+
+---
+
+# v18 · correcciones y mejoras
+
+Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v18.html`** (incluye v16 y v17). Código nuevo en `src/v18.js`.
+
+## Capítulo IX
+- **Caballería atrapada (corregido).** Aparecía en x = X−175, fuera del muro límite invisible del mapa (X−168), y quedaba encerrada fuera del escenario. Ahora **se llama por radio** desde la radio de campaña al pie de la loma (mantener USAR) y llega **por el camino del este** siguiendo una ruta de puntos de paso. Sus objetivos se limitan al interior del mapa y, si una montura no avanza durante 3 s, se recoloca en un punto libre cercano.
+- **Blindado «Basilisco» (corregido).** Su propio obstáculo de colisión lo empujaba unos 5 m en cada fotograma (de ahí la velocidad absurda). Ahora va a 1,7 m/s y a 0,8 m/s mientras dispara, con aceleración, giro lento, traqueteo y humo de escape.
+- **Caja de armas que siempre se repone** (trinchera, loma, puente y fortaleza; también en el campamento del cap. VIII y en el Puerto y la Encrucijada): da un **Panzerfaust** de un solo uso y **2 cargas satchel**. El Panzerfaust se lleva al hombro, dispara un cohete con estela y rebufo, y el tubo vacío cae al suelo; hace mucho daño a blindados, máquinas de asedio e incluso al T-Rex. Q lo guarda o lo vuelve a sacar.
+- **Búnkeres destructibles con cargas satchel** (GRA lanza la carga cuando la llevas): el búnker desaparece, deja escombros con varillas, fuego, humo y cobertura, y mata a quien esté dentro. En San Gregor hay **dos búnkeres enemigos nuevos (E-1 y E-2)** con ametralladoras.
+- **Capitán Argentum:** coraza de acero bruñido y **pistola Ruby de 11 mm**, que dispara con la mano izquierda cuando no está cargando.
+
+## Escuadra
+- **Personalidades al azar** (Agresivo, Cómico, Miedoso, Loco, Táctico), visibles en la etiqueta. Cambian la distancia de combate, la velocidad, la cadencia y la precisión. El miedoso se retira si el enemigo se acerca y el loco y el agresivo cargan. Cada uno tiene frases propias en combate y en calma.
+- **Melé de la escuadra:** estocada de bayoneta (fusileros) y culatazo (apoyo), con animación y empuje.
+- **Médico:** combo de cuchillo en 3 tiempos (estocada, tajo lateral y golpe fuerte con retroceso defensivo), se acerca a cuchillo cuando el enemigo está muy cerca, y dispara la pistola a dos manos con retroceso.
+- **Granada de palo alemana (Stielhandgranate)** para el jugador, el teniente y los fusileros enemigos; dos colgadas del cinturón y una en la mano al lanzar.
+
+## Capítulo VII (T-Rex)
+- **Sd.Kfz. 250 nuevo:** semioruga con ruedas delanteras, orugas animadas, blindaje inclinado, escudo de la ametralladora, faros, antena, estiba, insignias y conductor.
+- **Los tanques del convoy apuntan y disparan mientras avanzan:** cañón principal contra infantería, raptores y T-Rex, y ametralladora con trazadoras y ráfagas.
+- **Artillero de torreta** (todos los tanques): de pie en la escotilla de cintura para arriba, manos en las empuñaduras, retroceso del torso, vainas expulsadas, fogonazo y búsqueda de blancos con la cabeza.
+
+## Capítulo IV (Puerto)
+6 defensores reales tras los sacos (combaten y pueden morir), bengalas de iluminación que caen lentamente y alumbran el muelle, reflector sobre la grúa, grúa con contenedor en movimiento y un carguero en llamas.
+
+## Capítulo VI (Encrucijada)
+- El pelotón del cruce ya no es decorado: **8 soldados reales** que combaten y caen uno a uno; la salud del pelotón depende de los vivos.
+- Fuego de morteros de apoyo sobre los accesos durante el asedio.
+- Iglesia en ruinas con el campanario en llamas como referencia visual, y vehículos ardiendo en las barricadas.
+
+## Sonido
+- Reverberación de campo en todo el juego (más intensa en mazmorras y ruinas).
+- Capas nuevas en las armas: grave del disparo, chasquido supersónico y cerrojo del fusil.
+- Explosiones con cuerpo, cola y retardo según la distancia.
+- Ambiente propio de cada capítulo: viento, perros, truenos, goteo, cadenas, olas, gaviotas, sirena de barco, campanas, aviones, sirenas, cuervos, pájaros e insectos, rugidos lejanos, búhos y artillería lejana.

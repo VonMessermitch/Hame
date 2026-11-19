@@ -4,7 +4,7 @@ aplica ediciones quirúrgicas verificadas al código existente e inyecta el mód
 import sys, pathlib, re
 root = pathlib.Path(__file__).resolve().parent.parent
 src = (root/'original_v15.html').read_text(encoding='utf-8')
-mod = (root/'src'/'v16.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v17.js').read_text(encoding='utf-8')
+mod = (root/'src'/'v16.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v17.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v18.js').read_text(encoding='utf-8')
 out = src
 def rep(old, new, count=1):
     global out
@@ -14,7 +14,7 @@ def rep(old, new, count=1):
     out = out.replace(old, new)
 
 # --- cabecera / CDN con respaldo ---
-rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v17 · Operación Tres Coronas)</title>')
+rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v18 · Operación Tres Coronas)</title>')
 rep('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>',
     '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\n'
     '<script>window.THREE||document.write(\'<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\\/script>\')</script>')
@@ -49,7 +49,7 @@ rep("if(Math.hypot(p.x-P.g.position.x,p.z-P.g.position.z)<.75&&p.y<P.g.position.
     "if(Math.hypot(p.x-P.g.position.x,p.z-P.g.position.z)<.75&&p.y<P.g.position.y+(P.cr?1.45:2.2)&&p.y>P.g.position.y-.2){hitP(b.dmg);h=true}if(!h)h=e8Hit(b);if(!h&&inB(p))h=true;")
 # granadas enemigas dañan también a la guarnición
 rep("const dp=Math.hypot(P.g.position.x-q.x,P.g.position.z-q.z);if(dp<6)hitP(34*(1-dp/6*.5));scene.remove(g.m);egr.splice(i,1)",
-    "const dp=Math.hypot(P.g.position.x-q.x,P.g.position.z-q.z);if(dp<6)hitP(34*(1-dp/6*.5));e8Blast(q.x,q.z,6,34);scene.remove(g.m);egr.splice(i,1)")
+    "const dp=Math.hypot(P.g.position.x-q.x,P.g.position.z-q.z);if(dp<6)hitP(34*(1-dp/6*.5));e8Blast(q.x,q.z,6,34);if(window.expSnd)expSnd(q.x,q.z,1);scene.remove(g.m);egr.splice(i,1)")
 # cadáveres persistentes (con límite)
 rep("p.y=c.y-(c.t>2.6?(c.t-2.6)*.8:0);if(c.t>4){scene.remove(c.g);corpses.splice(i,1)}",
     "const K=c.keep||(level===8?9:2.6);p.y=c.y-(c.t>K?(c.t-K)*.8:0);if(c.t>K+1.4){scene.remove(c.g);if(window.disp16)disp16(c.g);corpses.splice(i,1)}")
@@ -92,5 +92,5 @@ rep("startSw(2);P.swHit=true;P.plunge=true;", "startSw(SW.length-1);P.swHit=true
 rep("slash(SW[2]);shake=Math.max(shake,1.5);", "slash(SW[SW.length-1]);shake=Math.max(shake,1.5);")
 # --- inyección del módulo ---
 rep("\n</script></body></html>", "\n" + mod + "\n</script></body></html>")
-(root/'Sombras_sobre_el_Nilo_1909_v17.html').write_text(out, encoding='utf-8')
+(root/'Sombras_sobre_el_Nilo_1909_v18.html').write_text(out, encoding='utf-8')
 print('OK', len(out), 'bytes')
