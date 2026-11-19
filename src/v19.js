@@ -238,7 +238,7 @@ inB=function(q){for(const b of obstB)if(!b.nolos&&Math.abs(q.x-b.x)<b.hw&&Math.a
    escuderos acorazados, ametralladora), escuadra y oficial con uniforme
    ===================================================================== */
 const ENM=['Brandt','Kessler','Vogt','Hartung','Lindner','Rauch','Falk','Störmer','Adler','Eckhart','Holz','Weiss','Kranz','Roth','Baumann','Seidel','Krämer','Wendt','Busch','Lorenz'],ERK=['Sturmmann','Gefreiter','Obergefreiter','Unteroffizier'];
-const ROLE10={smg:'asalto',shot:'escopetero',sap:'zapador',shield:'escudero',rifle:'fusilero',mg:'ametrallador'};
+const ROLE10={smg:'granadero',shot:'escopetero',sap:'zapador',shield:'escudero',rifle:'fusilero',mg:'ametrallador',marks:'tirador',radio:'radiotelegrafista'};
 function swapModel(o,ng){const old=o.g,ou=old.userData,nu=ng.userData;const map=new Map();for(const k in ou)if(ou[k]&&ou[k].isObject3D&&nu[k]&&nu[k].isObject3D)map.set(ou[k],nu[k]);
  for(const k of['mR','mL'])if(ou[k]&&nu[k])for(const c of ou[k].children.slice())nu[k].add(c);
  for(const k in ou){const v=ou[k];if(k in nu&&!(v&&v.isObject3D&&!(nu[k]&&nu[k].isObject3D)))continue;if(v&&v.isObject3D){const np=map.get(v.parent)||(v.parent===old?ng:null);if(np&&v.parent!==np)np.add(v)}nu[k]=v}
@@ -247,7 +247,7 @@ function eisGar(s,role){const ng=mkEis({mask:R()<.35,armor:role==='shield',rank:
  for(const c of s.u.mR.children.slice())s.u.mR.remove(c);u.mR.add(role==='mg'?mkGun('mg'):role==='smg'?mkMP38d():role==='shot'?mkShotgun():role==='shield'?mkC10():role==='sap'?mkMP38d():mkGun('rifle'));
  if(role==='shield'){const sh=new T.Group(),q=PB();pBox(q,.72,1.2,.07,0x5a5e62,0,0,0);pBox(q,.6,.06,.08,0x3a3e42,0,.35,.01);pBox(q,.6,.06,.08,0x3a3e42,0,-.35,.01);pBox(q,.14,.05,.09,0x111111,.12,.42,.01);pBox(q,.3,.3,.09,0xb08a20,0,0,.02);pbMesh(q,sh,SABM);sh.position.set(.05,-.25,.25);sh.rotation.set(0,0,.1);u.mL.add(sh);const sw=mkSabre();sw.position.set(-.3,.15,-.05);sw.rotation.set(.3,0,2.9);u.ch.add(sw)}
  if(role==='sap'){const q=PB();pBox(q,.42,.3,.22,0x6a5a3a,0,.3,-.3);pCyl(q,.06,.06,.5,0x8a7a5a,.2,.55,-.3,0,0,1.5708,6);pBox(q,.1,.1,.1,0xc02020,-.15,.5,-.42);pbMesh(q,u.ch,VCM)}
- swapModel(s,ng);s.u=ng.userData;s.role=role;s.kind=role==='mg'?'mg':role==='rifle'?'rifle':'carb';s.mag=s.kind==='mg'?100:10;s.name=ERK[R()*4|0]+' '+ENM[(GAR.length*7+R()*20|0)%ENM.length]+' ('+ROLE10[role]+')';if(role==='shield'){s.hp=s.max=230}if(role==='sap'){s.hp=s.max=110}return s}
+ swapModel(s,ng);s.u=ng.userData;s.role=role;s.kind=role==='mg'?'mg':(role==='rifle'||role==='marks'||role==='radio')?'rifle':'carb';s.mag=s.kind==='mg'?100:10;s.name=ERK[R()*4|0]+' '+ENM[(GAR.length*7+R()*20|0)%ENM.length]+' ('+ROLE10[role]+')';if(role==='shield'){s.hp=s.max=230}if(role==='sap'){s.hp=s.max=110}return s}
 function gar10(list){const made=gar9(list.map(q=>[q[0],q[1],q[2]===undefined?Math.PI:q[2],q[3],q[4]==='mg'?'mg':'rifle']));made.forEach((s,i)=>eisGar(s,list[i][4]||'smg'));return made}
 const _gd10=garDamage;garDamage=function(s,v,src){if(level===10&&s.role==='shield'){v*=.4;if(R()<.4)burst(s.g.position.x,1.3,s.g.position.z,0xffdd88,3,.15,3)}return _gd10(s,v,src)};
 let PST10=0;function posts10(list){L10.posts=list;garAssign('x10_'+(PST10++),list)}
@@ -435,7 +435,7 @@ function cineLanding10(){const X=X10;const B=[mkBoat10(true),mkBoat10(true),mkBo
  L9.tick=dt=>{B.forEach((b,i)=>{b.position.z=Math.max(50,b.position.z-dt*(12-i));b.rotation.z=Math.sin(time*1.3+i)*.04});if(tk.alive){tk.g.position.set(B[1].position.x,1.4,B[1].position.z+1)}if(R()<dt*2)burst(X+58,14+R()*3,-14,0x40ff60,3,.3,2)};
  sky9('alba');L10.sky='alba';
  const fin=()=>{B.forEach((b,i)=>{b.position.z=50;b.children.slice().forEach(c=>{if(c.userData&&c.userData.l1)b.remove(c)})});tk.g.position.set(X,0,44);tk.ob.x=X;tk.ob.z=44;tk.hold=false;tk.path=[[X,30],[X,-16]];tk.pi=0;
-  const roles=['smg','smg','smg','shot','shot','sap','sap','shield','shield','rifle','mg','smg'];gar10(roles.map((r,i)=>[X-40+(i%3)*36+(R()-.5)*3,45-(i/3|0)*.8,Math.PI,0,r]));
+  const roles=['smg','rifle','marks','shot','smg','sap','sap','shield','shield','radio','mg','rifle'];gar10(roles.map((r,i)=>[X-40+(i%3)*36+(R()-.5)*3,45-(i/3|0)*.8,Math.PI,0,r]));
   allies.forEach((a,i)=>{if(a.name){a.g.visible=true;a.g.position.set(X-6+i*2.4,0,44);a.down=0;a.g.rotation.x=0}});if(officer){officer.g.visible=true;officer.g.position.set(X-2,0,43);officer.down=0;officer.dec=0}if(MED){MED.g.visible=true;MED.g.position.set(X+4,0,44);MED.down=0}enter10_2()};
  cine9([{d:3.6,a:[X+62,16,-8],b:[X+58,15,-4],la:[X+58,18,-14],lb:[X+20,8,60],txt:'¡Bengala verde sobre el faro! La flota de Eisenmark recibe la señal.'},
   {d:4.2,a:[X-14,3,92],b:[X-8,2.6,70],la:()=>[B[1].position.x,1,B[1].position.z-20],txt:'«¡Rampas abajo! ¡Por la Marca de Hierro!»'},

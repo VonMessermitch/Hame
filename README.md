@@ -244,3 +244,55 @@ Ruta por «pasos» de cada línea (alambrada, parapeto, muralla, boca de la mina
 ## Limitaciones
 - Volver a jugar el capítulo X sin salir de la página recarga la página y deja el capítulo X preseleccionado: pulsa JUGAR otra vez.
 - Los dracos aliados se quedan en la entrada de la mina y no acompañan a las fases V y VI.
+
+---
+
+# v20 · Técnica de Eisenmark 1922, Panzerfaust, niebla PS2, botiquines e IA local
+
+Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v20.html`**. Módulo nuevo: `src/v20.js`.
+
+## Corrección importante: botones táctiles
+En Android los botones **USAR, ARM, GRA, MEL, REC, SAL y ROD** llamaban a las funciones originales de v15, así que todo lo añadido después no llegaba al pulsarlos: la caja del Panzerfaust, las cargas satchel con GRA, los combos de sable, el cañón del cap. IX y los trabajos del cap. X (cortar alambre, sabotear, mecanismos, cargas). Ahora cada botón llama a la versión actual.
+
+## Panzerfaust
+- Modelo nuevo: tubo con franja de advertencia, alza abatible, palanca de disparo y cabeza hueca con ojiva.
+- Al cogerlo de la caja va **a la espalda**, en diagonal.
+- Con **ARM / Q** se **empuña al hombro, estilo bazooka**: mano derecha en la empuñadura y la izquierda sujetando el tubo por delante. Sigue la inclinación de la cámara.
+- El disparo tiene **chorro de gases hacia atrás** (fogonazo, humo y sonido). La caja vuelve a llenarse siempre.
+
+## Uniformes y armas de la lámina «Technische Infanterie 1922» (caps. IX y X)
+- **Base:** Stahlhelm con faldón y emblema lateral, ribetes granate (cuello, hombreras, tapeta y puños), correaje en Y, cinturón con cartucheras triples, macuto, cantimplora, pala y botas altas. En el cap. X, el uniforme gris verdoso oscuro de la lámina.
+- **Roles de la vanguardia (cap. X):**
+  - tirador, con capa de camuflaje y fusil con visor;
+  - granadero, con bandolera de granadas y MP de tambor;
+  - fusilero, con Ew-R9;
+  - zapador, con cortaalambres y bolsa de herramientas;
+  - radiotelegrafista, con radio a la espalda y antena;
+  - ametrallador, con Ew-MG12 y cintas cruzadas;
+  - escuderos y escopeteros.
+- **Mandos y sanitario:** Hauptmann Reuss lleva gorra de plato, monóculo y portamapas; el sanitario lleva brazalete y bolsa con cruz roja.
+- **Armas nuevas:**
+  - **Ew-R9 revisado:** guardamanos, cerrojo, cargador de 10 cartuchos, empuñadura de pistola y correa; versión con visor para el tirador.
+  - **Ew-MG12:** camisa de refrigeración perforada, apagallamas, cargador lateral, bípode y asa.
+  - El jugador del cap. X usa el Ew-R9 («EW-R9 REVISADO 8,98×66»).
+- **Capítulo IX:** la guarnición lleva Stahlhelm, el equipo completo y Ew-R9 o Ew-MG12. La escuadra recibe botas altas, correaje y ribetes, y el médico su bolsa.
+
+## Niebla PS2 (menú → NIEBLA PS2)
+- **Modos:**
+  - Desactivada (niebla de cada capítulo);
+  - **PS2 clásica:** niebla densa y tramado retro;
+  - **Dunas del Nilo:** ámbar;
+  - **Noche del Velo:** corta, con cielo.
+- La distancia de dibujo se acorta con la niebla, lo que también **aligera la carga en Android**. La elección se recuerda entre partidas.
+
+## Médico y botiquines
+- Si tu salud baja del 60 %, el sanitario te **lanza un botiquín** (cada 24 s como mínimo).
+- Los enemigos sueltan a veces uno (8 %).
+- Cada botiquín da +25 de salud y munición. Desaparece a los 45 s.
+
+## IA táctica local (menú → IA LOCAL)
+- **Cómo funciona:** al empezar busca un modelo local de **Ollama** en `127.0.0.1:11434` y usa el modelo elegido si está instalado (llama3.2, mistral, qwen2.5 o gemma2). El oficial genera entonces frases de radio cortas al cambiar de objetivo, cuando estás muy herido o cuando llega una oleada grande.
+- **Respaldo:** si no hay Ollama (o falla o tarda), entra el **motor táctico integrado**, con frases propias, sin conexión y gratis. El indicador arriba a la derecha muestra cuál está activo.
+- **Desactivar:** la opción «Desactivada» deja solo los diálogos originales del juego.
+- **Requisito de Ollama:** para que el navegador pueda hablarle, arranca Ollama con `OLLAMA_ORIGINS=*` (o el origen desde el que abras el juego).
+- **Aviso en la consola:** si Ollama no está en marcha, el navegador muestra un aviso de «conexión rechazada» en la consola. Es normal.
