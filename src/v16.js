@@ -76,7 +76,7 @@ g.scale.setScalar(sc);g.userData={l1,l2,k1,k2,b,ch,hd,aR,aL,eR,eL,mR,mL,ak:0,ay:
 /* armas ligeras fusionadas (1 malla): fusil M95, carabina, MG Schwarzlose portátil, pistola C96 */
 const WGC={};
 function mkGun(kind){const k=kind||'rifle';if(!WGC[k]){const q=PB(),wd=0x6a4226,st=0x2a2d30,dk=0x151515;
- if(k==='rifle'||k==='carb'){const L=k==='rifle'?1:.82;pCyl(q,.024,.024,1.1*L,st,0,-.66*L,0,0,0,0,6);pBox(q,.08,.62*L,.075,wd,0,-.38*L,-.02);pBox(q,.085,.13,.11,st,0,.1,0);pBox(q,.03,.12,.03,st,.06,.18,.02);pBox(q,.075,.42,.11,wd,0,.42,-.05);pBox(q,.08,.18,.15,wd,0,.66,-.07);pBox(q,.085,.06,.16,dk,0,.77,-.08);pBox(q,.1,.025,.11,0x9a9a90,0,-.6*L,0);if(k==='rifle')pBox(q,.014,.45,.03,0xb8bcc0,0,-1.42,.01)}
+ if(k==='rifle'||k==='carb'){const L=k==='rifle'?1:.82;pCyl(q,.024,.024,1.1*L,st,0,-.66*L,0,0,0,0,6);pBox(q,.08,.62*L,.075,wd,0,-.38*L,-.02);pBox(q,.085,.13,.11,st,0,.1,0);pBox(q,.03,.12,.03,st,.06,.18,.02);pBox(q,.075,.42,.11,wd,0,.42,-.05);pBox(q,.08,.18,.15,wd,0,.66,-.07);pBox(q,.085,.06,.16,dk,0,.77,-.08);pBox(q,.1,.025,.11,0x9a9a90,0,-.6*L,0);pBox(q,.075,.24,.15,st,0,-.06,-.15);pBox(q,.08,.03,.16,dk,0,-.19,-.15);if(k==='rifle')pBox(q,.014,.45,.03,0xb8bcc0,0,-1.42,.01)}
  else if(k==='mg'){pCyl(q,.075,.075,.7,0x3a3a2a,0,-.55,0,0,0,0,8);pCyl(q,.025,.025,.35,dk,0,-1.05,0,0,0,0,6);pBox(q,.15,.45,.17,st,0,.0,0);pBox(q,.14,.2,.12,0x4a4a3a,.13,-.05,.0);pBox(q,.06,.16,.06,dk,0,.3,-.02);pBox(q,.05,.12,.05,dk,-.08,.33,.0);pBox(q,.05,.12,.05,dk,.08,.33,0)}
  else if(k==='c96'){pBox(q,.06,.34,.13,st,0,-.12,0);pBox(q,.05,.12,.24,st,0,-.05,-.16);pCyl(q,.02,.02,.28,dk,0,-.38,.02,0,0,0,6);pBox(q,.055,.16,.1,0x5a3a20,0,.1,-.06,.3)}
  WGC[k]=pbGeo(q)}return new T.Mesh(WGC[k],VCM)}
@@ -103,7 +103,7 @@ const smkG=new T.SphereGeometry(1,8,6);
 const _mA=new T.Matrix4(),_mB=new T.Matrix3();
 function mergeHuman(g){const u=g.userData;if(!u||u.v16||u.mg16||!u.ch)return;u.mg16=1;const J=[u.l1,u.k1,u.l2,u.k2,u.b,u.ch,u.hd,u.aR,u.eR,u.mR,u.aL,u.eL,u.mL].filter(Boolean),JS=new Set(J),S=sharedSets();
  for(const j of J){const groups=new Map();const walk=(o,M)=>{for(const c of o.children.slice()){if(JS.has(c))continue;if(!c.visible)continue;c.updateMatrix();const m2=new T.Matrix4().multiplyMatrices(M,c.matrix);
-   if(c.isMesh&&c.geometry&&c.geometry.attributes.normal&&!Array.isArray(c.material)&&c.material.isMeshLambertMaterial&&!c.material.transparent){const mt=c.material,em=mt.emissive?mt.emissive.getHex():0;const k=(mt.map?mt.map.uuid:'-')+'|'+em;let a=groups.get(k);if(!a){a={map:mt.map,em,L:[]};groups.set(k,a)}a.L.push({c,m:m2,col:mt.color.getHex()})}
+   if(c.isMesh&&c.geometry&&c.geometry.attributes.normal&&!Array.isArray(c.material)&&c.material.isMeshLambertMaterial&&!c.material.transparent&&!c.material.vertexColors){const mt=c.material,em=mt.emissive?mt.emissive.getHex():0;const k=(mt.map?mt.map.uuid:'-')+'|'+em;let a=groups.get(k);if(!a){a={map:mt.map,em,L:[]};groups.set(k,a)}a.L.push({c,m:m2,col:mt.color.getHex()})}
    if(c.children.length)walk(c,m2)}};walk(j,new T.Matrix4());
   for(const a of groups.values()){if(a.L.length<2)continue;let nv=0,ni=0;for(const q of a.L){const G=q.c.geometry;nv+=G.attributes.position.count;ni+=G.index?G.index.count:G.attributes.position.count}
    const pos=new Float32Array(nv*3),nor=new Float32Array(nv*3),uv=new Float32Array(nv*2),col=new Float32Array(nv*3),idx=nv>65000?new Uint32Array(ni):new Uint16Array(ni);let vo=0,io=0;
@@ -357,7 +357,7 @@ const GAR=[];let garN=0;const GNM=['Szabó','Kovács','Tóth','Nagy','Horváth',
 function mkGar(i,kind){const coats=[0x7a8a8e,0x72827e,0x808a88,0x6e7c82],hats=R()<.62?'helm':R()<.75?'cap':'kepi',rk=R()<.15?3:R()<.3?2:R()<.55?1:0;
  const g=mkSoldier({coat:coats[R()*4|0],hat:hats,hatC:hats==='helm'?[0x4e5a52,0x55605a,0x4a5450][R()*3|0]:0x6a787c,tab:[0xa02a2a,0x2a6a3a,0xd8c060,0x2a3a7a][R()*4|0],rank:rk,pack:R()<.75,puttee:R()<.5?0x5a5440:0x4a4a3e});
  g.userData.mR.add(mkGun(kind==='mg'?'mg':kind==='carb'?'carb':'rifle'));g.visible=false;scene.add(g);
- const s={g,u:g.userData,i,kind,name:GRK[rk]+' '+GNM[(i*7+3)%GNM.length],hp:125,max:125,alive:true,post:null,st:'idle',t:R()*9,cd:R(),mag:kind==='mg'?100:5,rel:0,tg:null,tgT:0,los:false,vx:0,vz:0,morale:1,down:0,up:0,crouch:0,aim:0,peek:0,burst:0,inB:false,fall:0,hitT:0,bark:0,face:Math.PI};GAR.push(s);return s}
+ const s={g,u:g.userData,i,kind,name:GRK[rk]+' '+GNM[(i*7+3)%GNM.length],hp:125,max:125,alive:true,post:null,st:'idle',t:R()*9,cd:R(),mag:kind==='mg'?100:10,rel:0,tg:null,tgT:0,los:false,vx:0,vz:0,morale:1,down:0,up:0,crouch:0,aim:0,peek:0,burst:0,inB:false,fall:0,hitT:0,bark:0,face:Math.PI};GAR.push(s);return s}
 function garVisible(v){for(const s of GAR)if(s.alive)s.g.visible=v}
 const POSTS={};let postSet=null;
 function garAssign(name,list){postSet=name;const P_=(POSTS[name]=list.map(p=>({x:p[0],z:p[1],f:p[2],c:!!p[3],bk:!!p[4],fb:p[5]||null,occ:null})));
@@ -369,7 +369,7 @@ function garTarget(s){const p=s.g.position;let best=null,bs=1e9;const R2=s.kind=
  for(const e of enemies){if(!e.active)continue;const ep=e.g.position,d=Math.hypot(ep.x-p.x,ep.z-p.z);if(d>R2)continue;const dp=Math.hypot(ep.x-P.g.position.x,ep.z-P.g.position.z);const sc=d+(dp<12?-10:0)+(e.s>1.15?-6:0)+(e===s.tg?-5:0)+R()*3;if(sc<bs){if(!losClear(p.x,(s.crouch>.5?1.2:1.45),p.z,ep.x,ep.y+1.3*e.s,ep.z))continue;bs=sc;best=e}}return best}
 function garShoot(s,e){const p=s.g.position,u=s.u,mg=s.kind==='mg';const o=new T.Vector3(p.x+Math.sin(s.g.rotation.y)*.7,p.y+(s.crouch>.5&&!s.peek?1.15:1.45),p.z+Math.cos(s.g.rotation.y)*.7);const t=e.g.position.clone();t.y+=1.25*e.s;
  const d=o.distanceTo(t),sp=(mg?.045:s.kind==='carb'?.03:.022)+d*.0004+(Math.hypot(e.vx||0,e.vz||0)>1?.015:0)+(s.morale<.5?.02:0);const v=t.sub(o).normalize();v.x+=(R()-.5)*sp;v.y+=(R()-.5)*sp*.6;v.z+=(R()-.5)*sp;v.normalize().multiplyScalar(mg?78:72);
- const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.2,dmg:mg?13:s.kind==='carb'?24:30,by:s});if(mg)trc16(o,o.clone().addScaledVector(v,.6),0xffc070);
+ const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.2,dmg:mg?13:s.kind==='carb'?30:40,by:s,pen:mg?0:1});if(mg)trc16(o,o.clone().addScaledVector(v,.6),0xffc070);
  burst(o.x+v.x*.012,o.y,o.z+v.z*.012,0xffdd88,1,.06,1);if(R()<.5)burst(o.x,o.y,o.z,0xaaaaaa,1,.5,.8);npcShot(mg?'mg':'rifle',o.x,o.z);s.aim=.4;u.ch.rotation.x=-.08;s.recoil=1}
 function garPose(s,dt){const u=s.u,mv=Math.hypot(s.vx,s.vz),k=Math.min(1,dt*10),ph=s.t*(mv>3.5?13:10);
  if(s.down>0||s.up>0){const lying=s.down>0?1:clamp(s.up/.7,0,1);s.g.rotation.x+=(-1.45*lying-s.g.rotation.x)*Math.min(1,dt*8);s.g.position.y=.25*lying;u.l1.rotation.x+=(.2-u.l1.rotation.x)*k;u.l2.rotation.x+=(-.1-u.l2.rotation.x)*k;u.aR.rotation.x+=(-2.4*lying-.4-u.aR.rotation.x)*k;u.aL.rotation.x+=(-.3-u.aL.rotation.x)*k;return}
@@ -390,7 +390,7 @@ function garDamage(s,d,src,kind){if(!s.alive||s.down>0&&kind!=='blast')return;s.
 function garUpd(dt){if(!GAR.length)return;const pp=P.g.position;let k=0;
  for(const s of GAR){if(!s.alive||!s.g.visible)continue;s.t+=dt;s.cd-=dt;s.aim=Math.max(0,s.aim-dt);s.bark-=dt;s.melee=Math.max(0,(s.melee||0)-dt);s.morale=Math.min(1,s.morale+dt*.012);const p=s.g.position;
   if(s.down>0){s.down-=dt;if(s.down<=0){s.up=.7}garPose(s,dt);continue}if(s.up>0){s.up-=dt;garPose(s,dt);continue}
-  if(s.rel>0){s.rel-=dt;if(s.rel<=0)s.mag=s.kind==='mg'?100:5}
+  if(s.rel>0){s.rel-=dt;if(s.rel<=0)s.mag=s.kind==='mg'?100:10}
   /* percepción escalonada */
   s.tgT-=dt;if(s.tgT<=0){s.tgT=.28+R()*.25+(k++%4)*.02;s.tg=garTarget(s)}if(s.tg&&enemies.indexOf(s.tg)<0)s.tg=null;const e=s.tg;
   let near=null,nd=99;for(const o of enemies){const d=Math.hypot(o.g.position.x-p.x,o.g.position.z-p.z);if(d<nd){nd=d;near=o}}
@@ -464,7 +464,7 @@ function officerAI(dt){const op=officer;if(!op||!op.g.visible)return;if(!op.v16)
    for(const m of mates){if(Math.hypot(m.x-me.x,m.z-me.z)>24)continue;for(const e of act){const d=Math.hypot(e.g.position.x-m.x,e.g.position.z-m.z);if(d<6&&d<sd){sd=d;sup=m;se=e}}}
    if(sup){st='support';tgt=se;goal={x:(sup.x*2+me.x)/3,z:(sup.z*2+me.z)/3}}
    else{const blk=act.filter(e=>Math.hypot(e.g.position.x-obj.x,e.g.position.z-obj.z)<22&&Math.hypot(e.g.position.x-me.x,e.g.position.z-me.z)<55);
-    const defend=level===8&&(L8.ph===10||L8.ph===11)||level===2||level===4||level===5;
+    const defend=level===8&&(L8.ph===10||L8.ph===11)||level===2||level===4||level===5||level===9&&!!L9.def;
     if(op.hp<45&&tS&&dS<30){st='heal';tgt=tS;goal=coverNear(me.x,me.z,tS.g.position.x,tS.g.position.z,16)}
     else if(big&&dB<50&&(!blk.length||R()<.4)){st='focus';tgt=big;V16.focus=big;goal=coverNear(me.x,me.z,big.g.position.x,big.g.position.z,14)}
     else if(blk.length&&!defend){let cx=0,cz=0;blk.forEach(e=>{cx+=e.g.position.x;cz+=e.g.position.z});cx/=blk.length;cz/=blk.length;tgt=blk.reduce((a,b)=>Math.hypot(b.g.position.x-me.x,b.g.position.z-me.z)<Math.hypot(a.g.position.x-me.x,a.g.position.z-me.z)?b:a);
@@ -508,7 +508,7 @@ function offLabel(){const o=officer;if(!o||!o.lab)return;if(!o.g.visible||!playi
    ===================================================================== */
 allyUpdate=function(dt){if(!playing)return;officerAI(dt);const op=officer,active=enemies.filter(e=>e.active),leader=op&&op.g.visible?op.g.position:null;
  const nearest=(from,max=65)=>{let best=null,bd=max;for(const e of active){const d=Math.hypot(e.g.position.x-from.x,e.g.position.z-from.z);if(d<bd){bd=d;best=e}}return{e:best,d:bd}};
- for(const a of allies){if(!a.name)continue;const p=a.g.position,u=a.g.userData;a.t+=dt;a.cd-=dt;a.aim=Math.max(0,a.aim-dt);a.ammoT-=dt;a.rel=Math.max(0,a.rel-dt);if(a.rel===0&&a.wasReload){a.mag=a.role==='Apoyo'?30:5;a.wasReload=false}
+ for(const a of allies){if(!a.name)continue;const p=a.g.position,u=a.g.userData;a.t+=dt;a.cd-=dt;a.aim=Math.max(0,a.aim-dt);a.ammoT-=dt;a.rel=Math.max(0,a.rel-dt);if(a.rel===0&&a.wasReload){a.mag=a.role==='Apoyo'?50:10;a.wasReload=false}
   if(a.down>0){a.down-=dt;a.g.rotation.x+=(-1.4-a.g.rotation.x)*Math.min(1,dt*6);p.y=.25;u.aR.rotation.x=-2.2;if(a.down<=0){a.hp=60;a.up=.8}continue}
   if(a.up>0){a.up-=dt;a.g.rotation.x*=Math.pow(.02,dt);p.y*=Math.pow(.02,dt);if(a.up<=0){a.g.rotation.x=0;p.y=0}continue}
   const threat=nearest(p,72),tg=threat.e,apo=a.role==='Apoyo',scout=a.role==='Fusilero';
@@ -525,7 +525,7 @@ allyUpdate=function(dt){if(!playing)return;officerAI(dt);const op=officer,active
   const ml=Math.hypot(mx,mz);if(ml>1){mx/=ml;mz/=ml}if(ml>.05){const s=steer(a,mx,mz,dt);const m2=Math.min(1,ml);mx=s[0]*m2;mz=s[1]*m2}
   const sp=apo?3.6:scout?5.0:4.3,accel=Math.min(1,dt*(apo?2.7:scout?5.5:4));a.vx=a.vx||0;a.vz=a.vz||0;a.vx+=(mx*sp-a.vx)*accel;a.vz+=(mz*sp-a.vz)*accel;p.x+=a.vx*dt;p.z+=a.vz*dt;resolve(p,.5);
   const ftg=(V16.focus&&active.indexOf(V16.focus)>=0&&Math.hypot(V16.focus.g.position.x-p.x,V16.focus.g.position.z-p.z)<50)?V16.focus:tg,fd=ftg?Math.hypot(ftg.g.position.x-p.x,ftg.g.position.z-p.z):99;
-  if(ftg){const range=apo?45:scout?39:36;if(a.rel<=0&&a.cd<=0&&fd<range){if(a.mag<=0){a.rel=apo?2.8:2.1;a.wasReload=true;feed(a.name+': ¡Recargando!')}else{a.mag--;a.aim=.35;a.cd=(apo?.13:scout?.82:1.05)+R()*.3;const o=p.clone();o.y=1.4;const t2=ftg.g.position.clone();t2.y=1.2*ftg.s;const v=t2.sub(o).normalize(),spread=apo?.035:scout?.025:.05;v.x+=(R()-.5)*spread;v.y+=(R()-.5)*spread*.6;v.z+=(R()-.5)*spread;v.normalize().multiplyScalar(apo?70:62);const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.3,dmg:apo?7:scout?19:16,by:a});if(R()<.55){SFXV=clamp(1-Math.hypot(p.x-cam.position.x,p.z-cam.position.z)/80,.15,1);weaponSfx(apo?'smg':'rifle')}}}}
+  if(ftg){const range=apo?45:scout?39:36;if(a.rel<=0&&a.cd<=0&&fd<range){if(a.mag<=0){a.rel=apo?2.8:2.1;a.wasReload=true;feed(a.name+': ¡Recargando!')}else{a.mag--;a.aim=.35;a.cd=(apo?.13:scout?.82:1.05)+R()*.3;const o=p.clone();o.y=1.4;const t2=ftg.g.position.clone();t2.y=1.2*ftg.s;const v=t2.sub(o).normalize(),spread=apo?.035:scout?.025:.05;v.x+=(R()-.5)*spread;v.y+=(R()-.5)*spread*.6;v.z+=(R()-.5)*spread;v.normalize().multiplyScalar(apo?70:62);const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.3,dmg:apo?9:scout?34:30,by:a,pen:apo?0:1});if(R()<.55){SFXV=clamp(1-Math.hypot(p.x-cam.position.x,p.z-cam.position.z)/80,.15,1);weaponSfx(apo?'smg':'rifle')}}}}
   if(apo&&a.ammoT<=0&&playing){a.ammoT=42+R()*18;pick(P.g.position.x+(R()-.5)*4,P.g.position.z+(R()-.5)*4,'a')}
   const face=ftg?Math.atan2(ftg.g.position.x-p.x,ftg.g.position.z-p.z):(Math.hypot(a.vx,a.vz)>.2?Math.atan2(a.vx,a.vz):a.g.rotation.y);a.g.rotation.y=angL(a.g.rotation.y,face,Math.min(1,dt*(scout?8:apo?4.5:6)));
   const mv=Math.hypot(a.vx,a.vz)>.35,ph=a.t*(scout?13:apo?8.5:10),k=Math.min(1,dt*10),gait=mv?Math.sin(ph)*(scout?.72:apo?.42:.58):0,cr=op&&op.mode==='cover'&&!mv&&ftg?1:0;

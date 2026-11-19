@@ -113,3 +113,52 @@ Todas las cinemáticas se saltan con «Saltar», Intro o Espacio, y una pulsaci�
 - Llevar la noche, la guarnición y los búnkeres a otros capítulos (II tiene búnkeres originales).
 - Escombros con colisión por bloque y cobertura destructible a medida que cae.
 - Teniente y camaradas son «héroes» que caen heridos y se recomponen (decisión de diseño: aparecen en la cinemática final); la guarnición sí muere de forma permanente.
+
+---
+
+# v17 · OPERACIÓN TRES CORONAS — El Cerco de Vargenkreuz
+
+Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v17.html`** (incluye todo lo de v16). Menú → CAPÍTULO → «IX · OPERACIÓN TRES CORONAS». El código nuevo está en `src/v17.js`; `python3 src/build.py` regenera el HTML.
+
+## Cambios en armas, escuadra y enemigos (todo el juego)
+- **Fusil Mannlicher-Mauser 8,98×66**: cargador extraíble de 10 tiros tipo Enfield (modelado bajo el cajón de mecanismos), 62 de daño, **atraviesa a un enemigo** y sigue con el 60 % del daño, más retroceso, sacudida, frenado del jugador y estampido grave. Recarga con peines: 2,3 s rellenando, 3,1 s en vacío. Escuadra y guarnición usan el mismo calibre (10 tiros, más daño, penetración).
+- **MP38** con modelo nuevo y **tambor de 50 cartuchos** (nervios, llave de carga); el tambor es la pieza que cae y se repone en la animación de recarga.
+- **Sable polaco aserrado** rehecho (guarda de estribo, alambre en la empuñadura, vaceo, filo pulido). **Escudo eliminado.** Combo de **5 golpes**: tajo, revés, **estocada** (alcance largo, aturde), **molinete giratorio** (360°, empuja) y golpe aplastante; el golpe en caída usa el aplastante.
+- **Sanitäter Ritter**, médico de la escuadra (todos los capítulos salvo el convoy): pistola C10 y cuchillo. Cuando alguien baja al **10 % de salud** (jugador, camaradas, teniente o guarnición) acude, se arrodilla y lo cura con animación de vendaje y partículas; reanima a los caídos. Combate, puede caer herido y se recompone.
+- **Escuadra y jugador remodelados** con el mismo estilo: uniformes con tejido, costuras y manchas de barro, cascos, mochilas, rango, correaje con cartuchera, cantimplora de máscara, guantes y polainas.
+- **Enemigos rediseñados**: los orcos tienen arco ciliar, colmillos, orejas, hombreras con pinchos, cuello de piel, trofeo de cráneo, faldón, brazales y rodilleras; además la plaga lleva pústulas luminosas y garras, el mago hábito, capucha y orbe, el custodio penacho y capa, y el trasgo capucha.
+- **Esqueletos guardianes** (enemigo nuevo): huesos sobre el mismo esqueleto articulado, ojos espectrales, sable oxidado; se deshacen al morir.
+- **Animación de combate de enemigos**: encorvamiento y balanceo pesado de los orcos, anticipación y torsión del cuerpo en cada golpe, retroceso al recibir impactos, temblor al quedar aturdidos, **rugido** al entrar en combate y respiración.
+- **Tácticas enemigas**: los fusileros lanzan granadas, los orcos, la plaga y los esqueletos esquivan cuando el jugador les apunta, y la infantería herida busca cobertura.
+
+## Capítulo IX — un solo mapa conectado (sur → norte)
+S1 Trincheras de San Gregor · S2 Granja de Kessel (molino como hito) · S3 Llanura de Argentum · S4 Bosque de Tannen · S5 Puente del Cuervo (río, vado) · S6 Estación Vargenkreuz (locomotora, vagones, depósito de agua) · S7 Fortaleza de las Tres Coronas (tres torres coronadas, murallas destructibles por bloques, búnkeres, MG 08 utilizables) · S8 Monasterio (campanario con luz roja como hito) y ruinas subterráneas.
+
+| Fase | Contenido |
+|---|---|
+| 1 · El barro y el acero | 10 soldados de guarnición en el parapeto, 3 oleadas (fusileros, granaderos, asalto, ametralladores, criaturas), **bombardeo dinámico** con cráteres y **sacos terreros que se dañan por etapas y desaparecen**, **nube de gas** que avanza, daña y ciega por zonas, puesto de comunicaciones que defender. |
+| 2 · La carga de Argentum | 8 húsares a caballo con IA de escuadrón: llegada, formación, avance, **detección de ametralladoras y flanqueo**, carga a sable, media vuelta y reorientación, **retirada por bajas** y reagrupamiento. Nidos de ametralladora, blindado «Basilisco» con torreta y **cañón de campaña en la loma** que maneja el jugador. |
+| 3 · El cerco de Tannen | Observadores en plataformas, repetidor que restaurar (mantener USAR), **ataques por ambos flancos**, patrulla aliada que se repliega, **árbol derribado que corta el camino → ruta alternativa por el arroyo**, emboscada por la retaguardia, aviso de cerco con orden de ruptura del teniente. |
+| 4 · El Puente del Cuervo | Ingenieros **reparando el camión** (animación de trabajo, otro ocupa su puesto si cae), **saboteadores** que corren a colocar cargas, blindado aliado de apoyo; si el puente baja del 50 % **se hunde el tramo central y se abre el vado del oeste**, por donde pasa el camión. |
+| 5 · Fortaleza | 12 soldados en parapetos y búnkeres; **ariete** que revienta la puerta este, **torre de asedio** que suelta tropas, **bombarda arcana** que bombardea y derriba bloques de muralla; 4 oleadas; derrota si el enemigo alcanza el monasterio. |
+| 6 · Ruinas | Complejo subterráneo con pasillos, cámaras, pilares, runas, maquinaria y braseros; **tres resonadores** que destruir mientras sube el medidor de brecha; luego **el Coloso de las Tres Coronas** (jefe con golpe de área e invocación de esqueletos). |
+
+**10 cinemáticas** breves, saltables y sincronizadas con eventos: inicio, caballería, emboscada, puente, regreso al fuerte, descubrimiento de las ruinas, destrucción de la máquina, derrumbe, llegada de los tanques y final. Si una condición de derrota se cumple, **se reintenta la fase**, no la misión entera.
+
+## Optimización del capítulo IX
+Sectores fusionados por separado y ocultos por distancia, árboles, hierba, rocas, sacos y cráteres instanciados, IA escalonada y límite de enemigos vivos. En las pruebas: **436–681 draw calls y ~2 ms de lógica por fotograma**, menos que el capítulo VIII.
+
+## Errores corregidos en v17
+- Las piezas nuevas de los enemigos compartían material con aliados: el tinte del frenesí o del portal teñía de rojo a **todos** los soldados. Ahora cada enemigo tiene su material.
+- El cañón y las MG del mapa se fusionaban como geometría estática y no podían girar.
+- La caballería no salía del estado de llegada.
+- La ruta del camión atravesaba barandillas y sacos.
+- Las etiquetas de nombre y el contador de aliados quedaban sobre las cinemáticas.
+- El médico se colocaba entre la cámara y el jugador.
+
+## Limitaciones restantes
+- No hay terreno con desniveles transitables: el relieve es visual, y trincheras y lomas se simulan con parapetos y plataformas. El río solo se cruza por el puente o el vado.
+- La navegación sigue siendo de dirección local con antiatasco y rutas por puntos, no una navmesh.
+- Las voces son subtítulos.
+- Probado en Chromium sin interfaz con renderizado por software, no en un teléfono Android real.
+- Los caballos no tienen ragdoll completo: caen de lado y el jinete sale despedido.

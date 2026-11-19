@@ -4,7 +4,7 @@ aplica ediciones quirúrgicas verificadas al código existente e inyecta el mód
 import sys, pathlib, re
 root = pathlib.Path(__file__).resolve().parent.parent
 src = (root/'original_v15.html').read_text(encoding='utf-8')
-mod = (root/'src'/'v16.js').read_text(encoding='utf-8')
+mod = (root/'src'/'v16.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v17.js').read_text(encoding='utf-8')
 out = src
 def rep(old, new, count=1):
     global out
@@ -14,7 +14,7 @@ def rep(old, new, count=1):
     out = out.replace(old, new)
 
 # --- cabecera / CDN con respaldo ---
-rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v16 · Edición Definitiva)</title>')
+rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v17 · Operación Tres Coronas)</title>')
 rep('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>',
     '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\n'
     '<script>window.THREE||document.write(\'<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\\/script>\')</script>')
@@ -81,7 +81,16 @@ rep("const p=e.g.position,u=e.g.userData,d=Math.hypot(pp.x-p.x,pp.z-p.z);e.slamT
 rep("if(d<7)hitP(30*(1-d/7*.5));", "if(Math.hypot(pp.x-p.x,pp.z-p.z)<7)hitP(30*(1-Math.hypot(pp.x-p.x,pp.z-p.z)/7*.5));e8Blast(p.x,p.z,7,30);")
 # NPC centinela decorativo del campamento: sustituido por la guarnición combatiente
 rep("8:[['s','a',X8-44,30],", "8:[")
+# v17: penetración de bala, impactos en vehículos/máquinas, combos de sable ampliados
+rep("if(dx*dx+dz*dz<(.95*e.s)**2&&y>p.y&&y<p.y+2.3*e.s){const head=y-p.y>1.65*e.s;hurt(e,b.dmg*(head?2:1),head?'h':'b',b.by);hit=true;",
+    "if(!(b.hs&&b.hs.has(e))&&dx*dx+dz*dz<(.95*e.s)**2&&y>p.y&&y<p.y+2.3*e.s){const head=y-p.y>1.65*e.s;hurt(e,b.dmg*(head?2:1),head?'h':'b',b.by);hit=true;if(b.pen>0){b.pen--;b.dmg*=.6;(b.hs||(b.hs=new Set())).add(e);hit=false}")
+rep("if(!hit&&inB(b.m.position)){hit=true;", "if(!hit&&v9Hit(b))hit=true;if(!hit&&inB(b.m.position)){hit=true;")
+rep("var TGP=null,", "var v9Hit=()=>false,TGP=null,")
+rep("startSw(P.swC>0?(P.sc+1)%3:0)}", "startSw(P.swC>0?(P.sc+1)%SW.length:0)}")
+rep("if(P.q)startSw((P.sc+1)%3)}", "if(P.q)startSw((P.sc+1)%SW.length)}")
+rep("startSw(2);P.swHit=true;P.plunge=true;", "startSw(SW.length-1);P.swHit=true;P.plunge=true;")
+rep("slash(SW[2]);shake=Math.max(shake,1.5);", "slash(SW[SW.length-1]);shake=Math.max(shake,1.5);")
 # --- inyección del módulo ---
 rep("\n</script></body></html>", "\n" + mod + "\n</script></body></html>")
-(root/'Sombras_sobre_el_Nilo_1909_v16.html').write_text(out, encoding='utf-8')
+(root/'Sombras_sobre_el_Nilo_1909_v17.html').write_text(out, encoding='utf-8')
 print('OK', len(out), 'bytes')
