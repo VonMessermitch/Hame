@@ -512,3 +512,47 @@ Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v22.html`**. Módulo nuevo: `src/
 - Las mejoras de ventanas y puertas se aplican a los edificios del campamento. Las casas de la fortaleza conservan su modelo.
 - No hay motor de cuerpos rígidos: la física de objetos es la descrita arriba.
 - En algunas posturas extremas (cuerpo a cuerpo, muerte) el arma todavía puede atravesar el cuerpo.
+
+# v23 · Misión XI «Operación Cielo de Acero» — Asalto aerotransportado, Eisenmark 1922
+
+Archivo: `Sombras_sobre_el_Nilo_1909_v23.html` (código nuevo en `src/v23.js`; se construye con `python3 src/build.py`).
+Menú → «XI · OPERACIÓN CIELO DE ACERO». El selector **PUNTO DE CONTROL** permite empezar en cualquiera de las siete fases.
+
+## Desarrollo (≈6 minutos)
+| Tiempo | Fase | Qué ocurre |
+|---|---|---|
+| 0:00 | Embarque | Cinemática «Todos a bordo» (megáfono, mecánicos, camión, bombarderos calentando motores). El jugador cruza la base, sube la rampa, entra en la góndola y toma asiento (E). Diálogo del «cacharro» y del correo; el sargento Brandner los manda abrocharse. |
+| 0:45 | Despegue | Se cierra la puerta, se sueltan los amarres, el cepelín se eleva hasta 260 m. Se unen 5 bombarderos y 6 cazas de escolta. HUD «Mantén la posición… Avance de la formación». Diálogo de las «vacaciones»; el Hauptmann Adler ordena «¡A sus puestos!». |
+| 1:40 | Interceptación | Breve cinemática de contacto. MG 08 de babor o estribor: cazas y aviones de ataque hacen pasadas desde el horizonte; la escolta los persigue. |
+| 2:40 | Nubes oscuras | Niebla densa, turbulencia, motores que fallan. Dracos pequeños en grupos, dracos que se agarran a las ventanas, dracos blindados contra los motores, un draco que se estrella contra la góndola y el **dragón de guerra** (sin barra de vida; solo se le puede derribar en la parte final, si no se retira herido). Eventos: mecánico herido (ayudarlo con E), motor dos humeando, inclinación de la góndola y compañero que resbala y es sujetado, cinta de munición en el pañol. |
+| 3:45 | El objetivo | Se despejan las nubes al atardecer. Cinemática con el oficial y el mapa, luego vista de la ciudad industrial amurallada (fábricas, chimeneas, estación, depósitos, arsenal, puente, refinería, puerto, AA, torres, barrios). Reflectores, sirenas, fuego antiaéreo. |
+| 4:20 | Bombardeo | Palancas de lanzamiento en la bodega (si el jugador no llega, lo hace el oficial a los 15 s). Las compuertas se abren y las bombas caen, visibles por el **suelo de cristal**. Los bombarderos sueltan sus cargas. Explosiones distintas y escalonadas durante ~20 s: depósito ferroviario, combustible, arsenal (cadena de secundarias), AA, puente (se derrumba) y fábricas. Un draco se estrella contra un bombardero, otro pierde altura, el motor dos queda fuera. |
+| 5:10 | Derribo | Explosión, el jugador cae al suelo, alarma roja, luces que fallan, humo, incendios pequeños que se pueden rodear, un panel que cae, carga suelta deslizándose. Lenz lo ayuda a levantarse; la escuadra salta por la puerta de emergencia. Diálogos del paracaídas. E en la puerta: **¡SALTAR!** |
+| 5:35 | «La caída» | Cinemática en tercera persona: salto, caída libre, el cepelín ardiendo e inclinándose, compañeros con paracaídas, apertura del paracaídas, la ciudad en llamas, radio «…¡Weiss! ¿Me escuchás?…», fundido a negro y pantalla de resultados. |
+
+## Sistemas
+- **Vuelo con marco relativo:** la góndola no se mueve; el mundo (base, terreno en mosaico reciclable, nubes y ciudad) se desplaza y desciende, así que caminar dentro del dirigible es estable. La inclinación y la turbulencia se aplican a la cámara.
+- **Góndola jugable** (44 m): compartimento de tropa con bancos, pasillo, radio, mesa de mapas, pañol de munición, dos troneras de MG 08, escalera a la escotilla, bodega de bombas con suelo de cristal, puerta de embarque y de emergencia, todo con colisión.
+- **Base de Falkenhorst:** hangar de dirigibles, torre de control de tres plantas, cuartel, comedor, taller, depósitos de combustible, polvorín, estación ferroviaria con tren, cañones AA, nidos de MG, reflectores, garitas, alambrada, andamios, grúa, cables de amarre, camiones, bombarderos y cazas aparcados. Personal trabajando (mecánicos, pilotos discutiendo, patrulla, soldados fumando o comiendo).
+- **IA aérea:** cada aparato tiene estados (aproximación, ataque, ruptura, agarre, retirada, derribado). Entran desde 560–820 m, hacen su pasada, rompen y vuelven. La escolta busca al enemigo más próximo al cepelín; los fusileros de la escuadra disparan desde las ventanas. Los derribados caen con humo y estallan en el suelo.
+- **MG 08:** giro amplio pero limitado (±75°), cintas de 250 cartuchos con recarga manual (R / REC), recalentamiento con atasco, trazadoras, retroceso, casquillos y mayor alcance en el aire.
+- **Daño expuesto:** el jugador solo recibe impactos si está en la MG o junto a una ventana del costado atacado.
+- **Daño progresivo:** cristales que estallan, humo por las ventanas rotas, chispas, paneles que caen, alarma giratoria con luz roja, luces que se apagan, motores con humo o fuego, incendios en el casco.
+- **Puntos de control:** al morir se reaparece dentro de la góndola sin perder la fase; el menú permite empezar en cualquier fase.
+
+## Pruebas (Chromium sin GPU)
+- Misión completa de principio a fin con las interacciones: embarque, asiento, MG, ayudar al mecánico, cinta, palancas, salto y pantalla final.
+- Cada punto de control arranca en un estado coherente.
+- Subida a la rampa con teclado real.
+- Todos los niveles (1–12) arrancan sin errores (solo aparece el aviso esperado de la sonda de Ollama).
+- El capítulo X se completa. Una ejecución automática se quedó en la compuerta de la fase IV, pero el mismo script también falla así a veces con la v22: es una inestabilidad previa del script, no de este cambio.
+- **Rendimiento:**
+  - base ≈630 draw calls, 0,5 ms de lógica;
+  - en vuelo con 18 aparatos ≈110 draw calls, 0,7 ms;
+  - bombardeo ≈70 draw calls.
+
+## Limitaciones conocidas
+- La inclinación de la góndola es visual (cámara): el suelo sigue siendo horizontal para la física.
+- Los aviones y criaturas no colisionan entre sí; los choques (draco contra la góndola o contra un bombardero) están guionizados.
+- Los NPC de la tripulación siguen rutas fijas dentro de la góndola, sin navegación general.
+- Durante el embarque la escuadra puede cruzarse con el jugador en la rampa (se empujan, no se bloquean).
