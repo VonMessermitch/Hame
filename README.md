@@ -397,3 +397,118 @@ Primera opción del menú (aparece preseleccionada mientras no se haya completad
 ## Rendimiento
 - Campamento: ≈120–440 draw calls y ~0,35–0,55 ms de lógica por fotograma en las pruebas.
 - Capítulo X: igual que antes.
+
+---
+
+# v22 · Húsares Argentum, empuñe, fortaleza defendible, obús con dotación, tren, edificios y físicas
+
+Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v22.html`**. Módulo nuevo: `src/v22.js`.
+
+## 1. Húsares Argentum (cap. IX)
+- **Aspecto:** kolpak de piel con bolsa roja y penacho blanco, pelliza azul con ribete de piel sobre el hombro, seis cordones dorados en el pecho, sabretache rojo con escudo, vaina de la espada en la cadera y carabina colgada a la espalda.
+- **Carabina de caballería Mauser** (modelo propio: cañón corto, guardamanos, cerrojo acodado, cargador de 5, correa).
+- **Alternancia espada ↔ carabina con transición de 0,8 s:** la mano va a la vaina o a la espalda, cambia el arma a mitad del gesto y vuelve. Nada aparece de golpe.
+- **Elección del arma:**
+  - En las cargas y a menos de 8 m, espada: guardia alta, tajo con aturdimiento y parada.
+  - Entre 12 y 62 m, carabina: hostigamiento a caballo. El jinete gira el torso, el caballo encara al blanco si está parado, apunta a dos manos, dispara, acciona el cerrojo y recarga tras 5 disparos.
+  - Al disparar en movimiento la dispersión es mayor.
+- **Ya no se quedan inmóviles:** mientras «forman» esperando la orden de carga, hostigan con las carabinas. El capitán conserva la Ruby y la espada.
+- **Desmontar:** no está implementado, porque el sistema de caballería no lo tenía. Todo el combate es montado.
+
+## 2. Empuñe de armas (todas las tropas)
+- **Postura de puntería resuelta numéricamente** sobre el esqueleto común (búsqueda exhaustiva fuera de línea): la mano derecha queda a 1,4 cm del objetivo y la de apoyo a 3 cm del guardamanos.
+- **IK de muñeca:** cada fotograma la mano orienta el arma exactamente hacia el frente del soldado (cañón al frente y alza arriba). Antes el arma quedaba ladeada unos 30°.
+- El arma se adelanta ligeramente al apuntar y vuelve a su sitio en reposo.
+- **A quién se aplica:** vanguardia y guarnición, la escuadra al apuntar y los húsares con carabina (siguiendo el giro del torso).
+
+## 3. Misión de entrenamiento: IA sin atascos
+- **Grafo de navegación del campamento:** unos 80 nodos con aristas comprobadas contra los obstáculos y ruta más corta. Lo usan el sargento, los reclutas y la escuadra de instrucción cuando la línea recta está bloqueada.
+- **Desatasco:** si un NPC no avanza durante 2,4 s, recalcula la ruta y se desplaza en lateral.
+- **Separación entre unidades:** ningún soldado ocupa el sitio de otro y los NPC se apartan del jugador.
+- **Corrección importante:** el punto de reunión de la fase VII estaba dentro de la berma del polígono de tiro y nadie podía llegar. Se ha movido.
+- **Prueba:** Koller recorre las 13 estaciones del campamento y llega a todas, y la misión se completa de principio a fin.
+
+## 4. Tren
+- **Locomotora:**
+  - caldera con cinco aros de latón, caja de humos con puerta y bisagras;
+  - chimenea con corona, domos de vapor (latón) y de arena, silbato, farol;
+  - pasamanos, estribos, topes y viga roja, quitapiedras;
+  - filas de remaches, cabina con ventanas enmarcadas, resplandor del hogar y manchas de óxido.
+- **Ténder** con carbón, tapa de agua, escalera y remaches.
+- **Vagones:**
+  - tablones verticales, puertas correderas con carriles y tirador;
+  - techo curvo, escalerilla, rueda de freno, topes y enganches;
+  - cartela, desgaste y tonos de madera distintos.
+- **Movimiento:**
+  - ruedas de radios y bielas de acoplamiento animadas según la distancia recorrida;
+  - holgura entre vagones al frenar, con golpe sonoro.
+- **Colisiones:** una caja por vagón, que se actualiza mientras el tren se mueve. Ya no se atraviesa.
+
+## 5. Edificios, ventanas y puertas (campamento)
+- **Ventanas con profundidad:** hueco oscuro, marco, cristal, cruceta, alféizar y contraventanas abiertas.
+- **Puertas:** marco, tablones, travesaños, bisagras, tirador y escalón.
+- **Tejados** con hiladas de tejas y chimenea con sombrerete. El cuartel tiene ventanas y puerta nuevas.
+- **Barracón del este transitable:**
+  - paredes reales y hueco de puerta;
+  - interior con literas, estufa con tubo y mesa;
+  - **puerta con bisagra animada** (USAR para abrir o cerrar).
+- El portón del circuito de obstáculos es ahora de **doble hoja animada**.
+
+## 6. Fortaleza de las Tres Coronas (cap. IX, fase 5)
+- **Cuatro escaleras de piedra** (dos en la muralla sur, una en la este y otra en la oeste) con barandilla. El jugador sube por ellas y camina por la pasarela.
+- **Parapeto exterior:**
+  - frena caídas;
+  - cubre a los tiradores agachados;
+  - deja pasar los disparos de quien está de pie.
+- **Dotación de la pasarela:** sacos en cada almena y cajas de munición.
+- **16 puestos de tiro con ocupación** (10 en la sur, 3 en la este y 3 en la oeste).
+- **IA de los fusileros:**
+  - llegan por la puerta principal, suben por la escalera y avanzan por la pasarela hasta su almena;
+  - se agachan tras el parapeto y se asoman para disparar (su línea de visión parte de la altura real);
+  - no repiten almena.
+- **Refuerzo de sectores:** cada 3 s, si un sector tiene 3 o más enemigos cerca y menos de 3 defensores, sube el fusilero libre más cercano.
+- **Relevo:** quien recibe mucho daño cambia a otra almena.
+- **Caída:** si la sección de muralla bajo sus pies vuela, el soldado cae al patio.
+
+## 7. Obús de asedio con dotación (sustituye a la «bombarda arcana»)
+- **Modelo:**
+  - cureña de mástiles abiertos con arados;
+  - ruedas de radios con llanta, escudo con mirilla;
+  - cuna, cilindros de retroceso, tubo con aros, cierre;
+  - arco de elevación, remaches;
+  - caja de munición con proyectiles.
+- **Dotación de tres:** artillero, cargador y auxiliar, que acompañan la pieza mientras avanza.
+- **Ciclo coordinado:**
+  - puntería: la pieza gira y eleva según la distancia, y el artillero maneja los volantes;
+  - carga: el cargador va de la caja al cierre;
+  - preparados: se tapan los oídos;
+  - disparo: fogonazo, humo, polvo, retroceso del tubo, temblor de cámara y sonido;
+  - recuperación.
+- **Proyectil visible** en parábola con estela, que provoca explosión, cráter y daño a la guarnición.
+- **Blancos:**
+  - elige entre el jugador, la guarnición (algo menos a la de las murallas) y la escuadra, entre 40 y 175 m;
+  - descarta blancos con obstáculos en los primeros 12 m del tiro.
+- **Dotación reducida:** con menos sirvientes dispara más despacio; sin ninguno se queda en silencio.
+- **Si se acercan aliados o hieren a la dotación**, esta abandona la pieza y combate. Vuelve al servicio cuando la zona lleva 6 s tranquila.
+
+## 8. Físicas y colisiones
+- **Separación entre personajes:** guarnición, escuadra, oficial, sanitario y NPC del campamento (0,9 m entre sí y respecto al jugador). También entre caballos (2,1 m).
+- **Unidades en altura** (murallas, plataformas): ya no son expulsadas por el volumen sobre el que caminan.
+- **Objetos empujables** (barriles y cajas) en el campamento y la fortaleza:
+  - se apartan al chocar el jugador o los soldados;
+  - frenan por rozamiento, rebotan en los muros;
+  - salen despedidos con las explosiones.
+
+## Otras correcciones
+- **Nombres repetidos:** dos funciones de la v19 y la v21 repetían nombre con otras del juego (`mkDraco` del cap. VII y `upd11` de la fase de ruinas del cap. IX). Se han renombrado como precaución; las pruebas no mostraron que ninguna llegara a fallar.
+
+## Rendimiento (pruebas en Chromium sin GPU)
+- Fortaleza con 12 defensores, obús y oleadas: ≈700 draw calls y ~1,5 ms de lógica.
+- Combate de húsares con 40 enemigos: ~3,4 ms de lógica.
+
+## Limitaciones conocidas
+- Los húsares no desmontan.
+- La dotación del obús reutiliza el modelo de fusilero enemigo.
+- Las mejoras de ventanas y puertas se aplican a los edificios del campamento. Las casas de la fortaleza conservan su modelo.
+- No hay motor de cuerpos rígidos: la física de objetos es la descrita arriba.
+- En algunas posturas extremas (cuerpo a cuerpo, muerte) el arma todavía puede atravesar el cuerpo.

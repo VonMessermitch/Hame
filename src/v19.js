@@ -34,7 +34,7 @@ function tkUpd(dt){for(const t of TK10){const g=t.g,u=g.userData,p=g.position;if
  if(t.kind==='sup'){if(t.cd<=0&&err<.1){t.cd=3.2+R();u.muz.getWorldPosition(_tv);u.rec=1;burst(_tv.x,_tv.y,_tv.z,0xffcc66,8,.2,8);smoke(_tv.x,_tv.y,_tv.z,3,2,0x8a8a8a,.6,.5);npcShot('big',_tv.x,_tv.z);const tp=tg.p.clone(),h=tg.h;setTimeout(()=>{if(level!==10)return;if(h)h.dmg(320,'x');boom9(tp.x,tp.z,1,false)},280)}}
  else if(t.cd<=0&&err<.2){t.cd=.11;t.mb=(t.mb||0)+1;if(t.mb>10){t.mb=0;t.cd=.9}u.muz.getWorldPosition(_tv);u.mgRec=1;_tw.set(tg.p.x+(R()-.5)*1.2,tg.y,tg.p.z+(R()-.5)*1.2);trc16(_tv,_tw,0xffb050);npcShot('mg',_tv.x,_tv.z);if(R()<.4)tg.hit(14)}}}
 /* ---------- DRACOS TERRESTRES: animales de guerra (asalto, transporte, pesado, rastreo) ---------- */
-function mkDraco(kind,cA,cB){const s={asalto:1,transporte:1.15,pesado:1.5,rastreo:.8}[kind]||1;const g=new T.Group(),bd=new T.Group();bd.position.y=1.5;g.add(bd);const q=PB();
+function mkDraco10(kind,cA,cB){const s={asalto:1,transporte:1.15,pesado:1.5,rastreo:.8}[kind]||1;const g=new T.Group(),bd=new T.Group();bd.position.y=1.5;g.add(bd);const q=PB();
  pa(q,gSph(1,12,9),cA,0,0,0,0,0,0,1.05,.9,2.0);pa(q,gSph(.9,10,8),shade(cA,1.15),0,-.35,.1,0,0,0,.95,.6,1.7);for(let i=0;i<7;i++)pBox(q,.5-i*.03,.14,.5,cB,0,.82-i*.02,1.2-i*.42,.2);for(let i=0;i<6;i++)pa(q,gCone(.12,.45,4),0xd8c890,0,.95,1.1-i*.42,-.4);
  if(kind==='asalto'||kind==='pesado'){pBox(q,1.6,1.1,.16,0x4a4e52,0,.1,1.85,.25);for(let i=0;i<4;i++)pBox(q,.1,.1,.18,0x9a9a90,-.6+i*.4,.4,1.94);for(const sd of[-1,1])pBox(q,.1,.8,1.6,0x4a4e52,sd*1.0,.1,.6,0,0,sd*.2)}
  if(kind==='transporte'){pBox(q,1.8,.12,2.0,0x5a4630,0,1.05,-.3);for(const sd of[-1,1])pBox(q,.08,.6,2.0,0x5a4630,sd*.9,1.35,-.3);pBox(q,1.8,.6,.08,0x5a4630,0,1.35,.68)}
@@ -47,7 +47,7 @@ function mkDraco(kind,cA,cB){const s={asalto:1,transporte:1.15,pesado:1.5,rastre
  const legs=[];for(const [x,z] of[[-.75,1.0],[.75,1.0],[-.8,-1.0],[.8,-1.0]]){const up=new T.Group();up.position.set(x,-.25,z);bd.add(up);{const a=PB();pa(a,gSph(.4,8,6),cA,0,-.1,0,0,0,0,1,1.3,1.1);pbMesh(a,up,VCM)}const lo=new T.Group();lo.position.y=-.6;up.add(lo);{const b=PB();pCyl(b,.22,.18,.7,shade(cA,.9),0,-.3,0,0,0,0,8);for(let i=0;i<3;i++)pa(b,gCone(.06,.2,4),0xe8e0c0,-.12+i*.12,-.68,.18,1.4);pBox(b,.4,.12,.45,shade(cA,.8),0,-.66,.06);pbMesh(b,lo,VCM)}legs.push([up,lo])}
  const sh=new T.Mesh(shG,shM);sh.rotation.x=-1.5708;sh.position.y=.04;sh.scale.set(3,5,1);g.add(sh);g.scale.setScalar(s);scene.add(g);return{g,bd,neck,head,jaw,tail,legs,s}}
 const DR10=[];
-function spawnDraco(kind,side,x,z,name){const c=side==='e'?[0x4a2a24,0x1a1010]:[{asalto:0x5a6a3a,transporte:0x6a6040,pesado:0x4a5040,rastreo:0x7a6a4a}[kind],0x2a2a20];const D=mkDraco(kind,c[0],c[1]);D.g.position.set(x,0,z);const hp={asalto:900,transporte:800,pesado:1600,rastreo:500}[kind]*(side==='e'?.8:1);
+function spawnDraco(kind,side,x,z,name){const c=side==='e'?[0x4a2a24,0x1a1010]:[{asalto:0x5a6a3a,transporte:0x6a6040,pesado:0x4a5040,rastreo:0x7a6a4a}[kind],0x2a2a20];const D=mkDraco10(kind,c[0],c[1]);D.g.position.set(x,0,z);const hp={asalto:900,transporte:800,pesado:1600,rastreo:500}[kind]*(side==='e'?.8:1);
  const d=Object.assign(D,{kind,side,name,hp,max:hp,alive:true,st:'follow',t:R()*5,cd:1,ccd:4,vx:0,vz:0,charge:0,atk:0,atkK:0,anchor:null,fall:0});DR10.push(d);
  if(side==='e')HIT9.push({foe:true,x:()=>d.g.position.x,z:()=>d.g.position.z,y0:0,y1:3*d.s,r:1.8*d.s,ok:()=>d.alive,dmg:(v,k)=>drDamage(d,v*(k==='b'?.6:1))});
  else L9.tgts.push({p:D.g.position,r:1.8*D.s,y:3*D.s,bias:3,h:v=>drDamage(d,v),ok:()=>d.alive});return d}

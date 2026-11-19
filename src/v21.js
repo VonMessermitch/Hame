@@ -193,7 +193,7 @@ function build11(){if(L11.built)return;L11.built=true;const X=X11;sBegin();
  L11.truck=mkTruck16({driver:true,col:0x4a5048});L11.truck.position.set(X+92,0,28);L11.truck.rotation.y=1.5708;L11.trkOb={x:X+92,z:28,r:2.6};obst.push(L11.trkOb);
  L11.tank=mkTankette('rec',0x4a5040);L11.tank.position.set(X+86,0,40);L11.tank.rotation.y=1.5708;L11.tkOb={x:X+86,z:40,r:2};obst.push(L11.tkOb);
  L11.wreck=mkTruck16({driver:false,col:0x3a3a30});L11.wreck.position.set(X+146,0,36);L11.wreck.rotation.set(0,.4,0);obst.push({x:X+146,z:36,r:2.4});
- L11.horse=mkHorse9(0x5a3a22,0x3a4450);L11.horse.g.position.set(X-100,0,-22);scene.add(L11.horse.g);L11.draco=mkDraco('rastreo',0x6a6a4a,0x2a2a20);L11.draco.g.position.set(X-108,0,-30);L11.draco.g.rotation.y=1.2;obst.push({x:X-108,z:-30,r:2});
+ L11.horse=mkHorse9(0x5a3a22,0x3a4450);L11.horse.g.position.set(X-100,0,-22);scene.add(L11.horse.g);L11.draco=mkDraco10('rastreo',0x6a6a4a,0x2a2a20);L11.draco.g.position.set(X-108,0,-30);L11.draco.g.rotation.y=1.2;obst.push({x:X-108,z:-30,r:2});
  L11.train=mkTrain11();L11.train.g.position.set(X+10,0,48);
  L11.siren=null;bunker8(X+40,-202,1,'CASAMATA');
 }
@@ -234,8 +234,8 @@ function go11(ph){L11.ph=ph;step11(0);DLG.q=DLG.q.filter(l=>typeof l==='function
   ()=>{L11.cp=[X-48,-40];koller(X+4,-50);obj11('IV · Trinchera de instrucción',X+4,-52)},
   ()=>{L11.cp=[X+6,-50];koller(X+70,-40);obj11('V · Exposición de armas',X+70,-42)},
   ()=>{L11.cp=[X+70,-40];koller(X+84,22);obj11('VI · Parque de vehículos',X+84,22)},
-  ()=>{L11.cp=[X+84,22];koller(X-45,-140);obj11('VII · Pueblo de prácticas: allí te espera tu grupo',X-45,-142)},
-  ()=>{L11.cp=[X-45,-142];cineAlarm11()}][ph];if(st)st();
+  ()=>{L11.cp=[X+84,22];koller(X-45,-146);obj11('VII · Pueblo de prácticas: allí te espera tu grupo',X-45,-146)},
+  ()=>{L11.cp=[X-45,-146];cineAlarm11()}][ph];if(st)st();
  if(ph===4)giveArm11('revolver');if(ph===5){giveArm11('smg');for(const t of L11.t5)tgtUp(t)}}
 /* armamento al repetir un ejercicio suelto */
 function armFor11(ph){if(ph>=4)giveArm11('rifle');if(ph>=5){giveArm11('revolver');giveArm11('sword');L11.nades=true;P.grenades=Math.max(P.grenades,3)}if(ph>=6)giveArm11('smg');if(L11.arm.length&&!L11.arm.includes(P.cur))P.cur=L11.arm[0]}
@@ -291,7 +291,7 @@ function upd11_6(dt){const X=X11,pp=P.g.position;L11.t+=dt;
  else if(L11.st===5){obj11('VI · Estacioná la tanqueta en el recuadro blanco y quedate quieto',X+138,28);if(Math.hypot(L11.tank.position.x-X-138,L11.tank.position.z-28)<3.2&&(L11.vspd||0)<.4){L11.sub+=dt;if(L11.sub>1.5){step11(6);vehExit11();talk([['Mecánico','¡Milagro! Ni un rasguño.'],['Koller','La caballería y los dracos, en los establos. Andá a verlos: un animal de guerra no es una mascota.']])}}else L11.sub=0}
  else if(L11.st===6){obj11('VI · Establos: caballería y dracos de Eisenmark',X-100,-18);if(near10(X-100,-18,8)){step11(7);koller(X-96,-16);talk([['Koller','El caballo te lleva al frente. El draco te lleva a través del frente. Ninguno de los dos te quiere.'],['Mozo de cuadra','Al draco no se le mira a los ojos, recluta. Ni se le da la espalda. Ni se le habla de comida.'],['Koller','Montarlos te lo enseñan los catafractos. Hoy, aprendé a no ponerte delante.'],()=>{step11(8);go11(7)}])}}}
 function upd11_7(dt){const X=X11,pp=P.g.position;L11.t+=dt;const S=L11.sq||[],al=S.filter(s=>s.alive);
- if(L11.st===0){obj11('VII · Presentate a tu grupo de instrucción',X-45,-142);if(near10(X-45,-142,8)&&!L11.sqOn){L11.sqOn=1;spawnSquad11();talk([['Koller','Éstos son tus cuatro. No son soldados todavía; vos tampoco. Dales órdenes con ORD (o T).'],['Koller','¡Recluta! ¡Llevá a tu grupo hasta el edificio! ¡No quiero cuatro cadáveres decorando el patio!'],['Koller','Primero: ordená que dos te cubran (ORD hasta CUBRIR).']]);step11(1)}}
+ if(L11.st===0){obj11('VII · Presentate a tu grupo de instrucción',X-45,-146);if(near10(X-45,-146,8)&&!L11.sqOn){L11.sqOn=1;spawnSquad11();talk([['Koller','Éstos son tus cuatro. No son soldados todavía; vos tampoco. Dales órdenes con ORD (o T).'],['Koller','¡Recluta! ¡Llevá a tu grupo hasta el edificio! ¡No quiero cuatro cadáveres decorando el patio!'],['Koller','Primero: ordená que dos te cubran (ORD hasta CUBRIR).']]);step11(1)}}
  else if(L11.st===1){obj11('VII · Ordená que dos soldados cubran (ORD → CUBRIR)',X-45,-148);if(L11.ord==='cubrir'){step11(2);kol('Ahora avanzá con el resto hasta el edificio grande. ORD → ASALTAR para que entren contigo.')}}
  else if(L11.st===2){obj11('VII · Avanzá con el resto hasta el edificio',X-35,-168);if(near10(X-35,-168,7)){step11(3);kol('¡Despejad el área! Muñecos y blancos de práctica: todo lo que tenga brazalete rojo.')}}
  else if(L11.st===3){const n=enemies.filter(e=>e.t11==='v7').length+L11.t7.filter(t=>t.up).length;obj11('VII · Despejá el área ('+n+')',X-40,-178);if(!n){step11(4);kol('¡Reagrupad! ORD → SEGUIR y que estén todos contigo.')}}
@@ -317,7 +317,7 @@ function setupTargets11(){const X=X11;if(L11.t1)return;
  L11.obj8=[[20,-215],[55,-218],[38,-226]].map(([x,z])=>{const g=new T.Group(),q=PB();pBox(q,1.6,.4,2.6,0x6a5a3a,0,.6,0);pCyl(q,.5,.5,.2,0x3a3a36,-.9,.5,0,0,0,1.5708,10);pCyl(q,.5,.5,.2,0x3a3a36,.9,.5,0,0,0,1.5708,10);pCyl(q,.12,.14,2.4,0x4a4a42,0,1,1.2,1.5708,0,0,8);pBox(q,1.6,1,.1,0xc02020,0,1.2,-.6);pbMesh(q,g,VCV);g.position.set(X+x,0,z);scene.add(g);const o={g,x:X+x,z,hp:260,alive:true};
   HIT9.push({foe:true,x:()=>o.x,z:()=>o.z,y0:0,y1:2,r:1.6,ok:()=>o.alive&&level===11,dmg:(v,k)=>{if(!o.alive)return;o.hp-=v*(k==='b'?.2:1);if(o.hp<=0){o.alive=false;boom9(o.x,o.z,1,false);o.g.visible=false;feed('★ Objetivo destruido')}}});return o})}
 /* ---------- escuadra de instrucción (fase VII–VIII) y órdenes ---------- */
-function spawnSquad11(prac){const X=X11;const made=gar9([[X-48,-140],[X-46,-139],[X-44,-140],[X-42,-139]].map(p=>[p[0],p[1],Math.PI,0,'rifle']));const nm=['Recluta Haas','Recluta Petrov','Recluta Ludwig','Recluta Moser'];
+function spawnSquad11(prac){const X=X11;const made=gar9([[X-48,-146],[X-46,-145],[X-44,-146],[X-42,-145]].map(p=>[p[0],p[1],Math.PI,0,'rifle']));const nm=['Recluta Haas','Recluta Petrov','Recluta Ludwig','Recluta Moser'];
  made.forEach((s,i)=>{const ng=mkSoldier({coat:CAMP.coat,pants:CAMP.pants,hat:'helm',hatC:CAMP.helm,tab:GARNET,pack:true,puttee:0x3a3a36});for(const c of s.u.mR.children.slice())s.u.mR.remove(c);ng.userData.mR.add(mkEwR9(false));swapModel(s,ng);s.u=ng.userData;gear20(ng,{helm:CAMP.helm});s.name=nm[i];s.hp=s.max=160});L11.sq=made;sqOrder11('seguir',true);if(prac===false)return;
  for(const [k,x,z] of[['fus',-55,-172],['fus',-30,-180],['gra',-60,-192],['fus',-26,-196]]){const e=sp10(k,X+x,z,{force:true});if(e){e.t11='v7';e.train=1;e.hp*=.5;e.max=e.hp}}for(const t of L11.t7)tgtUp(t)}
 function sqOrder11(o,quiet){L11.ord=o;const X=X11,S=(L11.sq||[]).filter(s=>s.alive),pp=P.g.position;
@@ -408,7 +408,7 @@ function cineMG0811(){const X=X11;koller(X+79,-44);
   {d:3.6,a:[X+77,1.8,-42],la:()=>[KOL.g.position.x,1.7,KOL.g.position.z],txt:'Koller: «Sí. Si podés llevarla, montarla, alimentarla y mantenerla funcionando.»'}],()=>{step11(2);for(const t of L11.t5b)tgtUp(t)})}
 function cineAlarm11(){const X=X11;koller(X+30,-150);L11.siren=1;sky9('tarde');L11.sky='tarde';for(const [x,z] of[[X+20,-200],[X+50,-210],[X+5,-190]])mkFire(x,z,1,0,-1);
  cine9([{d:3.4,a:[X-30,8,-120],b:[X-20,9,-126],la:[X+30,4,-200],txt:'Suena una sirena. Columnas de humo se levantan sobre el sector norte.'},
-  {d:3,a:()=>[AMB11.off.g.position.x+2,1.8,AMB11.off.g.position.z+2],la:()=>[AMB11.off.g.position.x,1.6,AMB11.off.g.position.z],txt:'Oficial: «¡Todo el personal a sus puestos! ¡Ataque al sector norte!»',fn:(dt,u)=>{if(u<.05){AMB11.off.g.position.set(X-40,0,-146);AMB11.off.tgt=[X-30,-160];AMB11.off.sp=5;AMB11.off.act='run'}}},
+  {d:3,a:()=>[AMB11.off.g.position.x+2,1.8,AMB11.off.g.position.z+2],la:()=>[AMB11.off.g.position.x,1.6,AMB11.off.g.position.z],txt:'Oficial: «¡Todo el personal a sus puestos! ¡Ataque al sector norte!»',fn:(dt,u)=>{if(u<.05){AMB11.off.g.position.set(X-40,0,-147);AMB11.off.tgt=[X-30,-160];AMB11.off.sp=5;AMB11.off.act='run'}}},
   {d:2.4,a:()=>{const s=(L11.sq||[])[0];const p=s?s.g.position:P.g.position;return[p.x+1.4,1.8,p.z+1.4]},la:()=>{const s=(L11.sq||[])[0];const p=s?s.g.position:P.g.position;return[p.x,1.6,p.z]},txt:'Recluta: «¡¿Nos atacan?!»'},
   {d:4,a:()=>[KOL.g.position.x+1.6,1.8,KOL.g.position.z+1.6],la:()=>[KOL.g.position.x,1.7,KOL.g.position.z],txt:'Koller: «¡Es un ejercicio, imbécil! ¡Si fuera real, ya estarías llorando en otro idioma!»'}],
   ()=>{AMB11.off.act='smoke';P.weapons.rifle.reserve+=20;giveArm11('smg');P.grenades=Math.max(P.grenades,4);L11.cp=[X+38,-155];if(L11.sq)sqOrder11('seguir',true);talk([['Koller','Te dan un arma, un cargador extra y un objetivo. Aplicá todo lo de hoy. ¡Sector Norte!']]);
@@ -441,7 +441,7 @@ function later11(t,f){(L11.tq||(L11.tq=[])).push({t,f})}
 function fx11(dt,cine){if(L11.tq&&L11.tq.length){for(const q of L11.tq)q.t-=dt;const due=L11.tq.filter(q=>q.t<=0);L11.tq=L11.tq.filter(q=>q.t>0);for(const q of due)q.f()}skyMesh.position.copy(cam.position);if(cine){updParts(dt);updRag(dt)}smokeUpd(dt);tracerUpd(dt);fireUpd(dt);lightsUpd(dt);chUpd(dt);shellUpd(dt);if(L9.tick)L9.tick(dt);npcUpd11(dt);kolUpd(dt);tgtUpd(dt);if(!L9.cine)dlgUpd(dt);rainUpd11(dt);mgLane11(dt);vehUpd11(dt);
  V21.cs=(V21.cs||0)-dt;if(V21.cs<=0){V21.cs=.7;for(const [x,z] of[[-41.5,12],[-41.5,-4],[-41.5,-20],[40.5,18]])smoke(X11+x,6,z,.6,1,0x8a8a8a,.6,.35);if(L11.train&&L11.train.g.position.x<=X11+11)smoke(L11.train.g.position.x-2.4,4.6,48,.8,1.4,0x6a6a6a,.8,.4)}
  const F=L9.fog;if(F){const k=Math.min(1,dt*2);scene.fog.color.lerp(F.c,k);scene.fog.near+=(F.n-scene.fog.near)*k;scene.fog.far+=(F.f-scene.fog.far)*k}}
-function upd11(dt){fx11(dt,false);garUpd(dt);pinUpd10();workUpd11(dt);const ph=L11.ph;
+function updT11(dt){fx11(dt,false);garUpd(dt);pinUpd10();workUpd11(dt);const ph=L11.ph;
  if(ph===1)upd11_1(dt);else if(ph===2)upd11_2(dt);else if(ph===3)upd11_3(dt);else if(ph===4)upd11_4(dt);else if(ph===5)upd11_5(dt);else if(ph===6)upd11_6(dt);else if(ph===7)upd11_7(dt);else if(ph===8)upd11_8(dt);
  if(L11.sq&&L11.ord==='seguir'){L11.ft=(L11.ft||0)-dt;if(L11.ft<=0){L11.ft=1.2;sqOrder11('seguir',true)}}
  V21.am=(V21.am||4)-dt;if(V21.am<=0){V21.am=6+R()*8;const k=R();if(k<.3)whistle11();else if(k<.6)npcShot('rifle',X11-50+R()*20,-90);else if(k<.75)nz18(0,1.2,'lowpass',260,120,.04);else tn18('sine',880,880,.6,.02)}
@@ -455,13 +455,13 @@ function startLevel11(){const X=X11;level=11;build11();clearStage();WC.x=X+20;WC
  refill(2);P.grenades=0;L11.arm=[];L11.nades=false;L11.ph=0;L11.st=0;L11.sq=null;P.cur='rifle';P.g.visible=true;$('tc').style.display='block';playing=true;ambStart();sky9('manana');L11.sky='manana';
  const ex=+(($('ex11')||{}).value||0);L11.ex=ex;story('MISIÓN 0 — CAMPAMENTO TOKOVSKY');setTimeout(()=>story(''),2600);
  if(ex===0)cineIntro11();else if(ex===9){L11.ph=0;for(const w of['rifle','smg','revolver','sword'])giveArm11(w);L11.nades=true;P.grenades=6;P.g.position.set(X,0,5);obj11('Tokovsky · exploración libre: polígono, trinchera, armas y vehículos');for(const T_ of[L11.t1,L11.t2,L11.t5,L11.t5b,L11.t5c])for(const t of T_)tgtUp(t)}
- else{const S=[null,[X-15,38],[X+122,0],[X,-2],[X-46,-40],[X+6,-50],[X+70,-40],[X+84,22],[X-45,-140]][ex];P.g.position.set(S[0],0,S[1]);if(KOL)KOL.g.position.set(S[0]-2,0,S[1]-2);armFor11(ex);go11(ex);if(ex===8){spawnSquad11(false)}}}
+ else{const S=[null,[X-15,38],[X+122,0],[X,-2],[X-46,-40],[X+6,-50],[X+70,-40],[X+84,22],[X-45,-146]][ex];P.g.position.set(S[0],0,S[1]);if(KOL)KOL.g.position.set(S[0]-2,0,S[1]-2);armFor11(ex);go11(ex);if(ex===8){spawnSquad11(false)}}}
 /* ---------- integración ---------- */
 AMBL[11]=['wind','dog','bird','bell','arty','wind'];
 const _au21=allyUpdate;allyUpdate=function(dt){if(level===11){for(const a of allies)if(a.name)a.g.visible=false;if(officer)officer.g.visible=false;return}return _au21(dt)};
 const _mu21=medUpd;medUpd=function(dt){if(level===11){if(MED)MED.g.visible=false;return}return _mu21(dt)};
 const _up21=update;update=function(dt){if(level===11&&L9.cine&&playing){V16.dt=dt;time+=dt;cine9Upd(dt);fx11(dt,true);return}_up21(dt);if(!playing)return;coverUpd(dt);if(V21.prK>.01)cam.position.y=Math.max(.55,cam.position.y-V21.prK*1.05);
- if(level===11)upd11(dt);else{if(L11.skin)recruitSkin11(false);if(RAIN11&&RAIN11.visible)rain11(false)}
+ if(level===11)updT11(dt);else{if(L11.skin)recruitSkin11(false);if(RAIN11&&RAIN11.visible)rain11(false)}
  if(!$('pr').textContent&&!P.cover&&!P.veh&&!L9.cine){V21.cf=(V21.cf||0)-dt;if(V21.cf<=0){V21.cf=.3;V21.cnear=!!(firing||enemies.some(e=>e.active&&Math.hypot(e.g.position.x-P.g.position.x,e.g.position.z-P.g.position.z)<35))&&!!coverFind()}if(V21.cnear)$('pr').textContent='[F / CUB] Ponerse a cubierto'}};
 const _rp21=respawnP;respawnP=function(){_rp21();P.pr=false;P.cover=null;if(level===11){if(P.veh)vehExit11();P.g.position.set(L11.cp[0],0,L11.cp[1]);P.g.position.y=0;P.mg=false;L11.work=null}};
 const _end21=end;end=function(w){_end21(w);if(level===11&&w){$('menu').querySelector('h1').textContent='TOKOVSKY — INSTRUCCIÓN COMPLETADA';$('tx').innerHTML='Caminar, correr, saltar, agacharse, cuerpo a tierra, coberturas, fusil, subfusil, pistola, bayoneta, granadas, MG 08, mortero, cañón, camión, tanqueta y escuadra: todo aprendido en un día bajo los gritos del sargento Koller.<br><br><b style="color:#e0b050">Campaña desbloqueada.</b> El campamento queda abierto para repetir cualquier ejercicio o explorarlo libremente (menú → Misión 0 → EJERCICIO).<br><br><b style="font-size:20px;color:#e0b050">PUNTUACIÓN: '+score+'</b><br><i>«Y la guerra no tiene instructor.»</i>';try{const o=$('lvsel').querySelector('option[value="11"]');if(o)o.text='0 · CAMPAMENTO TOKOVSKY — Instrucción ✔ completada'}catch(e){}}};
