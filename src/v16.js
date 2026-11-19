@@ -4,6 +4,7 @@
    búnkeres habitables, camiones y tanque nuevos, destrucción parcial,
    cinemática del avance blindado, movimiento con inercia, pausa, audio)
    ===================================================================== */
+const LX=l=>l===9||l===10||l===11;/* capítulos con el sistema de objetivos del cap. IX: IX, X y el campamento Tokovsky (11) */
 const V16={kick:0,land:0,bob:0,swT:0,thT:0,hurtT:0,stam:100,fat:0,paused:false,hadLock:false,bark:0,phaseShown:-1};
 /* ---------- utilidades de geometría compartida y mallas fusionadas ---------- */
 const GQ={};
@@ -464,7 +465,7 @@ function officerAI(dt){const op=officer;if(!op||!op.g.visible)return;if(!op.v16)
    for(const m of mates){if(Math.hypot(m.x-me.x,m.z-me.z)>24)continue;for(const e of act){const d=Math.hypot(e.g.position.x-m.x,e.g.position.z-m.z);if(d<6&&d<sd){sd=d;sup=m;se=e}}}
    if(sup){st='support';tgt=se;goal={x:(sup.x*2+me.x)/3,z:(sup.z*2+me.z)/3}}
    else{const blk=act.filter(e=>Math.hypot(e.g.position.x-obj.x,e.g.position.z-obj.z)<22&&Math.hypot(e.g.position.x-me.x,e.g.position.z-me.z)<55);
-    const defend=level===8&&(L8.ph===10||L8.ph===11)||level===2||level===4||level===5||(level===9||level===10)&&!!L9.def;
+    const defend=level===8&&(L8.ph===10||L8.ph===11)||level===2||level===4||level===5||(LX(level))&&!!L9.def;
     if(op.hp<45&&tS&&dS<30){st='heal';tgt=tS;goal=coverNear(me.x,me.z,tS.g.position.x,tS.g.position.z,16)}
     else if(big&&dB<50&&(!blk.length||R()<.4)){st='focus';tgt=big;V16.focus=big;goal=coverNear(me.x,me.z,big.g.position.x,big.g.position.z,14)}
     else if(blk.length&&!defend){let cx=0,cz=0;blk.forEach(e=>{cx+=e.g.position.x;cz+=e.g.position.z});cx/=blk.length;cz/=blk.length;tgt=blk.reduce((a,b)=>Math.hypot(b.g.position.x-me.x,b.g.position.z-me.z)<Math.hypot(a.g.position.x-me.x,a.g.position.z-me.z)?b:a);

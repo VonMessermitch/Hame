@@ -40,7 +40,7 @@ function mkSabre9(){const w=new T.Group(),q=PB(),st=0xd4d9de,ed=0xf4f6f8,br=0xc9
 if(pShield.parent)pShield.parent.remove(pShield);
 /* cadena de 5 golpes: tajo, revés, estocada, molinete giratorio y golpe aplastante */
 SW.splice(2,0,{d:.4,dmg:48,k:'t',a0:0,a1:0},{d:.6,dmg:58,k:'s',a0:0,a1:0});
-const _slash17=slash;slash=function(S){if(level===9||level===10)dev9Melee(S);if(S.k!=='t'&&S.k!=='s')return _slash17(S);let hit=0;const px=P.g.position.x,pz=P.g.position.z,fx=Math.sin(P.swFace),fz=Math.cos(P.swFace);
+const _slash17=slash;slash=function(S){if(LX(level))dev9Melee(S);if(S.k!=='t'&&S.k!=='s')return _slash17(S);let hit=0;const px=P.g.position.x,pz=P.g.position.z,fx=Math.sin(P.swFace),fz=Math.cos(P.swFace);
  for(const e of[...enemies]){const dx=e.g.position.x-px,dz=e.g.position.z-pz,d=Math.hypot(dx,dz)||1,ok=S.k==='s'?d<4.8*Math.max(1,e.s*.7):d<5.8*Math.max(1,e.s*.6)&&(dx*fx+dz*fz)/d>.72;
   if(ok){hurt(e,S.dmg,'m');hit++;e.stun=S.k==='t'?.75:.5;if(e.type!=='boss'&&e.type!=='mecha'&&!e.boss9){const k=S.k==='s'?2.6:1.3;e.g.position.x+=dx/d*k;e.g.position.z+=dz/d*k}burst(e.g.position.x,1.3,e.g.position.z,0xffcc66,8,.35,6)}}
  if(S.k==='s'){for(let i=0;i<16;i++){const a=i/16*6.283;burst(px+Math.cos(a)*2.6,1.1,pz+Math.sin(a)*2.6,0xd8e8ff,1,.3,3)}snd(150,.35,'sawtooth',.09);shake=Math.max(shake,.7)}else{burst(px+fx*3,1.3,pz+fz*3,0xffe0a0,6,.25,8);snd(420,.12,'square',.06)}
@@ -73,7 +73,7 @@ function medHealStep(h,dt){const r=h.ref;if(h.kind==='p'){P.hp=Math.min(100,P.hp
  if(h.kind==='a'){if(r.down>0){r.down=Math.max(.01,r.down-dt*3);if(MED.healT>2.2){r.down=0;r.up=.8;r.hp=70;return true}return false}r.hp=Math.min(80,(r.hp||0)+dt*28);return r.hp>=70}
  if(h.kind==='o'){if(r.down>0){if(MED.healT>2.2){r.down=0;r.up=.9;r.hp=95;return true}return false}r.hp=Math.min(110,r.hp+dt*30);return r.hp>=90}
  if(h.kind==='g'){if(!r.alive)return true;r.down=0;r.hp=Math.min(r.max*.7,r.hp+dt*30);return r.hp>=r.max*.65}return true}
-function medUpd(dt){const m=MED;if(!m)return;const g=m.g,p=g.position,u=m.u;const hide=level===7||(level===8&&L8.cine)||((level===9||level===10)&&L9.cine)||!playing;
+function medUpd(dt){const m=MED;if(!m)return;const g=m.g,p=g.position,u=m.u;const hide=level===7||(level===8&&L8.cine)||((LX(level))&&L9.cine)||!playing;
  if(hide){m.lab.style.display='none';if(level===7)g.visible=false;return}if(!g.visible||m.lv!==level||Math.hypot(p.x-P.g.position.x,p.z-P.g.position.z)>95){g.visible=true;m.lv=level;p.set(P.g.position.x+2.2,0,P.g.position.z+2.6);m.heal=null}
  m.t+=dt;m.cd-=dt;m.hcd-=dt;m.mcd-=dt;m.stab=Math.max(0,m.stab-dt);m.rel=Math.max(0,m.rel-dt);if(m.rel===0&&m.wr){m.wr=0;m.mag=10}
  if(m.down>0){m.down-=dt;g.rotation.x+=(-1.4-g.rotation.x)*Math.min(1,dt*6);p.y=.25;if(m.down<=0){m.up=.8;m.hp=70;say(m.name+': «Me vendo yo mismo… ¡sigo con vosotros!»',2.2)}m.lab.style.display='none';return}
@@ -166,9 +166,9 @@ let CRI=null,CRR=null,crN=0;function crater9(x,z,r){if(!CRI){CRI=new T.Instanced
  const i=crN%120;crN++;_sM.makeScale(r,1,r);_sM.setPosition(x,.035+(i%9)*.002,z);CRI.setMatrixAt(i,_sM);_sM.setPosition(x,.03+(i%9)*.002,z);CRR.setMatrixAt(i,_sM);CRI.count=CRR.count=Math.min(120,crN);CRI.instanceMatrix.needsUpdate=CRR.instanceMatrix.needsUpdate=true}
 /* blancos no humanos: vehículos, máquinas, resonadores (balas, explosivos, cañón y melé) */
 const HIT9=[];
-v9Hit=function(b){if(level!==9&&level!==10)return false;const p=b.m.position;for(const h of HIT9){if(!h.ok())continue;if(Math.hypot(p.x-h.x(),p.z-h.z())<h.r&&p.y>h.y0&&p.y<h.y1){h.dmg(b.dmg,'b',b);burst(p.x,p.y,p.z,0xffd890,3,.2,4);snd(1500,.04,'square',.02);return true}}return false};
+v9Hit=function(b){if(!LX(level))return false;const p=b.m.position;for(const h of HIT9){if(!h.ok())continue;if(Math.hypot(p.x-h.x(),p.z-h.z())<h.r&&p.y>h.y0&&p.y<h.y1){h.dmg(b.dmg,'b',b);burst(p.x,p.y,p.z,0xffd890,3,.2,4);snd(1500,.04,'square',.02);return true}}return false};
 function hitSplash9(x,z,r,d,kind){for(const h of HIT9){if(!h.ok())continue;const dd=Math.hypot(x-h.x(),z-h.z());if(dd<r+h.r)h.dmg(d*(1-dd/(r+h.r)*.5),kind||'x')}}
-const _boom17=boom;boom=function(pos){_boom17(pos);if(level===9||level===10)hitSplash9(pos.x,pos.z,4.5,360,'x');if(window.expSnd)expSnd(pos.x,pos.z,1)};
+const _boom17=boom;boom=function(pos){_boom17(pos);if(LX(level))hitSplash9(pos.x,pos.z,4.5,360,'x');if(window.expSnd)expSnd(pos.x,pos.z,1)};
 /* artillería dinámica: silbido, impacto, cráter, coberturas dañadas, daño repartido por distancia */
 const SHL=[];function shell9(x,z,k,col){snd(1500,.85,'sine',.02);SHL.push({x,z,t:.9,k:k||1,col})}
 function shellUpd(dt){for(let i=SHL.length-1;i>=0;i--){const s=SHL[i];s.t-=dt;if(s.t<=0){SHL.splice(i,1);boom9(s.x,s.z,s.k,true,s.col)}}}
@@ -186,7 +186,7 @@ function gasIn(){return GAS.on&&Math.hypot(P.g.position.x-GAS.x,P.g.position.z-G
    OBJETIVOS ENEMIGOS AMPLIADOS (cap. IX): jugador, escuadra, médico,
    guarnición, caballería y objetivos (comunicaciones, camión, blindado aliado)
    ===================================================================== */
-const G9L=l=>l===9||l===10||l===6||l===4;
+const G9L=l=>LX(l)||l===6||l===4;
 const _e8T17=e8T;e8T=function(e){if(level===8){const r=_e8T17(e);if(MED&&MED.g.visible&&!(MED.down>0)&&e.tgr8===r&&Math.hypot(MED.g.position.x-e.g.position.x,MED.g.position.z-e.g.position.z)<Math.hypot(r.p.x-e.g.position.x,r.p.z-e.g.position.z)-4){e.tgr8={p:MED.g.position,h:medDamage,ok:()=>!(MED.down>0)};e.tp8=MED.g.position;e.th8=medDamage;return e.tgr8}return r}if(!G9L(level))return null;
  e.tgT8=(e.tgT8||0)-(V16.dt||.016);if(e.tgT8>0&&e.tgr8&&e.tgr8.ok())return e.tgr8;const p=e.g.position;let best={p:P.g.position,h:hitP,ok:()=>true},bs=Math.hypot(P.g.position.x-p.x,P.g.position.z-p.z)-6+R()*4;
  const cand=(q,h,ok,bias)=>{const d=Math.hypot(q.x-p.x,q.z-p.z)+bias+R()*4;if(d<bs){bs=d;best={p:q,h,ok}}};
@@ -296,7 +296,7 @@ function mkDevice9(){const g=new T.Group(),q=PB();pCyl(q,1.3,1.6,.6,0x3a3a40,0,.
  const core=new T.Mesh(new T.OctahedronGeometry(.6,0),new T.MeshBasicMaterial({color:0xff4060}));core.position.y=3.6;g.add(core);g.userData.core=core;const ring=new T.Mesh(gTor(1.2,.05,4,20),new T.MeshBasicMaterial({color:0xff6a8a,transparent:true,opacity:.6,blending:T.AdditiveBlending,depthWrite:false}));ring.position.y=3.6;g.add(ring);g.userData.ring=ring;scene.add(g);return g}
 function spawnDev9(x,z,name){const g=mkDevice9();g.position.set(x,0,z);const d={g,x,z,hp:950,max:950,alive:true,name};obst.push({x,z,r:1.7});DEV9.push(d);HIT9.push({x:()=>x,z:()=>z,y0:0,y1:4.6,r:1.7,ok:()=>d.alive,dmg:(v,k)=>devHit(d,v,k)});return d}
 function devHit(d,v,k){if(!d.alive)return;d.hp-=v*(k==='b'?.55:k==='m'?1.4:1);d.g.userData.core.material.color.setHex(0xffffff);setTimeout(()=>{if(d.alive)d.g.userData.core.material.color.setHex(0xff4060)},60);if(d.hp<=0){d.alive=false;boom9(d.x,d.z,1.5,false,0xff4080);d.g.userData.core.visible=false;d.g.userData.ring.visible=false;d.g.rotation.z=.2;feed('★ Resonador '+d.name+' destruido');say('¡Resonador '+d.name+' destruido! Quedan '+DEV9.filter(q=>q.alive).length,2.5);score+=2000}}
-function dev9Melee(S){if(level!==9&&level!==10)return;const px=P.g.position.x,pz=P.g.position.z;for(const h of HIT9)if(h.ok()&&Math.hypot(h.x()-px,h.z()-pz)<h.r+3.2)h.dmg(S.dmg,'m')}
+function dev9Melee(S){if(!LX(level))return;const px=P.g.position.x,pz=P.g.position.z;for(const h of HIT9)if(h.ok()&&Math.hypot(h.x()-px,h.z()-pz)<h.r+3.2)h.dmg(S.dmg,'m')}
 function devUpd(dt){for(const d of DEV9){if(!d.alive)continue;const u=d.g.userData;u.core.rotation.y+=dt*2;u.core.position.y=3.6+Math.sin(time*3+d.x)*.15;u.ring.rotation.x+=dt*1.4;u.ring.rotation.y+=dt;if(R()<dt*6)burst(d.x,3.6,d.z,0xff6080,1,.5,3)}}
 let BOSS9=null;
 function spawnBoss9(x,z){const e=spawnE('orcoH',x,z),u=e.g.userData;e.boss9=1;e.s=2.5;e.g.scale.setScalar(2.5);const dm={easy:.78,normal:1,hard:1.28}[difficulty]||1;e.hp=e.max=3600*dm;e.sp=3.4;e.alert=0;e.k8n='al COLOSO DE LAS TRES CORONAS';e.slamT=5;e.sumd=0;e.hunchK=.3;const EM=u.em16||(u.em16=VCM.clone());
@@ -575,7 +575,7 @@ function startLevel9(){level=9;build9();clearStage();WC.x=X9+150;WC.z=-290;WC.r=
 const _up17=update;update=function(dt){if(level===9&&L9.cine&&playing){V16.dt=dt;time+=dt;cine9Upd(dt);fx9(dt);return}_up17(dt);if(!playing)return;enemyTactics(dt);medUpd(dt);if(level===9)upd9main(dt);
  if(!P.mg&&!P.gun9){const w=P.weapons[P.cur];if(P.cur==='rifle')$('ammo').textContent='MANNLICHER-MAUSER 8,98×66 · '+(P.rel>0?'RECARGANDO (peines)':w.mag+' / '+w.reserve);else if(P.cur==='smg')$('ammo').textContent='MP38 · TAMBOR 50 · '+(P.rel>0?'RECARGANDO':w.mag+' / '+w.reserve)}};
 const _in17=interact;interact=function(){if(level===9&&playing&&!L9.cine){if(FG9.g&&L9.ph===3&&Math.hypot(P.g.position.x-FG9.x,P.g.position.z-FG9.z)<3.6){P.gun9=!P.gun9;P.aim=P.gun9?1:0;say(P.gun9?'Cañón de campaña: apunta y pulsa FUEGO. USAR para bajar.':'Dejas el cañón.',2.5);return}if(L9.relay&&Math.hypot(P.g.position.x-L9.relay.x,P.g.position.z-L9.relay.z)<3.6)return;if(L9.radioPos&&Math.hypot(P.g.position.x-L9.radioPos.x,P.g.position.z-L9.radioPos.z)<3.6)return;if(!nearMG()&&!P.mg)return}_in17()};
-$('skip').addEventListener('click',()=>{if((level===9||level===10)&&L9.cine)L9.skip=1});addEventListener('keydown',e=>{if((level===9||level===10)&&L9.cine&&(e.code==='Enter'||e.code==='Space')){L9.skip=1;e.preventDefault()}});
+$('skip').addEventListener('click',()=>{if((LX(level))&&L9.cine)L9.skip=1});addEventListener('keydown',e=>{if((LX(level))&&L9.cine&&(e.code==='Enter'||e.code==='Space')){L9.skip=1;e.preventDefault()}});
 const _rp17=respawnP;respawnP=function(){_rp17();if(level===9){P.gun9=false;P.g.position.set(L9.cp[0],0,L9.cp[1]+(L9.ph===11||L9.ph===12?0:4));P.g.position.y=0;P.mg=false}};
 const _end17=end;end=function(w){_end17(w);if(w&&level===9){$('menu').querySelector('h1').textContent='LAS TRES CORONAS RESISTEN';$('tx').innerHTML='Las trincheras de San Gregor aguantaron el barro y el gas; los húsares de Argentum barrieron la llanura; el cerco de Tannen se rompió; el Puente del Cuervo dejó pasar a los refuerzos y la fortaleza resistió el asedio. Bajo el monasterio, la máquina del enemigo y su Coloso yacen sepultados.<br><br><b style="font-size:20px;color:#e0b050">PUNTUACIÓN: '+score+'</b><br>☠ Muertes: '+(typeof deathsN!=='undefined'?deathsN:0)+'<br><i>Fin de la Operación Tres Coronas.</i>'}};
 $('lvsel').insertAdjacentHTML('beforeend','<option value="9">IX · OPERACIÓN TRES CORONAS — El Cerco de Vargenkreuz (nuevo)</option>');document.querySelector('#menu p b').textContent='1909 — Capítulos I–IX · v17 OPERACIÓN TRES CORONAS';

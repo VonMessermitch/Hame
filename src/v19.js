@@ -257,7 +257,7 @@ function eisOn(){if(L10.eis)return;L10.eis=1;playerEis(true);for(const a of alli
  if(MED){MED.n0=MED.name;const ng=mkEis({mask:false,pack:false});const q=PB();pBox(q,.2,.14,.2,0xe8e8e8,0,-.1,0);pBox(q,.06,.1,.21,0xc02020,0,-.1,0);pBox(q,.21,.04,.06,0xc02020,0,-.1,0);pbMesh(q,ng.userData.aL,VCM);MED.g0=swapModel(MED,ng);MED.name='Sanitäter Brenner'}}
 function eisOff(){if(!L10.eis)return;L10.eis=0;playerEis(false);for(const a of allies)if(a.g0){swapModel(a,a.g0);a.g0=null;if(a.n0)a.name=a.n0}if(officer&&officer.g0){swapModel(officer,officer.g0);officer.g0=null;officer.name=officer.n0||officer.name}if(MED&&MED.g0){swapModel(MED,MED.g0);MED.g0=null;MED.name=MED.n0||MED.name}if(V18.mask)V18.mask.visible=false}
 /* el diálogo del juego base nombra al Oberleutnant Kovač: en el cap. X el protagonista es el Gefreiter Kasimir Wolff */
-const NMX=t=>typeof t==='string'&&level===10?t.replace(/Oberleutnant Kovač/g,'Gefreiter Wolff').replace(/Kovač/g,'Wolff').replace(/OBERLEUTNANT/g,'GEFREITER').replace(/Oberleutnant/g,'Gefreiter').replace(/TENIENTE/g,'HAUPTMANN').replace(/el teniente/g,'el capitán').replace(/Teniente/g,'Hauptmann').replace(/teniente/g,'capitán'):t;
+const NMX=t=>typeof t==='string'&&(level===10||level===11)?t.replace(/Oberleutnant Kovač/g,'Gefreiter Wolff').replace(/Kovač/g,'Wolff').replace(/OBERLEUTNANT/g,'GEFREITER').replace(/Oberleutnant/g,'Gefreiter').replace(/TENIENTE/g,'HAUPTMANN').replace(/el teniente/g,'el capitán').replace(/Teniente/g,'Hauptmann').replace(/teniente/g,'capitán'):t;
 const _say10=say;say=function(t,s){return _say10(NMX(t),s)};const _feed10=feed;feed=function(t){if(typeof t==='string')t=t.replace(' abatió a a ',' abatió a ').replace(' abatió a al ',' abatió al ');return _feed10(NMX(t))};const _story10=story;story=function(s){return _story10(NMX(s))};
 /* =====================================================================
    UTILIDADES DE FASE
@@ -379,7 +379,7 @@ function enter10_5(){const X=X10;L10.ph=5;L10.st=0;L10.t=0;L10.sky='tarde';sky9(
  for(const c of CAV)if(c.g){scene.remove(c.g)}CAV.length=0;for(let i=0;i<8;i++)mkCat10(i,X-160+(i%4)*3.2,-440-(i>>2)*4);
  Object.assign(CAVS,{st:'arrive',t:0,n0:8,path:[[X-130,-432],[X-96,-414]],pi:0,home:[X-96,-414],rx:X-96,rz:-414,go:0,fell:0,cn:'Rittmeister Varga',bx:[X-150,X+150,-500,-406],tgt:null});
  say('Reuss: «Tomad las tres alturas. Los catafractos de Varga llegan por las dunas del oeste.»',4)}
-function upd10_5(dt){const X=X10;L10.t+=dt;cavUpd(dt);catAnim();
+function upd10_5(dt){const X=X10;L10.t+=dt;if(CAVS.st==='form'&&CAVS.t>3&&!CAVS.go){CAVS.go=1;say('Rittmeister Varga: «¡Catafractos, hostigad su flanco! ¡Lanzas cargadas!»',3)}
  if(L10.st===0){let left=0,tg=null;for(const h of ZONE10.hills){if(h.done)continue;left++;tg=tg||h;if(near10(h.x,h.z,5.5)&&clear10(h.x,h.z,12)){h.t+=dt;$('pr').textContent='Asegurando la posición… '+bar10(h.t/4);if(h.t>=4){h.done=true;PR.flag(h.x,h.z,0x3a3a30,6);feed('★ Posición elevada asegurada');left--}}}
   obj9('V · Asegura las tres posiciones elevadas ('+(3-left)+'/3)',tg?tg.x:X,tg?tg.z:-430);if(!left){L10.st=1;L10.bt=9;posts10([[X-55,-427,Math.PI,true],[X-52,-428,Math.PI,true],[X,-442,Math.PI,true],[X+3,-443,Math.PI,true],[X+55,-427,Math.PI,true],[X+52,-428,Math.PI,true],[X-25,-430,Math.PI,true],[X+25,-430,Math.PI,true]]);say('Reuss: «¡Alturas nuestras! ¡Artillería: fuego sobre la línea enemiga!»',3)}}
  else if(L10.st===1){L10.bt-=dt;obj9('V · Bombardeo de la artillería capturada…',X,-488);L10.sh=(L10.sh||0)-dt;if(L10.sh<=0){L10.sh=.45;shell9(X+(R()-.5)*120,-480-R()*20,1.2);if(R()<.3)tn18('sawtooth',300,80,.5,.03)}if(L10.bt<=0){L10.st=2;cineCharge10()}}
@@ -388,7 +388,7 @@ function upd10_5(dt){const X=X10;L10.t+=dt;cavUpd(dt);catAnim();
 /* =====================================================================
    FASE VI — LA REFINERÍA DE ALEJANDRÍA y el Guardián
    ===================================================================== */
-function enter10_6(){const X=X10;L10.ph=6;L10.st=0;L10.t=0;L10.cp=[X,-506];L10.towT=0;L10.wt=18;CAVS.st='off';for(const c of CAV)if(c.alive){c.st='slot'}
+function enter10_6(){const X=X10;L10.ph=6;L10.st=0;L10.t=0;L10.cp=[X,-506];L10.towT=0;L10.wt=18;CAVS.bx=[X-140,X+140,-650,-406];
  posts10(line10(-532,X-40,X+40,12,Math.PI,true));bindFireLight(X-70,3,-605,0,0xff9040);bindFireLight(X+70,3,-555,1,0xff9040);
  for(const [k,x,z,o] of[['amet',-15,-524,1],['amet',20,-526,1],['fus',-40,-540],['fus',40,-540],['fus',-60,-560],['fus',65,-552],['gra',0,-545],['gra',-25,-560],['ball',30,-565],['ball',-50,-590],['lanz',10,-610],['tir',-75,-548],['escudo',75,-565]])s10(k,X+x,z,'r6',{pin:o});
  mkCrate18(X+6,-505,10);obj9('VI · Bombas, torre de control y antiaéreos',L10.pump.x,L10.pump.z)}
@@ -488,7 +488,7 @@ function fx10(dt,cine){skyMesh.position.copy(cam.position);if(cine){updParts(dt)
 const _o10=obj9;obj9=function(t,x,z){if(level===10)L10.ot=t;return _o10(t,x,z)};
 function upd10(dt){fx10(dt,false);garUpd(dt);pinUpd10();en10Upd(dt);sapUpd10(dt);workUpd10(dt);const ph=L10.ph;
  if(ph===1)upd10_1(dt);else if(ph===2)upd10_2(dt);else if(ph===3)upd10_3(dt);else if(ph===4)upd10_4(dt);else if(ph===5)upd10_5(dt);else if(ph===6)upd10_6(dt);else if(ph===7)upd10_7(dt);
- if(ph>=3)trkUpd10(0);
+ if(ph>=3)trkUpd10(0);if(ph>=5&&CAV.length){cavUpd(dt);catAnim()}
  if(L10.ot&&!L9.cine)$('obj').textContent=L10.ot;const ar=$('arrow');if(L9.obj){const pp=P.g.position,ddx=L9.obj[0]-pp.x,ddz=L9.obj[1]-pp.z,fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw);ar.style.display='block';ar.style.transform='rotate('+(Math.atan2(ddx*rx+ddz*rz,ddx*fx+ddz*fz)*57.3)+'deg)'}else ar.style.display='none';
  if(L9.cine)return;const el=$('gar');const a=GAR.filter(s=>s.alive&&s.g.visible).length,tk=TK10.filter(t=>t.alive).length,dr=DR10.filter(d=>d.alive&&d.side==='a').length,c=CAV.filter(q=>q.alive).length;
  if(ph>1){el.style.display='block';el.innerHTML='VANGUARDIA <b>'+a+'</b>'+(tk?' · TANQUETAS <b>'+tk+'</b>':'')+(dr?' · DRACOS <b>'+dr+'</b>':'')+(c?' · CATAFRACTOS <b>'+c+'</b>':'')+' · ✚ '+(MED&&!(MED.down>0)?'sanitario activo':'sanitario herido')}else el.style.display='none';
@@ -503,7 +503,7 @@ function startLevel10(){const X=X10;level=10;build10();clearStage();WC.x=X;WC.z=
 /* la escuadra espera en la flota durante la infiltración */
 const _au10=allyUpdate;allyUpdate=function(dt){if(level===10&&L10.solo){for(const a of allies)if(a.name)a.g.visible=false;if(officer)officer.g.visible=false;return}return _au10(dt)};
 const _mu10=medUpd;medUpd=function(dt){if(level===10&&L10.solo){if(MED)MED.g.visible=false;return}return _mu10(dt)};
-const _op10=objPoint;objPoint=function(){if((level===10||level===9)&&L9.obj&&!L9.cine)return{x:L9.obj[0],z:L9.obj[1]};return _op10()};
+const _op10=objPoint;objPoint=function(){if(LX(level)&&L9.obj&&!L9.cine)return{x:L9.obj[0],z:L9.obj[1]};return _op10()};
 const _up19=update;update=function(dt){if(level===10&&L9.cine&&playing){V16.dt=dt;time+=dt;cine9Upd(dt);fx10(dt,true);return}_up19(dt);if(!playing)return;if(level===10)upd10(dt)};
 const _in19=interact;interact=function(){if(level===10&&playing&&!L9.cine){if(crateNear())return _in19();if(L10.work){L10.work=null;return}const pp=P.g.position;for(const c of works10())if(Math.hypot(pp.x-c.x,pp.z-c.z)<c.r){L10.work=Object.assign({},c,{t:0});return}}return _in19()};
 const _rp19=respawnP;respawnP=function(){_rp19();if(level===10){P.g.position.set(L10.cp[0],0,L10.cp[1]);P.g.position.y=0;P.mg=false;P.gun9=false;L10.work=null}};

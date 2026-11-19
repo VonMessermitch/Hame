@@ -45,11 +45,11 @@ function firePzf(){P.pzf=0;P.pzfOn=false;cam.getWorldDirection(dv);const o=new T
  const t=mkPzf();t.position.copy(o);scene.add(t);DROP.push({m:t,v:new T.Vector3((R()-.5)*2,3,(R()-.5)*2),t:6})}
 function rokBoom(p,direct){expSnd(p.x,p.z,1.5);burst(p.x,p.y,p.z,0xff7a20,22,.7,11);burst(p.x,p.y,p.z,0x3a3632,16,1.2,6);smoke(p.x,p.y+1,p.z,7,5,0x2a2a2a,1.2,.6);flashLight(p.x,p.y+2,p.z,6,.4);shake=Math.max(shake,1);
  for(const e of[...enemies]){const d=Math.hypot(e.g.position.x-p.x,e.g.position.z-p.z);if(e===direct)hurt(e,650,'m');else if(d<5.5)hurt(e,240*(1-d/5.5*.6),'m')}
- if(level===9||level===10){hitSplash9(p.x,p.z,4,420,'x');if(direct&&direct.dmg)direct.dmg(1250,'g')}
+ if(LX(level)){hitSplash9(p.x,p.z,4,420,'x');if(direct&&direct.dmg)direct.dmg(1250,'g')}
  if(level===7)for(const m of mobs)if(!m.dead){const d=Math.hypot(m.g.position.x-p.x,m.g.position.z-p.z);if(d<(m.k==='rex'?7:4.5))mdmg(m,m===direct?700:260)}chBlast(p.x,p.y,p.z,3,10,0)}
 function rokUpd(dt){for(let i=ROK.length-1;i>=0;i--){const r=ROK[i];r.life-=dt;r.v.y-=4*dt;r.p.addScaledVector(r.v,dt);r.m.position.copy(r.p);if(R()<.8)smoke(r.p.x,r.p.y,r.p.z,1.2,1.4,0xbbbbbb,.3,.45);burst(r.p.x,r.p.y,r.p.z,0xffa040,1,.15,1);
  let hit=null,boom=r.p.y<.15||r.life<=0||inB(r.p);if(!boom)for(const e of enemies){if(Math.hypot(e.g.position.x-r.p.x,e.g.position.z-r.p.z)<1.1*e.s&&r.p.y<2.4*e.s){hit=e;boom=true;break}}
- if(!boom&&(level===9||level===10))for(const h of HIT9){if(h.ok()&&Math.hypot(r.p.x-h.x(),r.p.z-h.z())<h.r+.4&&r.p.y<h.y1+.5){hit=h;boom=true;break}}
+ if(!boom&&(LX(level)))for(const h of HIT9){if(h.ok()&&Math.hypot(r.p.x-h.x(),r.p.z-h.z())<h.r+.4&&r.p.y<h.y1+.5){hit=h;boom=true;break}}
  if(!boom&&level===7)for(const m of mobs){if(!m.dead&&Math.hypot(m.g.position.x-r.p.x,m.g.position.z-r.p.z)<(m.k==='rex'?4:2)&&r.p.y<(m.cy||2)*2){hit=m;boom=true;break}}
  if(boom){rokBoom(r.p,hit);scene.remove(r.m);ROK.splice(i,1)}}
  for(let i=DROP.length-1;i>=0;i--){const d=DROP[i];d.t-=dt;d.v.y-=18*dt;d.m.position.addScaledVector(d.v,dt);d.m.rotation.x+=dt*4;if(d.m.position.y<.1){d.m.position.y=.1;d.v.set(0,0,0)}if(d.t<=0){scene.remove(d.m);DROP.splice(i,1)}}}
@@ -58,7 +58,7 @@ let SATG=null;function throwSat(){if(P.gcd>0||P.sat<=0)return;P.sat--;P.gcd=1;V1
 function satUpd(dt){for(let i=SATL.length-1;i>=0;i--){const s=SATL[i];s.fuse-=dt;s.v.y-=18*dt;s.pos.addScaledVector(s.v,dt);if(s.pos.y<.15){s.pos.y=.15;s.v.y*=-.2;s.v.x*=.5;s.v.z*=.5}if(inB(s.pos)){s.v.x*=-.3;s.v.z*=-.3}s.m.position.copy(s.pos);if(R()<dt*8)burst(s.pos.x,s.pos.y+.2,s.pos.z,0xffd060,1,.2,1);
  if(s.fuse<=0){scene.remove(s.m);SATL.splice(i,1);const p=s.pos;expSnd(p.x,p.z,1.7);burst(p.x,.6,p.z,0xff7a20,26,.8,12);burst(p.x,.6,p.z,0x4a3a2a,20,1.3,7);smoke(p.x,2,p.z,9,6,0x2a2a2a,1.4,.6);flashLight(p.x,3,p.z,7,.45);shake=Math.max(shake,1.4);
   for(const e of[...enemies]){const d=Math.hypot(e.g.position.x-p.x,e.g.position.z-p.z);if(d<6.5)hurt(e,320*(1-d/6.5*.6),'m')}const dp=Math.hypot(P.g.position.x-p.x,P.g.position.z-p.z);if(dp<4.5)hitP(40*(1-dp/4.5*.5));
-  if(level===9||level===10){hitSplash9(p.x,p.z,5,700,'x');crater9(p.x,p.z,2.4);sbHit(p.x,p.z,3)}chBlast(p.x,1,p.z,4.5,15,0);
+  if(LX(level)){hitSplash9(p.x,p.z,5,700,'x');crater9(p.x,p.z,2.4);sbHit(p.x,p.z,3)}chBlast(p.x,1,p.z,4.5,15,0);
   for(const b of BK){if(b.dead)continue;const dx=Math.max(0,Math.abs(p.x-b.x)-b.W/2),dz=Math.max(0,Math.abs(p.z-b.z)-b.D/2);if(Math.hypot(dx,dz)<3.2)destroyBunker(b)}}}}
 /* BÚNKERES DESTRUCTIBLES: se registran sus piezas, colisiones y coberturas al construirse */
 const _bk18=bunker8;bunker8=function(x,z,side,label){const n0=scene.children.length,b0=obstB.length,c0=covers.length;const b=_bk18(x,z,side,label);b.vis=scene.children.slice(n0);b.obs=obstB.slice(b0);b.cov=covers.slice(c0);return b};
@@ -124,7 +124,7 @@ const _sl8x=startLevel8;startLevel8=function(){_sl8x();if(!V18.c8){V18.c8=1;mkCr
 const _b9x=build9;build9=function(){const f=L9.built;_b9x();if(!f){const X=X9;mkCrate18(X-8,12,9);mkCrate18(X+46,-92,9);mkCrate18(X-6,-345,9);mkCrate18(X+6,-470,9);bunker8(X-40,-112,1,'E-1');bunker8(X+34,-112,-1,'E-2')}};
 const _e1x=enter1;enter1=function(r){_e1x(r);for(const b of BK)if(!b.dead&&(b.label==='E-1'||b.label==='E-2'))for(const o of[-2.6,2.6]){const e=sp9('mg',b.x+o,b.z+2.7,true);if(e)e.k8n='a un ametrallador del búnker'}if(!r)setTimeout(()=>{if(level===9&&L9.ph===1)say('Teniente Hollenstein: «Esos búnkeres nos desangran. ¡Hay cargas satchel en la caja de la trinchera!»',5)},9000)};
 /* ---------- bucle v18 ---------- */
-const _up18=update;update=function(dt){_up18(dt);if(!playing)return;const cine=(level===8&&L8.cine)||((level===9||level===10)&&L9.cine);amb18(dt);rokUpd(dt);satUpd(dt);bunkerSmoke(dt);stickify();tanks7(dt);
+const _up18=update;update=function(dt){_up18(dt);if(!playing)return;const cine=(level===8&&L8.cine)||((LX(level))&&L9.cine);amb18(dt);rokUpd(dt);satUpd(dt);bunkerSmoke(dt);stickify();tanks7(dt);
  if(!cine){allyMelee(dt);barks18(dt);upd4x(dt);upd6x(dt);const c=crateNear();if(c&&!$('pr').textContent)$('pr').textContent='[E / USAR] Coger Panzerfaust y cargas satchel';
   if(P.pzfOn&&P.pzf>0)$('ammo').textContent='PANZERFAUST · 1 DISPARO · Q para guardar';if(P.sat>0)$('gc').textContent='CARGAS SATCHEL · '+P.sat+' (GRA) · GRANADAS · '+P.grenades;else if(P.pzf>0&&!P.pzfOn)$('gc').textContent='PANZERFAUST LISTO (Q) · GRANADAS · '+P.grenades}};
 (function(){const o=[...$('lvsel').options];for(const q of o){if(q.value==='4')q.text+=' · defensores, bengalas';if(q.value==='6')q.text+=' · pelotón real, artillería';if(q.value==='7')q.text+=' · Sd.Kfz. 250, tanques que disparan'}document.querySelector('#menu p b').textContent='1909 — Capítulos I–IX · v18';

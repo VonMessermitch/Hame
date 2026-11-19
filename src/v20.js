@@ -74,7 +74,7 @@ V20.pzBk=new T.Group();V20.pzBk.position.set(.02,.4,-.47);V20.pzBk.rotation.z=.8
 V20.r9=mkEwR9(false);V20.r9.visible=false;P.g.userData.mR.add(V20.r9);
 const _aP20=animP;animP=function(dt,mv,run){_aP20(dt,mv,run);const u=P.g.userData,on=P.pzfOn&&P.pzf>0;V20.pzBk.visible=P.pzf>0&&!on&&P.g.visible;
  if(on){const pz=V18.pz;pz.position.set(-.27,.78,.02);pz.rotation.set(clamp((pitch-.18)*.5,-.45,.45),0,0);u.aR.rotation.set(-.3,.3,0);u.eR.rotation.x=-2.4;u.aL.rotation.set(-1.6,-1.05,0);u.eL.rotation.x=-.25;u.hd.rotation.y=-.18;u.hd.rotation.z=.12}else u.hd.rotation.z*=.8;
- if(level===10&&pW.rifle.visible){pW.rifle.visible=false;V20.r9.position.copy(pW.rifle.position);V20.r9.rotation.copy(pW.rifle.rotation);V20.r9.visible=true}else V20.r9.visible=false};
+ if((level===10||level===11)&&pW.rifle.visible){pW.rifle.visible=false;V20.r9.position.copy(pW.rifle.position);V20.r9.rotation.copy(pW.rifle.rotation);V20.r9.visible=true}else V20.r9.visible=false};
 const _fp20=firePzf;firePzf=function(){const o=new T.Vector3();V18.pz.getWorldPosition(o);cam.getWorldDirection(dv);const bx=o.x-dv.x*1.3,bz=o.z-dv.z*1.3;_fp20();burst(bx,o.y,bz,0xffaa44,14,.25,7);smoke(bx,o.y,bz,4,3,0x9a9a90,1.2,.6);flashLight(o.x,o.y,o.z,6,.12,0xffb060);nz18(.001,.5,'lowpass',1800,200,.12);say('¡Retroceso libre! El chorro de gases sale por detrás.',1.4)};
 const _in20=interact;interact=function(){const c=playing?crateNear():null;_in20();if(c){P.pzfOn=false;say('Panzerfaust (1 disparo) a la espalda y 2 cargas satchel. ARM / Q para empuñarlo · FUEGO dispara · GRA lanza la carga.',4.5)}};
 /* ---------- NIEBLA PS2: niebla de profundidad, distancia de dibujo corta y tramado retro ---------- */
@@ -105,7 +105,7 @@ async function askAI20(sit,fb){if($('aimode').value==='off'||AI20.busy||time-AI2
   prompt:'Eres '+who+', oficial de '+(level===10?'la Marca de Eisenmark en 1922':'un ejército europeo en 1909')+' en un videojuego bélico de fantasía histórica. Di UNA sola frase corta (máximo 16 palabras) en español, como orden de radio a tu tropa, para esta situación: '+sit+'. Sin comillas ni explicaciones.'})});
   clearTimeout(t);if(!r.ok)throw 0;const j=await r.json();const s=(j.response||'').trim().split('\n')[0].replace(/^["«»“”']+|["«»“”']+$/g,'').slice(0,140);if(playing)say(who+': «'+(s||fb)+'»',4.5)}
  catch(e){AI20.ep=null;$('ai20').textContent='IA: motor táctico integrado';if(fb&&playing)say(who+': «'+fb+'»',4)}AI20.busy=false}
-function aiTick20(dt){if(!playing||L9.cine||(typeof L8!=='undefined'&&L8.cine))return;const o=$('obj').textContent,key=o.replace(/[\d%■□\[\]\/()·:.,]/g,'').trim().slice(0,38);
+function aiTick20(dt){if(level===11||!playing||L9.cine||(typeof L8!=='undefined'&&L8.cine))return;const o=$('obj').textContent,key=o.replace(/[\d%■□\[\]\/()·:.,]/g,'').trim().slice(0,38);
  if(key&&key!==V20.ot){const prev=V20.ot;V20.ot=key;if(prev&&R()<(AI20.ep?.85:.25))askAI20('nuevo objetivo: '+o,FB20.obj[R()*FB20.obj.length|0])}
  V20.hpT-=dt;if(P.hp<30&&V20.hpT<=0){V20.hpT=30;askAI20('el soldado '+(level===10?'Wolff':'Kovač')+' está gravemente herido bajo fuego enemigo',FB20.hp[R()*FB20.hp.length|0])}
  let n=0;for(const e of enemies)if(e.active!==false)n++;if(n>=12&&!V20.big){V20.big=1;askAI20('una gran oleada de '+n+' enemigos se acerca',FB20.wave[R()*FB20.wave.length|0])}if(n<5)V20.big=0}
@@ -119,4 +119,4 @@ const _g20=$('go').onclick;$('go').onclick=function(){V20.ps2=$('ps2fog').value;
 /* ---------- actualización ---------- */
 const _up20=update;update=function(dt){_up20(dt);if(!playing)return;mkUpd20(dt);aiTick20(dt);pMat.uniforms.ps2.value=V20.ps2!=='off'?1:0;
  if(level!==9&&V20.g9.length){for(const g of V20.g9)gear20off(g);V20.g9=[]}
- if(level===10&&P.cur==='rifle'&&!(P.pzfOn&&P.pzf>0)&&!P.mg){const a=$('ammo'),t=a.textContent;if(t.startsWith('MANNLICHER'))a.textContent=t.replace('MANNLICHER-MAUSER','EW-R9 REVISADO')}};
+ if((level===10||level===11)&&P.cur==='rifle'&&!(P.pzfOn&&P.pzf>0)&&!P.mg){const a=$('ammo'),t=a.textContent;if(t.startsWith('MANNLICHER'))a.textContent=t.replace('MANNLICHER-MAUSER','EW-R9 REVISADO')}};

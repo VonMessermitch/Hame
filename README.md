@@ -296,3 +296,104 @@ En Android los botones **USAR, ARM, GRA, MEL, REC, SAL y ROD** llamaban a las fu
 - **Desactivar:** la opción «Desactivada» deja solo los diálogos originales del juego.
 - **Requisito de Ollama:** para que el navegador pueda hablarle, arranca Ollama con `OLLAMA_ORIGINS=*` (o el origen desde el que abras el juego).
 - **Aviso en la consola:** si Ollama no está en marcha, el navegador muestra un aviso de «conexión rechazada» en la consola. Es normal.
+
+---
+
+# v21 · Misión 0 «Campamento Tokovsky», cuerpo a tierra, coberturas y animaciones
+
+Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v21.html`**. Módulo nuevo: `src/v21.js`.
+
+## Misión 0 — Campamento Tokovsky: «El que no sabe marchar, tampoco sabe morir»
+Primera opción del menú (aparece preseleccionada mientras no se haya completado). Juegas solo, sin escuadra ni médico, como **recluta Kasimir Wolff**: uniforme gris azulado con ribetes granate, gorra de campaña y correaje, sin casco de acero.
+
+### El campamento
+- **Mapa:** un campamento explorable, sin pasillos, con bosque y montañas alrededor. Tiene vía férrea y andén, patio de formación con mástil y cuartel, cuatro barracones, cantina, enfermería, establos (con caballos y un draco de reconocimiento), carbonera y torre de observación.
+- **Zonas de ejercicio:** circuito de obstáculos, polígono de tiro con berma, trinchera de instrucción, estaciones de armas, parque de vehículos, pueblo de prácticas y el «Sector Norte».
+- **Vida del campamento:**
+  - escuadra que marcha alrededor del patio;
+  - centinelas que saludan;
+  - reclutas que limpian fusiles sentados o comen en la cantina;
+  - soldados fumando;
+  - carboneros que discuten;
+  - mecánico, conductor y guardia en la torre.
+- **Sonido:** silbatos, campana, disparos lejanos, perros y viento.
+- **Sargento instructor Koller:** gorra de plato, cigarrillo y portamapas. Camina delante, señala al hablar, se gira hacia ti y reacciona a lo que haces.
+
+### Cinemáticas (todas en tiempo real y saltables)
+- **Llegada en tren bajo la lluvia** («Bienvenido al infierno barato»): el diálogo completo, el recluta que vomita, la mochila en el charco, el oficial del cigarrillo y el título «TOKOVSKY · DÍA 1».
+- **Escenas cortas durante la instrucción:** el desmayo, la ametralladora de fogueo, la MG 08, la alarma del Sector Norte y el cierre del combate («¡El suelo no tiene simpatía!»).
+- **Escena final al atardecer** («Todavía respira»), con el discurso de Koller.
+
+### Los ocho ejercicios
+| Fase | Qué se aprende |
+|---|---|
+| I · Las piernas son gratis | Seguir a Koller, correr, sprint hasta la bandera y circuito de obstáculos: tronco y valla (saltar), barrera baja (agacharse), alambrada (cuerpo a tierra), barriles, escalones y puerta (USAR). Bromas si te quedas atrás o te estrellas contra el tronco. |
+| II · La disciplina no se negocia | El chiste de «tu otra izquierda»; mirar las banderas que te nombran; seguir al cabo en marcha; mantener la posición; cubrirse tras los sacos; ponerse de pie; paso lateral; el recluta que se desmaya. |
+| III · El fusil no es para rascarse | Recoger el Ew-R9 de la mesa. Tres ejercicios: blancos estáticos (cercano, medio y lejano), blancos móviles y precisión (sólo el color que dice Koller; si fallas, «carrera en artillería»). |
+| IV · La guerra no espera a que recargues | Vaciar y recargar, cambiar a la pistola, cobertura y disparo asomándose, arrastrarse bajo fuego de fogueo, granadas al círculo y detrás de la barricada («un idiota con iniciativa»), bayoneta contra muñecos, sprint bajo fuego y botiquín. |
+| V · Exposición de armas | Subfusil, MG 08 (ráfagas, no «derretir el cañón»), mortero (tres disparos observados), cañón de campaña contra un blindado de madera y pistola. |
+| VI · Vehículos | Viaje en camión con la tropa (el recluta que se adelanta), ayudar al mecánico, **conducir la tanqueta** (joystick para avanzar y girar, FUEGO para el cañón) por puertas de conos, destruir el blanco y aparcar. Presentación de la caballería y de los dracos en los establos. |
+| VII · Un ejército no es una colección de idiotas armados | Grupo de cuatro reclutas con órdenes **ORD / T**: SEGUIR, MANTENER, CUBRIR y ASALTAR. Dos cubren mientras el resto entra en el edificio; luego se despeja el pueblo y se reagrupa. Koller protesta si abandonas a tu grupo o si se atasca. |
+| VIII · La última prueba | Alarma («¡Si fuera real, ya estarías llorando en otro idioma!»). Tomar la trinchera, flanquear la casamata, destruir tres objetivos y cruzar bajo fuego simulado hasta la extracción. |
+
+### Reglas de la instrucción
+- Las armas se reciben a lo largo de la instrucción: primero no tienes ninguna; luego el fusil, la pistola, la bayoneta, las granadas y el subfusil.
+- El fuego es de fogueo: recibes el 40 % del daño. Si caes, reapareces en el último punto de control.
+
+### Guardado, repetición y exploración
+- Al terminar se guarda «Instrucción completada» (localStorage) y aparece «Campaña desbloqueada».
+- El selector **EJERCICIO** permite repetir cada fase por separado o recorrer el campamento en **exploración libre**, con todas las armas y los blancos levantados.
+
+## Cuerpo a tierra y arrastrarse (Z / botón TUM)
+- El jugador se tumba y se arrastra (máx. 1,55 m/s) con animación de brazos y piernas alternos.
+- La cámara baja y el blanco que ofreces se reduce: las balas enemigas sólo te alcanzan por debajo de 0,75 m y recibes un 40 % menos de daño.
+- Disparas tumbado con gran precisión, y las balas salen a ras de suelo.
+- SALTAR te levanta y AGACHAR te deja en cuclillas.
+
+## Coberturas al estilo Gears (F / botón CUB)
+- **El jugador:**
+  - se pega a sacos, muros bajos, cajas, barriles o rocas cercanas y se agacha detrás;
+  - se desplaza a lo largo de la cobertura;
+  - FUEGO le hace asomarse para disparar y vuelve a ocultarse solo;
+  - alejarse o volver a pulsar CUB le hace salir;
+  - agachado y oculto recibe un 30 % del daño, y si la cobertura vuela, la pierde;
+  - aparece la indicación «[F / CUB] Ponerse a cubierto» cuando hay combate y una cobertura cerca.
+- **Los enemigos** que están en cobertura (o fijos en un nido) desvían el 45 % de los impactos que les llegan a través de la cobertura.
+- **Los aliados** agachados detrás de cobertura desvían la mitad.
+- **La escuadra** pasa a «fuego y cobertura» automáticamente cuando hay tres o más enemigos cerca.
+
+## Animaciones de disparo y empuñe
+- **Jugador:**
+  - al apuntar, postura a dos manos: mano izquierda bajo el guardamanos, mejilla en la culata y torso perfilado;
+  - ciclo del cerrojo: la mano derecha sube, tira y empuja tras cada disparo del fusil;
+  - retroceso en la cadera y vibración del subfusil.
+- **Vanguardia y guarnición:** retroceso en hombro y brazos, ciclo del cerrojo en los fusileros, vibración de la ametralladora y apoyo de la mano izquierda al apuntar.
+
+## Catafractos (capítulo X)
+- Antes sólo cargaban tras la cinemática y en la refinería se quedaban quietos.
+- Ahora empiezan a hostigar el flanco en cuanto forman.
+- Siguen activos durante la refinería y la extracción, con los límites de carga ampliados a la refinería.
+- Rodean las líneas por los pasos (ya no chocan contra la valla).
+- El registro anuncia los enemigos que ensartan.
+
+## Refinería y misceláneos (capítulo X)
+- **Refinería:**
+  - antorcha de gas encendida de 28 m;
+  - tres columnas de destilación con plataformas y escaleras;
+  - dos racks de tuberías elevadas;
+  - apartadero con tres vagones cisterna;
+  - oficinas de ladrillo con ventanas y rótulo;
+  - chimenea con humo negro;
+  - tres balancines de bombeo animados;
+  - respiraderos de vapor, charcos de crudo, pilas de bidones y cajas, farolas, extintores y carteles de aviso.
+- **Resto del mapa:** cajas de munición y teléfonos de campaña en las trincheras, postes indicadores, postes de telégrafo junto a la vía, un camión calcinado, montones de mineral y cristales luminosos en las minas, banderas y carros rotos en la explanada.
+
+## Otras correcciones
+- **Niveles con objetivos:** comparten un único criterio (capítulos IX, X y Misión 0), con impactos en objetivos, cinemáticas saltables y explosiones.
+- **Navegación del campamento:** rodea los tramos de valla largos.
+- **Temporizadores de la instrucción:** usan el reloj del juego, así que respetan la pausa.
+- **Diálogos de Koller:** las líneas que ya no vienen al caso se descartan.
+
+## Rendimiento
+- Campamento: ≈120–440 draw calls y ~0,35–0,55 ms de lógica por fotograma en las pruebas.
+- Capítulo X: igual que antes.
