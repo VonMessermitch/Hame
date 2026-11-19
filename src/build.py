@@ -4,7 +4,7 @@ aplica ediciones quirúrgicas verificadas al código existente e inyecta el mód
 import sys, pathlib, re
 root = pathlib.Path(__file__).resolve().parent.parent
 src = (root/'original_v15.html').read_text(encoding='utf-8')
-mod = (root/'src'/'v16.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v17.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v18.js').read_text(encoding='utf-8')
+mod = (root/'src'/'v16.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v17.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v18.js').read_text(encoding='utf-8') + "\n" + (root/'src'/'v19.js').read_text(encoding='utf-8')
 out = src
 def rep(old, new, count=1):
     global out
@@ -14,7 +14,7 @@ def rep(old, new, count=1):
     out = out.replace(old, new)
 
 # --- cabecera / CDN con respaldo ---
-rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v18 · Operación Tres Coronas)</title>')
+rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v19 · Crónicas de Hierro)</title>')
 rep('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>',
     '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\n'
     '<script>window.THREE||document.write(\'<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\\/script>\')</script>')
@@ -92,5 +92,5 @@ rep("startSw(2);P.swHit=true;P.plunge=true;", "startSw(SW.length-1);P.swHit=true
 rep("slash(SW[2]);shake=Math.max(shake,1.5);", "slash(SW[SW.length-1]);shake=Math.max(shake,1.5);")
 # --- inyección del módulo ---
 rep("\n</script></body></html>", "\n" + mod + "\n</script></body></html>")
-(root/'Sombras_sobre_el_Nilo_1909_v18.html').write_text(out, encoding='utf-8')
+(root/'Sombras_sobre_el_Nilo_1909_v19.html').write_text(out, encoding='utf-8')
 print('OK', len(out), 'bytes')

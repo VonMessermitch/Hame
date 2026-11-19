@@ -174,7 +174,7 @@ function mkTruck16(o){o=o||{};const g=new T.Group(),q=PB(),C=o.col||0x56604a,CD=
    --------------------------------------------------------------------- */
 const trkT=pixTex(64,16,(c,w,h)=>{c.fillStyle='#2a2a26';c.fillRect(0,0,w,h);for(let x=0;x<w;x+=8){c.fillStyle='#4a4a42';c.fillRect(x,0,5,h);c.fillStyle='#1a1a18';c.fillRect(x+5,0,3,h);c.fillStyle='#5a5a50';c.fillRect(x+1,h/2-1,3,2)}});
 trkT.wrapS=trkT.wrapT=T.RepeatWrapping;
-const TKC={sh:{a:0x4e5642,b:0x3e4535,c:0x5a6250},st:{a:0x9a8a5a,b:0x5a6a3a,c:0x8a7a4e},wr:{a:0x2a2622,b:0x1a1816,c:0x3a2e26},hero:{a:0x4a5640,b:0x3a4232,c:0x56604c}};
+const TKC={en:{a:0x3a3a3e,b:0x262628,c:0x48484c},sh:{a:0x4e5642,b:0x3e4535,c:0x5a6250},st:{a:0x9a8a5a,b:0x5a6a3a,c:0x8a7a4e},wr:{a:0x2a2622,b:0x1a1816,c:0x3a2e26},hero:{a:0x4a5640,b:0x3a4232,c:0x56604c}};
 const RWG={};function roadWheelGeo(r,k){const key=r+'|'+k;if(RWG[key])return RWG[key];const q=PB(),dk=k==='wr'?0x141210:0x1c1c1a,c=TKC[k].b;pCyl(q,r,r,.28,dk,0,0,0,0,0,1.5708,14);pCyl(q,r*.8,r*.8,.3,c,0,0,0,0,0,1.5708,12);for(let i=0;i<6;i++)pBox(q,.32,.05,r*1.5,shade(c,.8),0,0,0,i*.5236,0,0);pCyl(q,r*.25,r*.25,.36,0x2a2a26,0,0,0,0,0,1.5708,8);RWG[key]=pbGeo(q);return RWG[key]}
 const SPG={};function sprocketGeo(k){if(SPG[k])return SPG[k];const q=PB(),c=TKC[k].b;pCyl(q,.48,.48,.32,shade(c,.8),0,0,0,0,0,1.5708,14);for(let i=0;i<12;i++){const a=i/12*6.2832;pBox(q,.3,.12,.12,0x2a2a26,0,Math.cos(a)*.5,Math.sin(a)*.5,a,0,0)}pCyl(q,.18,.18,.38,0x2a2a26,0,0,0,0,0,1.5708,8);SPG[k]=pbGeo(q);return SPG[k]}
 function mkTank16(k){k=k||'sh';const K=TKC[k],A=K.a,B=K.b,Cc=K.c,MT=0x2a2c2a,DK=0x161616,wr=k==='wr';const g=new T.Group(),q=PB();
@@ -198,7 +198,7 @@ function mkTank16(k){k=k||'sh';const K=TKC[k],A=K.a,B=K.b,Cc=K.c,MT=0x2a2c2a,DK=
  for(let i=0;i<4;i++)pBox(q,.7,.08,.24,0x2e2e2a,-.7+i*.48,2.02,2.62,-1.0);
  /* caja de estiba y bidones traseros, insignias de la facción */
  pBox(q,1.4,.45,.6,0x4a4a36,0,2.75,-2.55);for(let i=0;i<3;i++)pBox(q,.32,.45,.16,0x3a4a2a,-.5+i*.5,2.75,-3.0);
- for(const s of[-1,1])crossMark(q,s*1.62,2.0,-.9,'x',.58);pBox(q,.6,.24,.03,0xd8d0b0,.5,1.25,3.4,.75);
+ if(k!=='en')for(const s of[-1,1])crossMark(q,s*1.62,2.0,-.9,'x',.58);pBox(q,.6,.24,.03,0xd8d0b0,.5,1.25,3.4,.75);
  if(k==='st')for(let i=0;i<22;i++){const s=R()<.5?-1:1;pBox(q,.03,.25+R()*.3,.4+R()*.6,0x4a5a2e,s*1.6,1.8+R()*.5,-2.5+R()*4.4,0,0,s*.32)}
  /* orugas: banda con textura desplazable */
  const tm=new T.MeshLambertMaterial({map:trkT.clone(),color:wr?0x6a6a6a:0xffffff});tm.map.needsUpdate=true;tm.map.repeat.set(9,1);
@@ -213,7 +213,7 @@ function mkTank16(k){k=k||'sh';const K=TKC[k],A=K.a,B=K.b,Cc=K.c,MT=0x2a2c2a,DK=
  pBox(tq,1.66,.88,2.5,Cc,0,.45,0);for(const s of[-1,1]){pBox(tq,.13,.95,2.5,shade(Cc,.95),s*.95,.42,0,0,0,s*.36);pBox(tq,.1,.4,.14,0x2a2a26,s*1.06,.62,.75)}pBox(tq,1.84,.1,2.44,shade(Cc,.92),0,.92,-.02);
  pBox(tq,1.5,.72,.7,Cc,0,.48,-1.5);pCyl(tq,.75,.75,.72,Cc,0,.48,-1.82,0,0,0,10);pBox(tq,1.3,.42,.5,0x4a4a36,0,.5,-2.3);
  for(const s of[-1,1]){for(let i=0;i<3;i++)pCyl(tq,.06,.06,.3,0x2a2a26,s*.8,.95,.6+i*.16,.6,0,0,6);for(let i=0;i<3;i++)pBox(tq,.05,.22,.42,0x2e2e2a,s*1.0,.35,-.3-i*.46,0,0,s*.36)}
- for(const s of[-1,1])crossMark(tq,s*1.04,.42,-.8,'x',.45);
+ if(k!=='en')for(const s of[-1,1])crossMark(tq,s*1.04,.42,-.8,'x',.45);
  pCyl(tq,.4,.42,.4,shade(Cc,.9),-.42,1.1,-.55,0,0,0,12);for(let i=0;i<6;i++){const a=i/6*6.2832;pBox(tq,.1,.12,.06,0x1a1a1a,-.42+Math.cos(a)*.41,1.15,-.55+Math.sin(a)*.41,0,-a,0)}pCyl(tq,.36,.36,.05,0x2a2a26,-.42,1.33,-.55,0,0,0,12);
  pCyl(tq,.3,.3,.06,shade(Cc,.85),.45,.98,-.6,0,0,0,10);pBox(tq,.12,.14,.18,DK,.45,1.05,-.25);
  pa(tq,new T.CylinderGeometry(.58,.58,1.15,12,1,false,0,3.1416),shade(Cc,.97),0,.45,1.22,0,0,1.5708);
@@ -464,7 +464,7 @@ function officerAI(dt){const op=officer;if(!op||!op.g.visible)return;if(!op.v16)
    for(const m of mates){if(Math.hypot(m.x-me.x,m.z-me.z)>24)continue;for(const e of act){const d=Math.hypot(e.g.position.x-m.x,e.g.position.z-m.z);if(d<6&&d<sd){sd=d;sup=m;se=e}}}
    if(sup){st='support';tgt=se;goal={x:(sup.x*2+me.x)/3,z:(sup.z*2+me.z)/3}}
    else{const blk=act.filter(e=>Math.hypot(e.g.position.x-obj.x,e.g.position.z-obj.z)<22&&Math.hypot(e.g.position.x-me.x,e.g.position.z-me.z)<55);
-    const defend=level===8&&(L8.ph===10||L8.ph===11)||level===2||level===4||level===5||level===9&&!!L9.def;
+    const defend=level===8&&(L8.ph===10||L8.ph===11)||level===2||level===4||level===5||(level===9||level===10)&&!!L9.def;
     if(op.hp<45&&tS&&dS<30){st='heal';tgt=tS;goal=coverNear(me.x,me.z,tS.g.position.x,tS.g.position.z,16)}
     else if(big&&dB<50&&(!blk.length||R()<.4)){st='focus';tgt=big;V16.focus=big;goal=coverNear(me.x,me.z,big.g.position.x,big.g.position.z,14)}
     else if(blk.length&&!defend){let cx=0,cz=0;blk.forEach(e=>{cx+=e.g.position.x;cz+=e.g.position.z});cx/=blk.length;cz/=blk.length;tgt=blk.reduce((a,b)=>Math.hypot(b.g.position.x-me.x,b.g.position.z-me.z)<Math.hypot(a.g.position.x-me.x,a.g.position.z-me.z)?b:a);

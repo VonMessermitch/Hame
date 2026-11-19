@@ -200,3 +200,47 @@ Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v18.html`** (incluye v16 y v17). 
 - Capas nuevas en las armas: grave del disparo, chasquido supersónico y cerrojo del fusil.
 - Explosiones con cuerpo, cola y retardo según la distancia.
 - Ambiente propio de cada capítulo: viento, perros, truenos, goteo, cadenas, olas, gaviotas, sirena de barco, campanas, aviones, sirenas, cuervos, pájaros e insectos, rugidos lejanos, búhos y artillería lejana.
+
+---
+
+# v19 · CRÓNICAS DE HIERRO — Operación Tridente de Acero: «El incendio de Alejandría»
+
+Archivo jugable: **`Sombras_sobre_el_Nilo_1909_v19.html`** (incluye todo lo anterior). Menú → **CAPÍTULO** → «X · CRÓNICAS DE HIERRO — El incendio de Alejandría». Módulo nuevo: `src/v19.js`.
+
+En este capítulo eres **otro soldado de otro ejército**: el **Gefreiter Kasimir Wolff**, Sturmtruppe de la **Marca de Eisenmark** (1922 alternativo), con uniforme gris verdoso, casco oscuro y máscara de gas. La escuadra, el oficial (**Hauptmann Reuss**) y el sanitario (**Sanitäter Brenner**) visten también de Eisenmark durante el capítulo y recuperan su uniforme al volver a otros capítulos.
+
+## Un solo mapa continuo (sur → norte), sin teletransportes
+Costa → trincheras → desierto → minas (dentro de la meseta) → explanada → refinería y puerto. Cada sector se conecta con el siguiente por accesos físicos: pasos en la alambrada, la brecha de la barricada, la puerta del complejo (que se vuela), la boca de la mina, los puentes sobre el abismo, la compuerta norte y la valla de la refinería. A los lados de las minas, la meseta impide rodearlas.
+
+| Fase | Contenido |
+|---|---|
+| **I · Infiltración costera** | De noche y solo. Patrullas con conos de visión, medidor de **detección progresiva**, alerta por ruido de disparos, eliminaciones silenciosas a cuchillo/sable sobre enemigos desprevenidos. Objetivos: sabotear la radio (si la cortas, la alarma no trae refuerzos), neutralizar 2 nidos de MG y subir al faro para lanzar la bengala → **desembarco aliado**. |
+| **II · Trincheras de hierro** | Tres líneas. Cortas la alambrada (E) o lo hacen los zapadores; tomas la primera trinchera; eliminas a los servidores de mortero (bombardean de verdad) y los búnkeres de la segunda; silencias los 3 nidos de la tercera → **cinemática**: la tanqueta Kettenhund revienta la barricada mientras la infantería salta del parapeto. Después capturas la artillería enemiga. |
+| **III · Desierto mecanizado** | Llegan las tanquetas de reconocimiento Zorn y Späher, el draco pesado Goliat y el draco de transporte Lastträger (desembarca infantería motorizada). Objetivos en paralelo: batería de cañones, cruce ferroviario, convoy de camiones cisterna que huye. **Evento:** un carro enemigo flanquea y persigue a las tanquetas; tiene puntos débiles (retaguardia y torreta) y Goliat puede embestirlo; hay Panzerfaust en las cajas. Por último, los zapadores (o tú) vuelan la puerta del complejo. |
+| **IV · Minas de Khazrul** | Columnas monumentales, abismo con dos puentes, vagonetas sobre raíles, ascensor, fundición con metal fundido, estatuas y galerías. Activas 3 mecanismos (E) mientras salen oleadas de las galerías: trasgos, genglocks, gorlocks, acechadores, minotauro, capataz, bruto… El draco guarda la entrada: no cabe en la mina. |
+| **V · Carga de los catafractos** | Tomas tres alturas, la artillería capturada bombardea la línea enemiga y Reuss ordena la carga. Los **catafractos** forman, cargan con **lanzas eléctricas** (chispas, retroceso, daño extra a blindados y descarga encadenada a dos enemigos cercanos), giran y vuelven a cargar mientras tú sigues combatiendo. |
+| **VI · La refinería** | Destruir bombas, tomar la torre de control, inutilizar 3 antiaéreos, colocar cargas en los 3 depósitos principales y defender a los zapadores 40 s mientras cablean el detonador. **Jefe: el Guardián de la Refinería**, minotauro acorazado con cañón pesado en 3 etapas: dispara desde la plataforma elevada → salta y pelea cuerpo a cuerpo → enloquece, destroza coberturas y te persigue. El detonador provoca la explosión en cadena y empieza la **extracción** al muelle bajo persecución. |
+
+Depósitos con estados **intacto → dañado (fuga) → incendiado → explosión → destruido**, y reacción en cadena con los tanques vecinos.
+
+## Fuerzas
+- **Vanguardia de Eisenmark** (12 al desembarcar + 4 motorizados): asalto con MP38, escopeteros, zapadores con mochila de cargas, escuderos acorazados con escudo, espada y pistola C10 (reciben un 60 % menos de daño), fusilero y ametrallador. Avanzan de posición en posición, se cubren, se repliegan y combaten cuerpo a cuerpo.
+- **Grupo blindado:** 1 tanqueta de apoyo con cañón y 2 de reconocimiento con ametralladora.
+- **Dracos terrestres:** asalto, transporte, pesado y reconocimiento. Embisten, muerden y pisotean.
+- **Enemigos:** fusileros, granaderos, ametralladores, francotiradores, oficiales, orcos, trasgos, guerreros escudados, gorlocks, genglocks, hurlocks con ballesta, ogros artilleros, minotauros y dracos enemigos. Clases especiales: acechador (oculto hasta que te acercas), lanzador, ballestero, bruto (rompe sacos terreros), ogro artillero (bombardeo con proyectiles) y capataz (acelera a los cercanos; si cae, su tropa vacila). Los cuerpo a cuerpo **rodean** al objetivo.
+
+## Navegación sin atascos
+Ruta por «pasos» de cada línea (alambrada, parapeto, muralla, boca de la mina, puentes, compuerta, valla), recalculada cuando un paso se abre o se cierra. La usan la escuadra, la vanguardia, los enemigos y el sanitario, junto con el antiatasco existente. El abismo de la mina bloquea el paso pero **no** la línea de tiro.
+
+## Controles y rendimiento
+- Se mantienen todos los controles táctiles. **E / USAR** sirve para cortar alambre, sabotear, accionar mecanismos, colocar cargas y el detonador (mantente cerca; alejarte interrumpe).
+- 10 cinemáticas saltables (botón, Enter o Espacio); ninguna bloquea el control de forma permanente.
+- Cada sector se oculta cuando está lejos (y el exterior desaparece dentro de la mina); geometría estática fusionada; mismo presupuesto que el capítulo IX (≈130–640 draw calls, ~0,5–1 ms de lógica por fotograma en las pruebas).
+
+## Otras correcciones de v19
+- Reiniciar un capítulo desde el menú reutiliza el mismo AudioContext (antes podían aparecer errores de nodos de audio de contextos distintos).
+- Texto del registro: «abatió a a un…» → «abatió a un…».
+
+## Limitaciones
+- Volver a jugar el capítulo X sin salir de la página recarga la página y deja el capítulo X preseleccionado: pulsa JUGAR otra vez.
+- Los dracos aliados se quedan en la entrada de la mina y no acompañan a las fases V y VI.
