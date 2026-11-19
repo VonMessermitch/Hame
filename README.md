@@ -556,3 +556,51 @@ Menú → «XI · OPERACIÓN CIELO DE ACERO». El selector **PUNTO DE CONTROL** 
 - Los aviones y criaturas no colisionan entre sí; los choques (draco contra la góndola o contra un bombardero) están guionizados.
 - Los NPC de la tripulación siguen rutas fijas dentro de la góndola, sin navegación general.
 - Durante el embarque la escuadra puede cruzarse con el jugador en la rampa (se empujan, no se bloquean).
+
+# v24 · «Cielo de Acero» mejorada: torreta ventral, cabina, aviación y más combate
+
+Archivo: `Sombras_sobre_el_Nilo_1909_v24.html` (código en `src/v23.js`, sección v24).
+
+## Torreta ventral con MG doble
+- Cúpula acristalada bajo la popa de la góndola, colgada de un cuello, con aro, costillas y escotilla en el pañol.
+- Se baja por la escotilla con E; **es el puesto que se ordena ocupar al empezar la interceptación**.
+- **Giro libre de 360°**, MG doble con disparo alterno, caja de 500 cartuchos (R / REC para cambiarla), recalentamiento, trazadoras, casquillos y mira de anillo. Las cajas se reponen en el pañol.
+- Los enemigos también atacan la torreta.
+
+## Tripulación de aviación
+- Soldados, sargento, radiotelegrafista y pilotos con chaqueta de cuero, casco de vuelo con orejeras y gafas, y bufanda. El oficial pasa a ser **Oberleutnant Adler**, con gorra de plato y uniforme azul de aviación.
+- Sin fusiles: llevan **pistola en la pistolera de la cintura** y solo la desenfundan para disparar por una ventana cuando no están en una MG.
+
+## MG 15 de trípode en las ventanas
+- Cuatro MG 15 (camisa perforada, tambor doble) en las ventanas de babor y estribor, con un tirador cada una que apunta y dispara ráfagas.
+- El jugador puede tomar cualquiera (E). El tirador se aparta y sigue con la pistola.
+- Las balas atraviesan la franja de ventanas: ya se puede disparar a través de ellas.
+
+## Cabina de mando
+- En proa, con puerta que se abre y cierra con E.
+- Dentro: dos pilotos en sus asientos, timón, rueda de profundidad, telégrafo de máquinas, instrumentos y ventanales.
+- **Mapa de avance** en la pared, que se actualiza en vivo (ruta, posición del cepelín, porcentaje y fase).
+- Los pilotos comentan la situación cuando entras.
+
+## Aviones con pilotos
+- Cada caza lleva su piloto, visible detrás del ala superior.
+- Los aviones de ataque llevan además un artillero.
+- Los bombarderos llevan dos pilotos, artillero de proa y artillero de cola.
+- Los dracos blindados y el dragón llevan jinetes.
+
+## Más combate aéreo
+- Interceptación: 95 s (antes 62) con oleadas por la cola y desde abajo.
+- Nubes y dracos: 88 s (antes 66).
+- Más enemigos en la aproximación y el bombardeo. La misión dura unos 7 minutos.
+- **Escolta de 8 cazas** (2 más).
+
+## Base aérea ampliada
+- Instalaciones: manga de viento, depósito de agua, planta de hidrógeno con tanques y tuberías, mástil de radio con vientos, mástil de amarre de celosía, globo cautivo de observación con su torno.
+- En la plataforma: botellas de gas y banderas.
+- Pista: carros con bombas, luces de pista, búnker de sacos con MG.
+- Otros elementos: tiendas de mantenimiento, motocicleta con sidecar, camión cisterna, banco de motores y hélices de repuesto.
+- Suelo con paleta de tierra y hierba (antes arena anaranjada).
+
+## Pruebas
+- Misión completa con torreta, MG 15, cabina y salto hasta la pantalla final.
+- Los niveles 1–12 arrancan sin errores.
