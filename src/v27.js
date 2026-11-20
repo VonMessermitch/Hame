@@ -92,13 +92,13 @@ function deco27(){const X=X13,q=PB(),WO=0x4a3624,DK=0x2a1e14,ST=0x6a665c,GL=0xff
   gable(bx,2*H,z0+8.15,12.2,2.9,0x6a4a2a);gable(bx,2*H,z0-8.15,12.2,2.9,0x6a4a2a);pBox(q,.3,.3,16.8,DK,bx,2*H+2.95,z0);
   for(const s of[-1,1]){const dg=new T.Group();pBox(q,2.2,3.4,.12,0x7a3a22,bx+s*7.3,1.7,z0+8.4);pBox(q,2.2,.14,.14,0xd8d0b8,bx+s*7.3,3.3,z0+8.48);pBox(q,2.2,.14,.14,0xd8d0b8,bx+s*7.3,.2,z0+8.48);pBox(q,.14,3.6,.14,0xd8d0b8,bx+s*7.3,1.7,z0+8.48,0,0,s*.55)}
   pBox(q,4.4,.2,.25,DK,bx,3.75,z0+8.45);pBox(q,9,.12,.12,0x2a2a2a,bx,3.9,z0+8.5);pBox(q,2.2,1.6,.15,0x2a1e14,bx,5.1,z0+8.3);pBox(q,1.6,.6,.5,0xc8a858,bx,4.55,z0+8.5);pCyl(q,.05,.05,1.8,0x6a6a6a,bx,7.8,z0+3,1.5708,0,0,5);
-  pBox(q,1,1.2,1,0x6a4a2a,bx,2*H+3.4,z0);for(const s of[-1,1])pBox(q,1.4,.12,1.2,0x3a2a22,bx+s*.35,2*H+4.15,z0,0,0,s*.5);pCyl(q,.02,.02,1,0x2a2a2a,bx,2*H+4.8,z0,0,0,0,4);pBox(q,.6,.04,.04,0x2a2a2a,bx,2*H+5.2,z0);pBox(q,.04,.04,.6,0x2a2a2a,bx,2*H+5.1,z0);
+  pBox(q,1,1.2,1,0x6a4a2a,bx,2*H+3.4,z0);for(const s of[-1,1])pBox(q,1.4,.12,1.2,0x3a2a22,bx+s*.35,2*H+4.15,z0,0,0,-s*.5);pCyl(q,.02,.02,1,0x2a2a2a,bx,2*H+4.8,z0,0,0,0,4);pBox(q,.6,.04,.04,0x2a2a2a,bx,2*H+5.2,z0);pBox(q,.04,.04,.6,0x2a2a2a,bx,2*H+5.1,z0);
   for(let i=0;i<3;i++)for(const s of[-1,1])win(bx+s*6.32,4.6,z0-5+i*5,'x',i===1&&s>0);
   for(let i=0;i<4;i++)pCyl(q,.35,.35,.9,0xc8a858,bx+7.5,.45,z0+2-i*1.1,0,0,1.5708,10);pBox(q,1.8,.06,.06,0x6a6a6a,bx-7.2,1.1,z0+5);pCyl(q,.4,.5,.9,0x5a5a5a,bx-7.4,.45,z0+6.5,0,0,0,10)}
  /* casa principal */{const hx=X-18,hz=-292,H=3;
   for(const [x,z,w,d] of[[hx,hz-4.75,12.6,.3],[hx-6.25,hz,.3,9.6],[hx+6.25,hz,.3,9.6],[hx-3.5,hz+4.75,5.4,.3],[hx+3.5,hz+4.75,5.4,.3]])pBox(q,w,.7,d,ST,x,.35,z);
   for(const s of[-1,1]){for(let i=0;i<6;i++){const ww=9.4*(1-i/6);pBox(q,.25,.42,ww,0x8a4a36,hx+s*6.12,2*H+.21+i*.42,hz)}}
-  pBox(q,.25,.25,9.8,0x3a1e16,hx,2*H+2.55,hz);for(let i=0;i<9;i++)for(const s of[-1,1])pBox(q,6.9,.05,.06,0x3a1a14,hx+s*3,2*H+1.33,hz-4.4+i*1.1,0,0,s*.5);
+  pBox(q,.25,.25,9.8,0x3a1e16,hx,2*H+2.55,hz);for(let i=0;i<9;i++)for(const s of[-1,1])pBox(q,6.9,.05,.06,0x3a1a14,hx+s*3,2*H+1.33,hz-4.4+i*1.1,0,0,-s*.5);
   pBox(q,.9,3.2,.9,0x7a3a2a,hx-3,2*H+2.2,hz-1.5);pBox(q,1.1,.2,1.1,0x5a5a5a,hx-3,2*H+3.85,hz-1.5);pBox(q,.7,1.6,.7,0x7a3a2a,hx+3.5,2*H+1.8,hz+2);
   for(const s of[-1,1])pBox(q,12.8,.12,.18,0x5a5a5a,hx,2*H+.05,hz+s*4.95);
   for(const s of[-1,1]){win(hx+s*3.6,1.6,hz+4.82,'z',s<0);win(hx+s*3.6,4.6,hz+4.82,'z',s>0);win(hx+s*3.6,1.6,hz-4.82,'z',false);win(hx+s*3.6,4.6,hz-4.82,'z',false);win(hx+s*6.32,1.6,hz,'x',s>0);win(hx+s*6.32,4.6,hz-1.5,'x',false)}
@@ -113,7 +113,7 @@ function deco27(){const X=X13,q=PB(),WO=0x4a3624,DK=0x2a1e14,ST=0x6a665c,GL=0xff
   const dg=new T.Group();dg.position.set(bx-.8,0,dz+.4);dg.rotation.y=-1.75;scene.add(dg);{const dq=PB();pBox(dq,1.5,2.3,.12,0x3a4038,.75,1.15,0);for(let i=0;i<4;i++)for(let j=0;j<3;j++)pCyl(dq,.035,.035,.03,0x2a2e28,.2+j*.55,.3+i*.6,.07,1.5708,0,0,6);pBox(dq,.08,.5,.08,0x6a6a62,1.3,1.1,.1);for(const y of[.4,1.9])pBox(dq,.16,.16,.16,0x2a2a2a,0,y,0);pbMesh(dq,dg,VCV)}
   pBox(q,1.4,.4,.05,0xe8e0c8,bx,3.25,dz+2.62);pBox(q,1.2,.06,.06,0x1a1a1a,bx,3.3,dz+2.66);pBox(q,.8,.06,.06,0x1a1a1a,bx-.1,3.17,dz+2.66);
   const lp=new T.Mesh(gSph(.14,6,5),new T.MeshBasicMaterial({color:0xffe0a0}));lp.position.set(bx+1.1,3.15,dz+2.7);scene.add(lp);
-  for(const s of[-1,1]){pBox(q,1.6,1.2,10.5,0x4a4636,bx+s*9.4,.5,bz,0,0,s*.7);}pBox(q,17,.6,1.6,0x4a4636,bx,.25,bz-5.9,-.6,0,0);
+  for(const s of[-1,1]){pBox(q,1.6,1.2,10.5,0x4a4636,bx+s*9.4,.5,bz,0,0,-s*.7);}pBox(q,17,.6,1.6,0x4a4636,bx,.25,bz-5.9,-.6,0,0);
   for(let i=0;i<5;i++)pBox(q,1.8,.08,1.6,0x3a4a2a,bx-6+i*3,3.75,bz-2+((i%2)*1.2),0,i*.4,0)}
  pbMesh(q,scene,VCV)}
 {const _b27=build13;build13=function(){const was=L13.built;_b27();if(!was)deco27()}}

@@ -759,3 +759,28 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - **Clima y HUD**: niebla, nieve y viento por fase; HUD naval contextual y minimapa del fiordo.
   - **Rescates y dificultad**: rescate de náufragos con cuerda; usa la dificultad del menú.
 - **Menú**: tarjetas de misión, lista deslizable (táctil y rueda) con indicador, y diseño apilado en pantallas chicas que lleva directo al panel.
+
+## v29 · Kaltfjord ampliado, rescate médico y cámara del tanque
+
+- **Entorno**:
+  - Techos invertidos corregidos: el signo de la pendiente estaba al revés en la base naval, el granero, la casa y los terraplenes de la misión XII.
+  - Utilería instanciada (un draw call por tipo): sacos terreros, cajas, erizos checos, sendas pisoteadas y faroles con halo.
+  - Fiordo ampliado ×1,2 de forma progresiva (`W28`/`IW28`): la base queda igual y mar adentro todo crece.
+  - Acorazado escalado ×1,2, con impactos, sectores, calado y navegación ajustados.
+- **Personajes**:
+  - Marinero de Eisenmark: chaqueta blanca, pantalón azul, charreteras M40 azul petróleo y gorra negra con distintivo verde y granate.
+  - Infantería de marina: el mismo uniforme, más cartucheras y correaje, y casco de acero tipo SSh-36.
+  - Personal sanitario: 2 enfermeras, 1 médico y 2 sanitarios, con cruces visibles.
+  - Nuevas poses: estabilizar, levantar, llevar la camilla, herido acostado, tirador y cargador de MG.
+- **IA**:
+  - Defensores con máquina de estados: reposo → alerta → arsenal (se arman) → cobertura → combate → herido.
+  - 2 nidos de MG-15 con tirador y cargador: el cargador recarga y alarga las ráfagas; si cae el tirador, el cargador toma el arma.
+  - Fuego enemigo contra los aliados: pueden quedar heridos.
+  - Equipo médico que acude bajo fuego, estabiliza, carga al herido en la camilla, lo lleva sincronizado entre dos sanitarios a la enfermería y lo entrega a una enfermera.
+  - El perro de la base acompaña al capitán Falk y, durante los rescates, al equipo médico.
+  - Tripulación automática del Wolfszahn: Keller opera el cañón y Lenz el Flak cuando el jugador no los maneja.
+  - Tras el desembarco y las escoltas, el acorazado retrocede hacia mar abierto.
+- **Tanque (nivel 14)**:
+  - Cámara en tercera persona sobre y detrás de la torreta, con inercia y colisión contra edificios y suelo.
+  - Retícula central y anillo que marca hacia dónde apunta realmente el cañón.
+  - V / 1ª-3ª alterna con la mira del cañón.
