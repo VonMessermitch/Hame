@@ -60,7 +60,7 @@ function tex15(){if(TX15)return TX15;const nz=(c,w,h,n,a,b)=>{for(let i=0;i<n;i+
 let PR15=null;
 function gPr15(){if(PR15)return PR15;const v=[-.5,0,-.5,-.5,0,.5,-.5,1,0, .5,0,.5,.5,0,-.5,.5,1,0, -.5,0,-.5,.5,1,0,.5,0,-.5, -.5,0,-.5,-.5,1,0,.5,1,0, .5,0,.5,-.5,1,0,-.5,0,.5, .5,0,.5,.5,1,0,-.5,1,0];const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(new Float32Array(v),3));g.computeVertexNormals();return PR15=g}
 /* viga entre dos puntos (coordenadas de mundo) */
-function beam15(q,c,x0,y0,z0,x1,y1,z1,th){const dx=x1-x0,dy=y1-y0,dz=z1-z0,L=Math.sqrt(dx*dx+dy*dy+dz*dz)||.01;pBox(q,th,L,th,c,(x0+x1)/2,(y0+y1)/2,(z0+z1)/2,Math.acos(Math.max(-1,Math.min(1,dy/L))),Math.atan2(dx,dz),0)}
+function beam15(q,c,x0,y0,z0,x1,y1,z1,th){const dx=x1-x0,dy=y1-y0,dz=z1-z0,L=Math.sqrt(dx*dx+dy*dy+dz*dz)||.01;/* orienta el eje Y de la viga según la dirección (Euler XYZ: rx=atan2(dz,dy), rz=-asin(dx)) */pBox(q,th,L,th,c,(x0+x1)/2,(y0+y1)/2,(z0+z1)/2,Math.atan2(dz,dy),0,-Math.asin(Math.max(-1,Math.min(1,dx/L))))}
 /* marco local (x0,z0 locales, giro yaw) */
 function fr15(x0,z0,yaw){const c=Math.cos(yaw||0),s=Math.sin(yaw||0),W=(lx,lz)=>X15+x0+lx*c+lz*s,Z=(lx,lz)=>z0-lx*s+lz*c;return{c,s,yaw:yaw||0,P:(lx,lz)=>[x0+lx*c+lz*s,z0-lx*s+lz*c],
  b:(q,w,h,d,col,lx,ly,lz,rx,ry,rz)=>pBox(q,w,h,d,col,W(lx,lz),ly,Z(lx,lz),rx||0,(ry||0)+(yaw||0),rz||0),

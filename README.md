@@ -784,3 +784,28 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - Cámara en tercera persona sobre y detrás de la torreta, con inercia y colisión contra edificios y suelo.
   - Retícula central y anillo que marca hacia dónde apunta realmente el cañón.
   - V / 1ª-3ª alterna con la mira del cañón.
+
+## v30 · Operación Nachtfall, tanque pesado, IA aliada por estados y biblioteca de recursos
+
+- **Nueva misión XV · Operación Nachtfall** (nivel 16, `src/v30_taikin.js`):
+  - Intro nocturna en la base de cepelines del cap. XI: equipo, diálogos y subida por la rampa.
+  - Despegue y vuelo hacia Taikin; el 88 mm alcanza un motor, suenan las alarmas y llega la orden de salto.
+  - Salto interactivo: caída libre con vista de máscara de gas, apertura del paracaídas (ESPACIO / USAR), dirección con WASD o joystick, aterrizaje y rescate si se cae en un lugar inválido.
+  - Reagrupar a 4 paracaidistas: combatiendo, herido (se venda), escondido y esperando. Hay un contenedor de suministros.
+  - Infiltración del perímetro: trinchera, torres con reflectores que delatan al jugador y puesto de control.
+  - Tres antiaéreas híbridas (AA-1, AA-2 y AA-3) con guarnición que aparece al acercarse; se destruyen con carga explosiva.
+  - Bengala (GRA) o baliza (USAR) para la segunda ola: cepelines, paracaidistas que caen y se suman a la escuadra, y un contraataque.
+  - Ciudad de Taikin: periferia agrícola, patio ferroviario, canal con tres puentes, bloques estilo Leningrado, casas bávaras, fábricas con chimeneas y complejo militar.
+- **Biblioteca reutilizable** (`src/v30_lib.js`, `LIB30`): paracaidista, casco aerotransportado, máscara de gas, mochila y arnés, paracaídas, baliza, cañón de 88 mm, antiaéreo híbrido cuádruple, 3 cabezas femeninas, casco de infantería de marina v2, infantería de marina de Zheng-Hua (exploradores, línea, choque y apoyo) y Vanguardia de choque de Eisenmark (sobre `mkEis` de Alejandría).
+- **Tanque**:
+  - Masa e inercia, giro sobre su eje, colisión con edificios, se aparta de los aliados y puede arrollar enemigos.
+  - Suspensión visual, retroceso al disparar y torreta con inercia.
+  - Daño por zonas: frontal, lateral y trasero; polvo y cráteres en los impactos.
+- **IA aliada**: estados IDLE, FOLLOW, ALERT, ENGAGE, SEEK_COVER, ADVANCE, DEFEND y REGROUP. Prioriza amenazas al jugador, recarga, reacciona a explosiones, evita atascos y obedece órdenes (T/ORD: seguir, avanzar, mantener).
+- **Fiordo**:
+  - Desembarco en 5 oleadas de infantería de marina de Zheng-Hua; contraataque de la Vanguardia de choque.
+  - Cámara exterior de la torpedera en el puente (V / 1ª-3ª alterna).
+  - El 88 mm de las baterías apunta, dispara y retrocede.
+  - Torre del vigía arreglada: las vigas se dibujaban en el origen del mundo.
+  - Enfermeras con rostro femenino; marinero que estaba sobre el agua reubicado.
+- **Terreno**: textura de suelo procedural y calcomanías instanciadas (barro, grava, huellas, cráteres, quemado, aceite) en Taikin, el fiordo, la ciudad del tanque y la misión XII.
