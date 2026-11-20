@@ -604,3 +604,87 @@ Archivo: `Sombras_sobre_el_Nilo_1909_v24.html` (código en `src/v23.js`, secció
 ## Pruebas
 - Misión completa con torreta, MG 15, cabina y salto hasta la pantalla final.
 - Los niveles 1–12 arrancan sin errores.
+
+# v25 · Misión XII «Los que quedaron atrás» — tras las líneas del Principado de Praga
+
+Archivo: `Sombras_sobre_el_Nilo_1909_v25.html` (código nuevo en `src/v25.js`). Menú → «XII · LOS QUE QUEDARON ATRÁS», con selector de **punto de control**:
+- El árbol (misión completa)
+- El bosque
+- El granero
+- Asalto a la granja
+- Recuperar armamento enemigo
+- El puente y los búnkeres
+- Demolición
+
+Al terminar la misión XI, el menú deja seleccionada la XII.
+
+## Continuidad
+Los supervivientes del Kaiser son tripulantes de la Fuerza Aérea de Eisenmark:
+- guerrera y pantalón azul grisáceo de aviación, casco de acero, bufanda, correaje negro, cinturón y pistolera;
+- insignia alada y ropa sucia o rasgada;
+- vendajes (Krause en la cabeza, Ernst en el brazo), gafas de vuelo (Weiss), guantes y mochila (Müller);
+- Adler con gorra de oficial y Vogel con casco de vuelo de cuero.
+
+Todos empiezan **solo con la pistola Lugy**.
+
+## Pistola Lugy y vista en primera persona
+- **Lugy:** arma original de Eisenmark.
+  - Silueta compacta tipo Ruby, empuñadura inclinada con cachas de madera estriada y botones de cerrojo de inspiración Luger.
+  - Acabado pavonado, guardamonte, miras, aro de correa y emblema alado dorado.
+  - Cargador de 8 cartuchos de 7,65 mm.
+- **Modelo en primera persona** (escena propia dibujada encima, sin atravesar paredes):
+  - mano derecha con palma sobre la empuñadura, tres dedos rodeando el frente, índice en el gatillo y pulgar alto en el costado;
+  - mano izquierda de apoyo;
+  - guantes de cuero y mangas azul grisáceas con puño y botones.
+- **Animaciones:**
+  - reposo con respiración, balanceo al caminar, arma inclinada al correr, inercia al girar;
+  - disparo con retroceso, corredera que retrocede, dedo en el gatillo, fogonazo con luz y casquillos;
+  - recarga completa: inclinar, soltar cargador, la mano izquierda trae uno nuevo, golpe y tirón de corredera;
+  - revisión del arma (R con el cargador lleno, o tras un rato quieto);
+  - bajar o subir el arma al interactuar, subir escaleras, recibir impactos y cambiar de arma;
+  - transición al recoger un arma enemiga: la Lugy baja a la funda y se levanta el fusil, que se muestra un instante.
+- **Fusil wz.29 y subfusil wz.39 «Mors» capturados**, ambos con manos y animación de disparo y recarga:
+  - fusil: el cerrojo se acciona tras cada disparo y la recarga es con peine;
+  - subfusil: recarga de cargador y tirón de la manivela.
+
+## Desarrollo
+1. **El árbol** (cinemática en primera persona, noche y lluvia): dos guardias y el perro Grauni, con todos los diálogos pedidos. Weiss y Ernst salen de los arbustos y abaten a los guardias con sus Lugy; el perro huye; te bajan del árbol.
+2. **El bosque:**
+   - patrullas con linterna (haz de luz), centinelas en hogueras y restos del Kaiser ardiendo;
+   - sigilo: cono de visión, sospecha, ruido de disparos, ventaja al ir agachado, eliminación silenciosa cuerpo a cuerpo y alerta en grupo.
+3. **El granero** de dos plantas, con altillo y escalera: Krause y Müller encañonan la puerta. Hay munición de pistola, mapa, linterna y herramientas. No hay fusiles.
+4. **Asalto a la granja** con pistolas:
+   - granja con casa de dos plantas, galpón con tractor, corral, pozo, carro, leñera, barricadas, cerca y portones;
+   - unos 13 defensores: portón, patio, interior, tirador y ametrallador en las ventanas superiores, galpón y oficial.
+5. **Camión de refuerzos** (modelo nuevo basado en tu imagen): llega con los faros encendidos y bajan 7 soldados.
+6. **Recogida de armas** (cinemática): «No podemos continuar con las pistolas…». La escuadra se rearma (Müller con la ametralladora RKM). El jugador recoge el fusil y el HUD se actualiza. A partir de ahí los caídos sueltan munición y la Lugy queda como arma secundaria.
+7. **El chofer** huye, Weiss lo detiene y se repite el interrogatorio completo; queda atado junto al camión.
+8. **Puente y búnkeres:**
+   - casamatas con tronera, nidos de ametralladora, torre con tirador, cañón ligero que dispara, patrulla con linterna en la vía y reflectores;
+   - búnker de mando con pasillo, celda y puesto de mando.
+9. **Rescate** del capitán Adler y el teniente Vogel (forzar la celda), con su diálogo. Después, el escritorio con la **orden de movimiento Nº 784** en pantalla.
+10. **Demolición con cronómetro de 180 s:**
+    - recoger las cargas en el depósito, colocarlas en la vía (barra de progreso) y volver al detonador;
+    - el tren aparece en los últimos 44 s y solo se puede detonar con el tren encima;
+    - llegan refuerzos por el puente este y por la vía oeste;
+    - si se acaba el tiempo o mueres, se reintenta la fase.
+11. **Final:**
+    - explosión de la vía, frenada de emergencia con chispas y descarrilamiento parcial (vagones en tijera, vapor, incendios, soldados que salen);
+    - diálogo final;
+    - los pilotos se ponen capotes praguenses y conducen el camión; la escuadra va escondida bajo la lona;
+    - plano aéreo y fundido;
+    - pantalla «MISIÓN COMPLETADA» con «Próxima misión: El camino hacia las colinas».
+
+## Principado de Praga (según tus referencias)
+- **Uniforme:** capote negro largo, pantalón gris, casco de ala ancha (M/1923) y correaje.
+- **Variantes:** fusilero (wz.29), tirador de subfusil (Mors), ametrallador (RKM wz.28) y oficial con rogatywka.
+
+## Pruebas (Chromium sin GPU)
+- La misión completa se recorre de principio a fin con interacciones y combates hasta la pantalla final; el reintento de la demolición también funciona.
+- Los niveles 1–13 arrancan sin errores (solo aparece el aviso esperado de la sonda de Ollama).
+
+## Limitaciones
+- Las manos son de bloques, como el resto del juego, no un modelo orgánico.
+- Los compañeros no reciben daño ni atraen el fuego enemigo, que se dirige siempre al jugador.
+- El sistema de coberturas heredado puede hacer que un enemigo bien cubierto tarde en caer. Si en la granja quedan 1–2 atrincherados durante 45 s, huyen.
+- El combate con el fusil mantiene la balística del juego (5 cartuchos y cerrojo).
