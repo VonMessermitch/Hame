@@ -688,3 +688,23 @@ Todos empiezan **solo con la pistola Lugy**.
 - Los compañeros no reciben daño ni atraen el fuego enemigo, que se dirige siempre al jugador.
 - El sistema de coberturas heredado puede hacer que un enemigo bien cubierto tarde en caer. Si en la granja quedan 1–2 atrincherados durante 45 s, huyen.
 - El combate con el fusil mantiene la balística del juego (5 cartuchos y cerrojo).
+
+## v26 · El último bastión (Misión XIII) + menú de campaña
+
+- **Misión XIII «El último bastión»** (nivel 14): Fritz Hell, artillero del 3.er Regimiento de Infantería Blindada, con la tripulación Brenner (comandante), Otto (conductor) y Keller (cargador).
+  - Cinemática dentro del tanque con órdenes por radio. Sólo se insinúa el sabotaje del tren: refuerzos que no llegan, línea de radio «...transporte ferroviario interrumpido...» y una nota en el mapa del palacio.
+  - Avance blindado: el tanque se conduce con cañón y MG coaxial (tecla de cambio de arma) y tiene mira propia. Hay rutas alternativas por las calles laterales, cañones antitanque con dotación y tanques enemigos. El tanque recibe daño.
+  - Fachada del edificio fortificado derribable con el cañón.
+  - Emboscada: un antitanque rompe la oruga y te deja inmovilizado. Seguís combatiendo desde la torreta mientras pasa el tanque aliado de Kessel.
+  - Cinemática del dragón: dobla el cañón y el tanque aliado lo abate.
+  - «¡Abandonen el vehículo!»: animación en primera persona (escotilla, manos en el borde, deslizarse, desenfundar la Lugy).
+  - A pie, en tres sectores:
+    - Sector A, avenida de escombros, donde aparece el teniente Arnim («¿Tanquista?… Entonces hoy es infantería»).
+    - Sector B, edificio de viviendas de 5 pisos: se entra por la brecha, se limpia la planta baja, se destruye la MG del 2.º piso y se sale por el patio trasero.
+    - Sector C, plaza de la catedral, donde un tanque propio rompe un muro.
+  - Palacio Real:
+    - jardines con trincheras, alambre y minas, donde los zapadores vuelan la barricada;
+    - puerta con MG y cañón ligero, que se abre con una carga de asalto;
+    - gran salón, escalera monumental, piso superior y torre.
+  - Terraza: dos defensores. Luego se retira la bandera enemiga y se iza la de Eisenmark, con el diálogo final y el parte por radio.
+- **Menú estilo campaña clásica**: fondo sepia animado y columna de opciones (Continuar campaña, Selección de misión, Opciones, Controles, Informe del frente). La selección de misión agrupa las misiones e incluye el informe de cada una y los puntos de control.
