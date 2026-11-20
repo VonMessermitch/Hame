@@ -4,7 +4,7 @@
    búnkeres habitables, camiones y tanque nuevos, destrucción parcial,
    cinemática del avance blindado, movimiento con inercia, pausa, audio)
    ===================================================================== */
-const LX=l=>l===9||l===10||l===11||l===12||l===13||l===14;/* capítulos con el sistema de objetivos del cap. IX: IX, X y el campamento Tokovsky (11) */
+const LX=l=>l===9||l===10||l===11||l===12||l===13||l===14||l===15;/* capítulos con el sistema de objetivos del cap. IX: IX, X y el campamento Tokovsky (11) */
 const V16={kick:0,land:0,bob:0,swT:0,thT:0,hurtT:0,stam:100,fat:0,paused:false,hadLock:false,bark:0,phaseShown:-1};
 /* ---------- utilidades de geometría compartida y mallas fusionadas ---------- */
 const GQ={};

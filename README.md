@@ -730,3 +730,32 @@ Todos empiezan **solo con la pistola Lugy**.
   - Se baja la lona y la caja queda iluminada por una linterna.
   - En el camino al oeste hay un control praguense con barrera y centinela con farol, que los deja pasar.
 - **Camión un 22 % más grande** para que todos quepan mejor.
+
+## v28 · Misión XIV «El fiordo de los condenados» (nivel 15) + selección de misión deslizable
+
+Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matthias Kern, marinero de segunda, a bordo de la torpedera B-17 «Wolfszahn».
+
+- **Módulos**:
+  - `src/v28_ships.js`: modelos navales (agente «ingeniero naval»): casco paramétrico, Wolfszahn, patrulleras, destructor, acorazado ZH-01 «Tianlong», barcaza, hidroaviones, torpedo, boyas y restos.
+  - `src/v28_env.js`: fiordo (agente «diseñador de entornos»): terreno, agua animada, témpanos, bosques y minimapa del fiordo.
+  - `src/v28_base.js`: base naval Kaltfjord y piezas destructibles.
+  - `src/v28.js`: sistemas e integración.
+- **Fases**: 1 rutina · 2 alarma · 3 defensa del puerto · 4 escoltas · 5 ataque aéreo · 6 plan de Falk · 7 primer torpedo · 8 caos naval · 9 último torpedo · 10 última defensa antiaérea · 11 retirada.
+  - Fase 1: cajas, batería y torpedo.
+  - Fase 2: el acorazado surge de la niebla y destruye la batería 1, el combustible, la grúa y el muelle 2.
+  - Fase 3: barcazas de desembarco; hay que proteger el arsenal.
+  - Fase 6: el canal del oeste y el paso lateral.
+  - Fase 8: colisión entre un aliado y un destructor, restos flotantes y náufragos.
+  - Fase 9: el último torpedo va a la popa; el acorazado pierde el timón y encalla.
+- **Sistemas**:
+  - **Navegación**: arcade con inercia, telégrafo, timón, colisión con el terreno y los barcos, oleaje, estela y espuma.
+  - **Puestos (1-5 / ARM)**: puente, cañón de proa, Flak, director de torpedos y sala de máquinas.
+  - **Daños por componentes**: casco, motor, hélice, timón, cañón, Flak, tubos, radio y combustible.
+  - **Incendios e inundación**: la tripulación (Brandt, Keller, Voss) hace el control de averías y el jugador puede apagar fuegos y activar las bombas.
+  - **Armas**: torpedos con seguro, giróscopo, estela, recarga y fallos (pasan por debajo, chocan con rocas, el enemigo esquiva); Flak con espoleta de proximidad.
+  - **Acorazado con 12 sectores**: torres, puente, chimeneas, timón, propulsión, costados y otros; inundación y escora.
+  - **IA**: patrulleras, destructores (incluido un abanico de torpedos) y aliados con 7 órdenes por radio (T/ORD).
+  - **Radio, bengalas y vigía**: la radio sufre interferencias y, si se rompe, pasa a lámpara de señales; bengala roja (GRA); el vigía da rumbo, distancia e identificación parcial.
+  - **Clima y HUD**: niebla, nieve y viento por fase; HUD naval contextual y minimapa del fiordo.
+  - **Rescates y dificultad**: rescate de náufragos con cuerda; usa la dificultad del menú.
+- **Menú**: tarjetas de misión, lista deslizable (táctil y rueda) con indicador, y diseño apilado en pantallas chicas que lleva directo al panel.
