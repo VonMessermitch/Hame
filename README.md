@@ -708,3 +708,25 @@ Todos empiezan **solo con la pistola Lugy**.
     - gran salón, escalera monumental, piso superior y torre.
   - Terraza: dos defensores. Luego se retira la bandera enemiga y se iza la de Eisenmark, con el diálogo final y el parte por radio.
 - **Menú estilo campaña clásica**: fondo sepia animado y columna de opciones (Continuar campaña, Selección de misión, Opciones, Controles, Informe del frente). La selección de misión agrupa las misiones e incluye el informe de cada una y los puntos de control.
+
+## v27 · Misión XII mejorada (Los que quedaron atrás)
+
+- **Brújula y minimapa** (misiones XII y XIII): una franja de rumbos arriba marca el objetivo con una estrella. Un minimapa circular gira con la vista y muestra edificios, la escuadra (verde), los enemigos cuando hay combate abierto (rojo) y el objetivo; si el objetivo queda fuera del mapa, aparece una flecha en el borde. Debajo se ve la distancia al objetivo.
+- **Baliza roja parpadeante** en el punto de la vía donde se colocan las cargas: anillo pulsante, columna de luz, flecha y luz roja.
+- **Búnkeres**:
+  - Las casamatas pasan de 6×4,4 m a 10×7 m. Tienen tronera frontal con pilares, puerta trasera blindada abierta, techo con tierra y sacos terreros, terraplenes, MG, bancos y lámpara.
+  - El búnker de mando suma puerta blindada, alas de hormigón, cartel, foco, terraplenes y red de camuflaje.
+- **Edificios**:
+  - Granero: zócalo de piedra, tablones, hastiales, portones con cruz de San Andrés, altillo, cumbrera y veleta.
+  - Casa: ventanas con marcos, postigos y luz, chimeneas, porche y jardineras.
+  - Galpón: más detalle.
+- **Aliados con el uniforme de aviación** del cepelín (capítulo XI): chaqueta de cuero, casco de vuelo con gafas y bufanda. La Lugy va en la funda.
+- **Casco praguense tipo wz.38** en acero marrón: cúpula, faldón abierto, reborde, remaches, barbuquejo y escarapela.
+- **Interrogatorio del chofer rehecho**:
+  - El chofer retrocede con las manos en alto, cae de rodillas, suplica, lo agarran del cuello, señala la vía y termina atado.
+  - Weiss apunta con la Lugy mientras Krause y Müller cubren. Hay más planos de cámara.
+- **Huida en camión rehecha**:
+  - El escuadrón sube a la caja y Adler y Vogel se ponen los capotes praguenses.
+  - Se baja la lona y la caja queda iluminada por una linterna.
+  - En el camino al oeste hay un control praguense con barrera y centinela con farol, que los deja pasar.
+- **Camión un 22 % más grande** para que todos quepan mejor.
