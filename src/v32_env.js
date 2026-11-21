@@ -114,6 +114,34 @@ function trench17(x0,x1,zb,o){const D=K17.D,bays=[],B=10;o=o||{};const gF=o.gF||
   if(xb<x1){const zn=zb-((i+1)%2)*4,zf=Math.max(zi,zn)+1.9,zr=Math.min(zi,zn)+1.9;bx17(1.4,1.2,zf-zr+1.4,P,xb,.6,(zf+zr)/2,0,0,0,'c');ob17(xb,(zf+zr)/2,.7,(zf-zr)/2+.7,1.25);const yf=Math.max(zi,zn)-1.8,yr=Math.min(zi,zn)-1.8;bx17(1.2,.8,yf-yr+1.2,PD,xb,.4,(yf+yr)/2,0,0,0,'c');bx17(1.4,.06,4.4,MUD,xb,.03,(zi+zn)/2,0,0,0)}
   if(i%2===0)cv17(cx,zi+.6,1.5)}
  return bays}
+/* v33 · casamata de hormigón con tronera al sur y puerta blindada trasera (mismo diseño que
+   las casamatas del cap. XIII, v25/v31_l13, parametrizado para coordenadas locales del 17).
+   Centro (cx,cz); la tronera mira a +z (sur). Devuelve {mg:[x,z], door:[x,z]} */
+function casemate17(cx,cz,o){o=o||{};const D=K17.D,CC=o.col||0x8a8780,CB=(w,h,d,x,y,z)=>bx17(w,h,d,CC,cx+x,y,cz+z);
+ CB(10.6,1.2,.8,0,.6,3.5);CB(1,1.6,.8,-4.8,2.0,3.5);CB(1,1.6,.8,4.8,2.0,3.5);CB(.7,1.6,.8,0,2.0,3.5);CB(.8,2.8,7,-5,1.4,0);CB(.8,2.8,7,5,1.4,0);CB(6.3,2.8,.8,-1.85,1.4,-3.5);CB(2.3,2.8,.8,3.85,1.4,-3.5);CB(1.4,.7,.8,2,2.45,-3.5);
+ bx17(11.8,.7,8.8,0x5a5a56,cx,3.15,cz);bx17(11,.45,8,0x3e3a2c,cx,3.7,cz);for(let i=0;i<8;i++)bx17(1.2,.4,.6,0xb8ac88,cx-4.4+i*1.25,4.1,cz+3.7,0,(i%2)*.08,0,'c');bx17(10.8,.1,.9,0x2a2a26,cx,2.85,cz+4.3);
+ for(const s of[-1,1])bx17(1.4,2.6,8.4,0x4a4636,cx+s*6.1,.9,cz,0,0,-s*.6);bx17(12,1.6,1.2,0x4a4636,cx,.5,cz+4.4,.75,0,0);
+ /* interior oscuro, marco de acero y hoja blindada abierta */bx17(9.2,.04,6.2,0x24221e,cx,.02,cz);bx17(9.2,.06,.7,0x14120e,cx,2.75,cz+3.1);bx17(1.6,.16,.16,0x2a2a2a,cx+2,2.12,cz-3.92);for(const s of[-1,1])bx17(.16,2.1,.16,0x2a2a2a,cx+2+s*.74,1.05,cz-3.92);
+ {const hx=cx+1.32,hz=cz-3.95,a=1.8,ux=Math.cos(a),uz=-Math.sin(a);bx17(1.36,2.05,.1,0x3a4038,hx+ux*.68,1.03,hz+uz*.68,0,a,0);if(D>0)for(let i=0;i<3;i++)for(let j=0;j<3;j++)bx17(.06,.06,.12,0x2a2e28,hx+ux*(.2+j*.48),.35+i*.65,hz+uz*(.2+j*.48),0,a,0);bx17(.07,.45,.16,0x6a6a62,hx+ux*1.18,1.0,hz+uz*1.18,0,a,0)}
+ /* plataforma de tiro de la ametralladora, mesa, cajas y farol */bx17(2.2,.25,1.4,0x4a3a28,cx-1.4,.13,cz+2.3,0,0,0,'c');bx17(1.8,.08,.6,0x5a3a22,cx-2.5,.8,cz-2.6,0,0,0,'c');for(let i=0;i<3;i++)bx17(.7,.45,.45,0x4a5a3a,cx+3.6,.23,cz-1.8+i*.6,0,0,0,'c');bx17(.14,.14,.14,0xffd890,cx,2.6,cz-1);
+ /* camuflaje y ventilación (v31_l13) */for(let i=0;i<5;i++)bx17(1.2+RN17()*.8,.06,.9,0x3a4a2a,cx-4+i*2,3.95,cz-1.5+(i%2)*1.6,0,RN17(),0);cy17(.18,.18,.6,0x4a4a44,cx-3,4.1,cz-2,0,0,0,8);bx17(.5,.08,.5,0x3a3a36,cx-3,4.42,cz-2);
+ if(o.name&&D>0){bx17(1.6,.36,.05,0xd8ccb0,cx-2.6,3.25,cz-4.42);bx17(1.3,.06,.06,0x1a1a1a,cx-2.6,3.28,cz-4.46)}
+ ob17(cx,cz+3.5,5.3,.4,1.2);ob17(cx-5,cz,.4,3.5,2.8);ob17(cx+5,cz,.4,3.5,2.8);ob17(cx-1.85,cz-3.5,3.15,.4,2.8);ob17(cx+3.85,cz-3.5,1.15,.4,2.8);
+ cv17(cx-6.9,cz-2,1.4);cv17(cx+6.9,cz-2,1.4);return{mg:[cx-1.4,cz+2.3],door:[cx+2,cz-4.6],x:cx,z:cz}}
+/* entrada de refugio (estilo del búnker de mando del cap. XIII, v27): alas de hormigón, dintel,
+   marco de acero, puerta (abierta o entornada), cartel, farol y túmulo de tierra detrás.
+   (x,z) = la puerta; la entrada mira a +z */
+function dug17(x,z,o){o=o||{};const D=K17.D,CC=0x84827a;for(const s of[-1,1]){bx17(.5,2.5,2.2,CC,x+s*1.45,1.25,z+1.0);ob17(x+s*1.45,z+1.0,.25,1.1,2.5)}bx17(3.4,.5,2.4,CC,x,2.75,z+1.0);
+ bx17(1.8,.16,.16,0x2a2a2a,x,2.42,z-.08);for(const s of[-1,1])bx17(.16,2.4,.16,0x2a2a2a,x+s*.86,1.2,z-.08);bx17(1.6,2.3,.05,0x0c0a08,x,1.15,z-.18);
+ {const a=o.shut?0:-1.75,hx=x-.8,hz=z,ux=Math.cos(a),uz=-Math.sin(a);bx17(1.5,2.3,.12,o.wood?0x5a4630:0x3a4038,hx+ux*.75,1.15,hz+uz*.75,0,a,0,'c');bx17(.08,.5,.16,0x6a6a62,hx+ux*1.3,1.1,hz+uz*1.3,0,a,0)}
+ if(o.sign){bx17(1.4,.4,.05,0xe8e0c8,x,3.25,z+2.22);bx17(1.2,.06,.06,0x1a1a1a,x,3.3,z+2.26);bx17(.8,.06,.06,0x1a1a1a,x-.1,3.17,z+2.26)}bx17(.16,.16,.16,0xffe0a0,x+1.1,3.15,z+2.3);
+ /* túmulo de tierra y sacos sobre el refugio */bx17(7,1.4,5.6,0x4a4636,x,.7,z-3.2,0,0,0);bx17(5.6,.9,4.4,0x544e3c,x,1.75,z-3.2);for(const s of[-1,1])bx17(1.4,2.2,5.6,0x4a4636,x+s*3.4,.8,z-3.2,0,0,-s*.55);bx17(7,1.2,1.4,0x4a4636,x,.4,z-6.3,-.6,0,0);
+ if(D>0)for(let i=0;i<5;i++)bx17(.9,.3,.5,shade(0xa49470,.9+RN17()*.2),x-2+i*1,2.35,z-1.3,0,(RN17()-.5)*.3,0,'c');cy17(.08,.08,1.2,0x3a3a36,x+1.8,2.6,z-3.5,0,0,0,6);
+ ob17(x,z-3.2,3.5,2.6,2.2);return pt17(x,z+1.6)}
+/* red de camuflaje sobre postes */
+function camo17(x,z,w,d,y,ry){const D=K17.D,c=Math.cos(ry||0),s=Math.sin(ry||0);bx17(w,.05,d,0x4a5236,x,y,z,0,ry||0,0);for(const a of[-1,1])for(const b of[-1,1])cy17(.05,.06,y,0x4a3a28,x+a*w*.45*c+b*d*.45*s,y/2,z-a*w*.45*s+b*d*.45*c,0,0,0,5);
+ if(D>0)for(let i=0;i<(D>1?14:7);i++){const u=(RN17()-.5)*w,v=(RN17()-.5)*d;bx17(.6+RN17()*.8,.04,.5+RN17()*.6,[0x5e6440,0x3a4228,0x6a6448][i%3],x+u*c+v*s,y+.04,z-u*s+v*c,0,RN17()*3,0)}
+ if(D>0)for(let i=0;i<6;i++){const u=(i/5-.5)*w;bx17(.3,.7,.03,0x4a5236,x+u*c+d/2*s,y-.35,z-u*s+d/2*c,0,ry||0,0)}}
 /* poste de telégrafo */
 function pole17(x,z){cy17(.12,.16,7.2,0x4a3a2a,x,3.6,z,0,0,0,6);bx17(1.8,.12,.12,0x4a3a2a,x,6.6,z);if(K17.D>0)for(const s of[-.7,.7])cy17(.05,.05,.16,0xe0e0d8,x+s,6.75,z,0,0,0,5)}
 /* vía: balasto, durmientes y rieles (tramos de 20 m para que cada sector cierre su malla) */
@@ -240,17 +268,34 @@ function buildKarsk17(){if(W17.built)return;W17.built=true;const X=X17,D=(G.deta
   SEC17=null;K17.routes.II=[[[30,0],[20,-20],[16,-45],[20,-72],[8,-100],[-6,-122],[-25,-140]],[[30,0],[40,-40],[42,-120],[30,-170],[-10,-190],[-25,-150]]]}
  /* camino costero */road17(K17.road,6);
  /* postes de telégrafo a lo largo de la vía */{let pv=null;for(let z=76;z>-960;z-=40){if(z<-752&&z>-808)continue;pole17(-14,z);if(pv&&pv>z+30){for(const s of[-.7,.7])bx17(.04,.04,40,0x1e1e1e,-14+s,6.56,z+20)}pv=z}}
- /* ================== III · LÍNEA DE LAS TRES CRUCES ================== */
- {SEC17='line';const L=K17.line,zb=-241;const mgX=[L[0].x+6,L[1].x+6,L[2].x+6],atX=[L[0].x-9,L[1].x-9,L[2].x-9];
-  const bays=trench17(-125,105,zb,{gF:mgX.map(x=>[x,2.4]).concat(atX.map(x=>[x,3.4])).concat([[-108,2.5],[-40,2.5],[40,6],[96,2.5],[-20,6]]),gB:[[-118,2.5],[-95,2.5],[-62,2.5],[-28,2.5],[-20,6],[-6,3],[22,2.5],[40,6],[60,2.5],[84,2.5]].concat(mgX.map(x=>[x+1,2.4]))});K17.trench=bays;
+ /* ================== III · LÍNEA DE LAS TRES CRUCES (v33: posición real) ==================
+    Trinchera de fuego continua y transitable (parapeto de sacos con escalón de tiro, revestimiento
+    de tablas y traveses que no cortan el paso), tres casamatas de hormigón con puerta blindada
+    (modelo del cap. XIII) con la ametralladora dentro, pozos antitanque con red de camuflaje,
+    refugios con puerta detrás del parados, puesto de mando con teléfono, trincheras de
+    comunicación hacia la retaguardia, pasos señalizados en la alambrada. Todo mira al sur (+z). */
+ {SEC17='line';const L=K17.line,ZF=-240.6,ZR=-245.7,X0=-125,X1=105;K17.lineZ=-243;
+  const lanes=[-112,-45,-22,30,94],cmX=L.map(c=>c.x+13),atX=L.map(c=>c.x-10),dgX=[-104,-58,-30,14,44,98];K17.lanes=lanes.map(x=>pt17(x,-243));K17.lineF=ZF;K17.lineR=ZR;
+  const gapsF=lanes.map(x=>[x,4]).concat(cmX.map(x=>[x,10.8])).concat(atX.map(x=>[x,3.2])),gapsR=lanes.map(x=>[x,4]).concat(dgX.map(x=>[x,3.6]));
+  const segs=(gs)=>{let s=X0;const out=[];for(const g of gs.slice().sort((p,q)=>p[0]-q[0])){const e=g[0]-g[1]/2;if(e>s)out.push([s,e]);s=Math.max(s,g[0]+g[1]/2)}if(s<X1)out.push([s,X1]);return out};
+  const PC=0xa09070,PD=0x7a6a50,MUD=0x3e352a,TW=0x4a3a28;
+  /* suelo de la trinchera y tablas */bx17(X1-X0,.05,4.2,MUD,(X0+X1)/2,.03,-243.1);if(D>0)for(let x=X0+1;x<X1;x+=2.2)bx17(1.9,.05,.75,0x5a4632,x,.07,-243.3,0,0,0,'c');
+  /* parapeto frontal: sacos, escalón de tiro, revestimiento */for(const [a,b] of segs(gapsF)){const L_=b-a,cx=(a+b)/2;bx17(L_,1.25,1.3,PC,cx,.62,ZF,0,0,0,'c');if(D>0)for(let x=a+.45;x<b-.3;x+=.92)for(let k=0;k<(D>1?2:1);k++)bx17(.9,.3,.55,shade(PC,.88+RN17()*.24),x+(k?.46:0),1.4+k*.28,ZF+(RN17()-.5)*.25,0,(RN17()-.5)*.25,0);
+   bx17(L_,.32,.5,TW,cx,.16,ZF-.9,0,0,0,'c');if(D>0){for(let x=a+.6;x<b;x+=1.8)bx17(.12,1.3,.12,TW,x,.65,ZF-.68);bx17(L_,.08,.06,0x5a4632,cx,1.1,ZF-.68)}ob17(cx,ZF,L_/2,.65,1.25)}
+  /* traveses cortos (no cierran el paso) */for(let x=X0+7;x<X1-4;x+=14){if(gapsF.some(g=>Math.abs(g[0]-x)<g[1]/2+2)||dgX.some(d=>Math.abs(d-x)<2.5))continue;bx17(1.3,1.25,1.5,PC,x,.62,ZF-1.35,0,0,0,'c');ob17(x,ZF-1.35,.65,.75,1.25)}
+  /* parados (pared trasera) */for(const [a,b] of segs(gapsR)){bx17(b-a,.8,1.2,PD,(a+b)/2,.4,ZR,0,0,0);if(D>0)for(let x=a+.5;x<b-.3;x+=.95)bx17(.9,.26,.5,shade(PD,.9+RN17()*.25),x,.92,ZR+(RN17()-.5)*.2,0,(RN17()-.5)*.3,0,'c');ob17((a+b)/2,ZR,(b-a)/2,.6,.8)}
+  /* pasos de la alambrada: estacas blancas a cada lado (se ven desde la trinchera) */wire17(-128,108,-228.5,lanes.map(x=>[x,5]));for(const x of lanes)for(const s of[-1,1]){bx17(.12,1.3,.12,0xe8e4d8,x+s*2.6,.65,-228.5);bx17(.12,1.3,.12,0xe8e4d8,x+s*2.2,.65,ZF+1)}
+  /* trincheras de comunicación hacia la retaguardia */for(const x of[-45,30]){bx17(3,.05,22,MUD,x,.03,-257.5);for(const s of[-1,1])bx17(.9,.55,22,PD,x+s*1.95,.28,-257.5,0,0,0);if(D>0)for(let z=-248;z>-268;z-=2.2)bx17(2.6,.05,.7,0x5a4632,x,.07,z,0,0,0,'c')}
+  K17.mg=[];K17.at=[];K17.casemates=[];K17.slots=[];
   for(let i=0;i<3;i++){const c=L[i];/* cruz de madera */const H=8.5;bx17(.42,H,.42,0x5a4630,c.x,H/2,c.z,0,.05*i,0,'c');bx17(4.2,.4,.4,0x5a4630,c.x,6,c.z,0,.05*i,0,'c');if(D>0){bx17(.5,.5,.5,0x4a3a28,c.x,H+.1,c.z,0,.8,0);cy17(.1,.1,1.4,0x6a6a62,c.x+.4,5.4,c.z+.25,0,0,.3,5)}for(let k=0;k<8;k++)rk17(c.x+(RN17()-.5)*2.4,.2,c.z+(RN17()-.5)*2.4,.5,.35,.5,0x7a746a,0);ob17(c.x,c.z,.6,.6,H);cv17(c.x,c.z+1,1.2);
-   const mz=-235,mx=mgX[i];ring17(mx,mz,2.2,1.1,0,.9);K17.mg.push(pt17(mx,mz,{rot:0}));bx17(1.6,.06,4,0x3e352a,mx,.03,mz-3.2);
-   const ax=atX[i];ring17(ax,-234.5,3.3,.9,0,1);K17.at.push(pt17(ax,-234.5,{rot:0}));for(let k=0;k<4;k++)bx17(.9,.35,.45,0x5a5a36,ax+2.6,.18+(k>>1)*.35,-238+(k&1)*.5,0,0,0,'c');
-   for(let k=0;k<6;k++)bx17(.75,.4,.45,0x5a5a36,c.x+3+(k%3)*.8,.2+(k>2?.4:0),c.z-1.5,0,0,0,'c');ob17(c.x+3.8,c.z-1.5,1.2,.3,.8)}
-  /* teléfono de campaña */{const p=K17.phone;bx17(.4,.3,.25,0x3a3226,p.x,.95,p.z);bx17(.8,.8,.6,0x5a4a32,p.x,.4,p.z,0,0,0,'c');cy17(.06,.06,4,0x4a3a28,p.x+.8,2,p.z,0,0,0,5);cy17(.3,.3,.25,0x3a3a2a,p.x-.7,.12,p.z,1.5708,0,0,8);ob17(p.x,p.z,.45,.35,.8)}
-  /* refugios (dugouts) */for(const x of[-100,-40,25,90]){const z=-255;bx17(5,1.1,4,0x6a5a40,x,.55,z-1,0,0,0,'c');bx17(5.4,.3,4.4,0x7a6a4a,x,1.2,z-1,0,0,0);for(let k=0;k<6;k++)cy17(.14,.14,5.2,0x4a3a28,x,1.42,z-2.6+k*.6,0,0,1.5708,6);bx17(1.3,1.6,.15,0x0c0a08,x,.5,z+1.05);for(const s of[-1,1])bx17(.2,1.5,.2,0x4a3a28,x+s*.8,.75,z+1.1);bx17(1.9,.2,.25,0x4a3a28,x,1.45,z+1.1);ob17(x,z-1,2.6,2,1.3);K17.dugouts.push(pt17(x,z+1.6));cv17(x+3,z,1.3)}
-  wire17(-128,108,-229,[[-108,3],[-40,3],[-20,7],[40,7],[96,3]]);
-  /* tierra de nadie: cráteres, estacas, muertos de cal (no), alambres caídos */for(let i=0;i<10;i++){const x=-110+RN17()*210,z=-226+RN17()*28;decalAt30('crater',X+x,z,3+RN17()*3);for(let k=0;k<6;k++){const a=k/6*6.283;bx17(1,.3,.6,0x5a5040,x+Math.cos(a)*2.1,.12,z+Math.sin(a)*2.1,0,-a,0)}cv17(x,z,2)}
+   /* casamata con la ametralladora de la cruz */const cm=casemate17(cmX[i],-237.8,{name:1});K17.casemates.push(cm);K17.mg.push(pt17(cm.mg[0],cm.mg[1],{rot:0,y:.25}));camo17(cmX[i],-237.5,12.5,9.5,4.35,0);
+   /* pozo antitanque con red */const ax=atX[i];ring17(ax,-235.4,3.2,.95,0,1.05);K17.at.push(pt17(ax,-235.4,{rot:0}));for(let k=0;k<4;k++)bx17(.9,.35,.45,0x5a5a36,ax+2.4,.18+(k>>1)*.35,-238.2+(k&1)*.5,0,0,0,'c');camo17(ax,-235.6,7.5,7.5,2.3,.3);
+   /* municiones junto a la cruz */for(let k=0;k<6;k++)bx17(.75,.4,.45,0x5a5a36,c.x+3+(k%3)*.8,.2+(k>2?.4:0),c.z-1.5,0,0,0,'c');ob17(c.x+3.8,c.z-1.5,1.2,.3,.8);
+   /* puestos de tiro escalonados para la sección (sobre el escalón, detrás del parapeto) */const S=[];for(let x=c.x-20;x<=c.x+24;x+=3.1){if(Math.abs(x-cmX[i])<6.4||Math.abs(x-ax)<2.4||lanes.some(l=>Math.abs(l-x)<2.8))continue;let tv=false;for(let t=X0+7;t<X1-4;t+=14)if(Math.abs(t-x)<1.3)tv=true;if(tv)continue;S.push(pt17(x,ZF-1.25))}S.sort((p,q)=>Math.abs(p.x-c.x)-Math.abs(q.x-c.x));K17.slots.push(S.slice(0,11))}
+  /* refugios con puerta detrás del parados; el del centro es el puesto de mando */for(const x of dgX){const p=dug17(x,-251,{sign:x===14,wood:x!==14,shut:x===-58||x===98});K17.dugouts.push(p);if(x!==14)cv17(x+2.6,-249,1.2)}
+  /* teléfono de campaña junto al puesto de mando */K17.phone=pt17(9.5,-248.2);{const p=K17.phone;bx17(.4,.3,.25,0x3a3226,p.x,.95,p.z);bx17(.8,.8,.6,0x5a4a32,p.x,.4,p.z,0,0,0,'c');cy17(.06,.06,4,0x4a3a28,p.x+.8,2,p.z,0,0,0,5);cy17(.3,.3,.25,0x3a3a2a,p.x-.7,.12,p.z,1.5708,0,0,8);ob17(p.x,p.z,.45,.35,.8)}
+  /* pilas de cajas y bidones en la retaguardia inmediata */for(const [x,z] of[[-50,-249],[24,-249],[60,-249],[-116,-249]]){for(let k=0;k<5;k++)bx17(.8,.45,.5,k%2?0x5a5a36:0x4a5030,x+(k%3)*.85,.23+(k>2?.45:0),z,0,(RN17()-.5)*.2,0,'c');cy17(.3,.3,.9,0x3a4a3a,x-1,.45,z+.2,0,0,0,8);ob17(x+.8,z,1.6,.4,.9)}
+  /* tierra de nadie: cráteres y restos (sin colisión alta) */for(let i=0;i<10;i++){const x=-110+RN17()*210,z=-200+RN17()*26;decalAt30('crater',X+x,z,3+RN17()*3);for(let k=0;k<6;k++){const a=k/6*6.283;bx17(1,.3,.6,0x5a5040,x+Math.cos(a)*2.1,.12,z+Math.sin(a)*2.1,0,-a,0)}cv17(x,z,2)}
   SEC17=null;K17.routes.III=[[[-25,-150],[-60,-200],[-62,-243]],[[40,-170],[60,-210],[52,-243]]]}
  /* ================== IV · LLANURA DE TEREK ================== */
  {SEC17='step';/* restos: camión quemado, autoblindado, carro volcado */
@@ -318,7 +363,7 @@ function buildKarsk17(){if(W17.built)return;W17.built=true;const X=X17,D=(G.deta
  /* ================== VI · ORILLA NORTE ================== */
  {SEC17='nor';road17([[-16,-808],[-10,-860],[-12,-960]],6);
   const bays=trench17(-112,72,-842,{gF:[[-20,9],[-70,2.6],[34,2.6]],gB:[[-20,9],[-90,2.6],[-50,2.6],[10,2.6],[55,2.6]]});K17.north.trench=bays;
-  for(const b of K17.north.bunkers){bx17(7,2.6,5,0x8a8a82,b.x,1.3,b.z,0,0,0,'c');bx17(7.6,.5,5.6,0x7a7a72,b.x,2.8,b.z);bx17(4,.4,.3,0x0a0a0a,b.x,1.6,b.z+2.52);bx17(4.6,.15,.6,0x6a6a62,b.x,1.88,b.z+2.7);sb17(b.x-3.5,b.z+3.2,b.x-1.5,b.z+3.2,.6,0,1);sb17(b.x+1.5,b.z+3.2,b.x+3.5,b.z+3.2,.6,0,1);bx17(1.2,2,.1,0x0a0a0a,b.x,1,b.z-2.52);ob17(b.x,b.z,3.5,2.5,3);cv17(b.x+4.6,b.z,1.6);cv17(b.x-4.6,b.z,1.6)}
+  /* v33: casamatas de hormigón con puerta blindada (modelo del cap. XIII) en lugar de los bloques simples */for(const b of K17.north.bunkers){casemate17(b.x,b.z,{col:0x7e7c76});camo17(b.x,b.z+.3,12.5,9.5,4.35,0);sb17(b.x-7.6,b.z+4.6,b.x-6.2,b.z+4.6,.7,0,1);sb17(b.x+6.2,b.z+4.6,b.x+7.6,b.z+4.6,.7,0,1)}
   for(const p of K17.north.pits){ring17(p.x,p.z,3.4,1,3.14,1);bx17(1.6,.06,5,0x3e352a,p.x,.03,p.z-5)}
   wire17(-118,78,-829,[[-20,10],[-70,3],[34,3]]);
   for(let i=0;i<10;i++){const x=-100+RN17()*170,z=-812-RN17()*14;decalAt30('crater',X+x,z,3+RN17()*3);cv17(x,z,2)}
