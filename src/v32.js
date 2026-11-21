@@ -34,3 +34,5 @@ function gfx32(){const O=$('cpO');if(!O||$('gfx32'))return;
  sync()}
 gfx32();if(!$('gfx32'))setTimeout(gfx32,500);
 {const b=document.querySelector('#cod [data-p=cpO] small');if(b)b.textContent='Dificultad, gráficos, límite de FPS';const O=$('cpO');if(O&&getComputedStyle(O).overflowY==='visible'){O.style.overflowY='auto';O.style.maxHeight='100%'}}
+/* nivel 17: sin arma en mano hasta equiparse en el barracón */
+{const _v=vmUpd13;vmUpd13=function(dt){if(level===17&&typeof N17!=='undefined'&&N17.arm&&!N17.arm.length&&typeof L13!=='undefined'){const s=L13.vm;L13.vm=false;try{return _v(dt)}finally{L13.vm=s}}return _v(dt)}}

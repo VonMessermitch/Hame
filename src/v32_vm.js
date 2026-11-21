@@ -11,7 +11,7 @@
 const rnd32=Math.random;
 const VM32={on:false,own:false,drew:false,R:{},key:null,want:null,sw:1,t:0,rk:0,rv:0,rz:0,sx:0,sy:0,svx:0,svy:0,ly:null,lx:null,bob:0,spd:0,lp:null,
  runK:0,aimK:0,land:0,air:false,vyp:0,fl:0,flx:0,thr:-1,ins:0,boltS:0,ej:false,sl:0,relE:false,cas:[],smk:[],built:false,M:null,frame:0,f13:-1,cy:[0,0],ld:0,ldv:0,fxT:0,trT:0,
- pal:{lo:{gl:0x8a6a48,sl:0x4f6272},mid:{gl:0x4a3424,sl:0x4f6272},13:{gl:0x3a2a1c,sl:0x4a586c},17:{gl:0x5a564c,sl:0x5c6650},drum:{17:true}}};
+ pal:{lo:{gl:0x8a6a48,sl:0x4f6272},mid:{gl:0x4a3424,sl:0x4f6272},13:{gl:0x3a2a1c,sl:0x4a586c},17:{gl:0x5a564c,sl:0x5c6650},drum:{17:true},bay:{17:true}}};
 const _q32=new T.Quaternion(),_e32=new T.Euler(),_p32=new T.Vector3(),_s32=new T.Vector3(),_Y32=new T.Vector3(0,1,0),_v32=new T.Vector3(),_w32=new T.Vector3(),_m32=new T.Matrix4();
 /* ---------- materiales: madera veteada, acero pavonado con desgaste, latón, lana/cuero teñidos por nivel ---------- */
 function tex32(f){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');f(x,64);const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;return t}
@@ -209,7 +209,7 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
  const sx=clamp(VM32.sx,-.25,.25),sy=clamp(VM32.sy,-.2,.2);VM32.fl=Math.max(0,VM32.fl-dt*3.2);VM32.fxT-=dt;VM32.trT-=dt;VM32.sl*=Math.pow(.00005,dt);
  const lift=Math.min(ez32(VM32.sw),level>=13&&VM13.lift!==undefined?VM13.lift:1);
  /* base: cadera ↔ puntería */const H=R.hip,A=R.aim;let px=H[0]+(A[0]-H[0])*aimK,py=H[1]+(A[1]-H[1])*aimK,pz=H[2]+(A[2]-H[2])*aimK,rx=0,ry=.05*(1-aimK),rz=0;
- if(k==='b'){rx-=.6;rz+=.35;ry-=.1}const ia=1-.75*aimK;py+=Math.sin(t*1.6)*.0022*ia;rx+=Math.sin(t*1.6+.8)*.006*ia;ry+=(Math.sin(t*.43)+.6*Math.sin(t*.97+1.3))*.006*ia;rz+=(Math.sin(t*.31+.5)+.5*Math.sin(t*.83))*.008*ia;
+ if(k==='b'){rx-=.9;rz-=.3;ry-=.15}const ia=1-.75*aimK;py+=Math.sin(t*1.6)*.0022*ia;rx+=Math.sin(t*1.6+.8)*.006*ia;ry+=(Math.sin(t*.43)+.6*Math.sin(t*.97+1.3))*.006*ia;rz+=(Math.sin(t*.31+.5)+.5*Math.sin(t*.83))*.008*ia;
  const ba=mv*(1+rk*.9)*(1-aimK*.75)*(gnd?1:.15);px+=Math.cos(bob-.3)*.012*ba;py+=Math.sin(bob*2-.7)*.009*ba;rz+=Math.cos(bob)*.028*ba;rx+=Math.sin(bob*2-.4)*.014*ba;ry+=Math.cos(bob-.3)*.01*ba;
  if(!gnd){py+=clamp(-(P.vy||0)*.002,-.02,.03);rx+=clamp((P.vy||0)*.004,-.05,.05)}
  if(k==='p'){px-=.01*rk;py-=.06*rk;pz+=.04*rk;rx-=.75*rk;ry+=.25*rk;rz+=.15*rk}else if(k==='v'){py-=.05*rk;rx-=.6*rk}else if(k==='b'){py-=.04*rk;rx+=.35*rk;rz-=.2*rk}else{px-=.05*rk;py+=.005*rk;pz+=.02*rk;rx-=.22*rk;ry+=.7*rk;rz+=.5*rk}

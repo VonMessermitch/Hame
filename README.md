@@ -817,3 +817,17 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
 - **Nivel 12 (misión XI):** más detalle en la base del cepelín y en la ciudad (techos, casas bombardeadas, fábricas, cráteres).
 - **Nivel 13 (misión XII):** granero y casa con interior, cobertizo, accesorios de granja, recinto ferroviario y detalle del puente.
 - **Nivel 14 (misión XIII):** fachadas, tiendas, balcones, mansardas, daños, catedral y palacio. Para Android se adorna solo lo que se ve desde las rutas, con unos 120k vértices extra.
+
+## v32 · Golfo de Hierro (Aethrion 1922)
+- **Misión XVII «Golfo de Hierro — El viento no lleva nombres»** (nivel 17, nueva campaña de Volskaya), en 6 fases con puntos de control:
+  1. Puesto de Karsk.
+  2. Barranco Sokol.
+  3. Línea de las Tres Cruces.
+  4. Contraataque de hierro.
+  5. Drovna arde.
+  6. Puente de Orlov.
+- **Mapa del Golfo de Karskaya** (`v32_env.js`): puesto y faro, barranco, trincheras, estepa, estación, refinería, puerto, garganta con puente, mar, niebla, aguanieve y viento.
+- **Soldados** (`v32_lib.js`): 10 tipos de Volskaya y 9 de Veyrn, basados en las láminas de referencia.
+- **Vehículos de 1922** (`v32_veh.js`): tanques, blindados, camiones, tren, cañones, morteros y barcos, con IA, daño y restos que sirven de cobertura.
+- **Primera persona en todo el juego** (`v32_vm.js`): manos con dedos, armas con detalle, ciclo de cerrojo, recargas, vainas, fogonazo, sprint, bayoneta y lanzamiento de granada.
+- **Opciones → Gráficos** (`v32.js`): presets Baja/Media/Alta/Ultra, resolución, detalle, partículas, distancia de visión, límite de FPS (30/45/60), medidor de FPS y brillo.
