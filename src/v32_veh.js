@@ -13,7 +13,7 @@
    Coordenadas de la API: LOCALES al nivel 17 (x mundo = VEH32.X + x; VEH32.X = X17).
    ===================================================================== */
 const X17=160000;
-const VEH32={list:[],X:X17,seaY:0,railY:.22,warn:true,allyDown:false,tpl:{},trains:[],lt:-1e9,
+const VEH32={list:[],X:X17,seaY:-.75,railY:.22,warn:true,allyDown:false,tpl:{},trains:[],lt:-1e9,
  onKill:v=>{},allies:null,onAllyHit:null,floor:null};
 const vh_va32=new T.Vector3(),vh_vb32=new T.Vector3(),vh_vc32=new T.Vector3(),vh_vd32=new T.Vector3(),vh_ve32=new T.Vector3();
 const vhCL32=(v,a,b)=>v<a?a:v>b?b:v,vhAD32=(a,b)=>{let d=b-a;while(d>Math.PI)d-=6.2832;while(d<-Math.PI)d+=6.2832;return d};
