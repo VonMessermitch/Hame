@@ -96,7 +96,7 @@ function rifle32(bay){const R=rig32('r','Rf'),g=R.gun,hi=G.detail>=2,lo=G.detail
  /* mano izquierda empujando el peine */
  const l2=R.lh2=grp32(g);B=B32();hand32(B,FH32([-.055,.075,.07],[.55,-.25,-.8],[-.55,.83,0]),-1,{c:[.9,1.1,1.2,1.3],c2:[.9,1.1,1.1,1.1],th:[-.15,.35,-.2,.15],el:[-.3,-.3,.3]});F32(B,l2);l2.visible=false;
  flash32(R,0,.012,bay?-1.2:-.875,.11);R.ej=V3(.012,.04,-.07);R.cas={r:.0062,l:.057};
- R.hip=[.12,-.112,-.4];R.aim=[0,-.049,-.05];R.W={kz:1,kr:1,sw:1.25,imp:3.2};R.mag=null;return R}
+ R.hip=[.115,-.104,-.36];R.aim=[0,-.049,-.17];R.W={kz:1,kr:1,sw:1.25,imp:3.2};R.mag=null;return R}
 /* ---------- subfusil (cargador recto, tambor) y ametralladora ligera (plato superior) ---------- */
 function smg32(o){o=o||{};const lmg=!!o.lmg,drum=!!o.drum,R=rig32('s',o.key||'Sm'),g=R.gun,hi=G.detail>=2,lo=G.detail===0;let B=B32();const w=B.w,s=B.s,J=lmg?.026:.017,Lb=lmg?.42:.2;
  cz(s,null,.021,.021,.32,ST32,0,.02,-.12,12);cz(s,null,.023,.023,.016,ST32b,0,.02,.046,12);cz(s,null,J,J,Lb,ST32,0,.02,-.28-Lb/2,lmg?12:10);
