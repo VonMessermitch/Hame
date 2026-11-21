@@ -201,7 +201,7 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
  const gnd=P.gnd!==false,mv=Math.min(1,VM32.spd/6),rl=P.rel>0&&P.reloading===P.cur&&P.rld>0?1-P.rel/P.rld:-1;
  const bw=VM32.boltS&&P.cd>0&&P.cur==='rifle'&&R.k==='r'?Math.sin(clamp(1-P.cd/(w.cd||.42),0,1)*Math.PI):0;
  const run=gnd&&rl<0&&!(P.aim>0)&&!(VM32.fxT>0)&&(VM32.spd>7.3||((keys.ShiftLeft||(tmOn&&Math.hypot(tm.x,tm.y)>.92))&&VM32.spd>2.5));
- VM32.runK+=((run?1:0)-VM32.runK)*Math.min(1,dt*7);const rk=VM32.runK;VM32.aimK+=((P.aim>0&&!run&&rl<0&&k!=='b'?1:0)-VM32.aimK)*Math.min(1,dt*13);const aimK=VM32.aimK*(1-.55*bw);
+ VM32.runK+=((run?1:0)-VM32.runK)*Math.min(1,dt*7);const rk=VM32.runK;VM32.aimK+=((P.aim>0&&!run&&rl<0&&k!=='b'?1:0)-VM32.aimK)*Math.min(1,dt*13);const aimK=VM32.aimK*(1-.85*bw);
  if(VM32.air&&gnd)VM32.ldv=(VM32.ldv||0)+Math.min(1.2,Math.max(0,-VM32.vyp)/12)*3;VM32.air=!gnd;VM32.vyp=P.vy||0;VM32.ld=VM32.ld||0;VM32.ldv=(VM32.ldv||0)+(-90*VM32.ld-12*VM32.ldv)*dt;VM32.ld+=VM32.ldv*dt;
  if(typeof V16!=='undefined'&&V16.bob!==undefined)VM32.bob=V16.bob;else if(gnd)VM32.bob+=dt*VM32.spd*1.25;const bob=VM32.bob;
  /* inercia de giro (muelle) */const dyw=VM32.ly===null?0:angD12(yaw,VM32.ly),dpt=VM32.lx===null?0:pitch-VM32.lx;VM32.ly=yaw;VM32.lx=pitch;const Wsw=R.W.sw*(1-aimK*.6);
@@ -222,7 +222,7 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
    const sw_=u<.2?s:u<.5?s-2*s*b:-s;px+=(sw_*.22)*m;py+=.06*m;rx+=-1.35*m;ry+=sw_*1.05*m;rz+=s*.35*m;pz-=.08*m*(u>.2&&u<.5?1:.4)}
   else{const a=ez32(u/.4),b=ez32((u-.4)/.15),c=ez32((u-.55)/.45),m=u<.55?1:1-c;const ang=u<.4?.7*a:.7-2.6*b;rx+=ang*m;py+=(u<.4?.12*a:.12-.3*b)*m;px-=.12*m;pz-=.05*m}}
  else if(P.swT>=0&&k!=='b'){const S=typeof SW!=='undefined'&&SW[P.sc]||{d:.42},u=P.swT/S.d,m=win32(u,0,.25,.4,1);mel=1;pz-=.18*m;rx-=.5*m;px-=.06*m;rz+=.3*m}
- R.root.position.set(px,py-VM32.fl*.03,pz);R.root.rotation.set(rx,ry,rz);
+ py-=.03*bw;pz-=.03*bw;rz+=.12*bw;R.root.position.set(px,py-VM32.fl*.03,pz);R.root.rotation.set(rx,ry,rz);
  const rkk=VM32.rk;R.kick.position.set(0,rkk*.012,rkk*.07*R.W.kz);R.kick.rotation.set(rkk*.2*R.W.kr+VM32.fl*.16,VM32.rz*rkk*.05+VM32.fl*VM32.flx*.1,VM32.rz*rkk*.07+VM32.fl*VM32.flx*.2);
  /* restablecer piezas */const g=R.gun;g.position.set(0,0,0);g.rotation.set(0,0,0);R.piv.rotation.set(0,0,0);if(R.lh){R.lh.position.set(0,0,0);R.lh.rotation.set(0,0,0);R.lh.visible=true}if(R.rh){R.rh.visible=true}
  for(const n in R.b){R[n].position.copy(R.b[n]);R[n].rotation.set(0,0,0)}if(R.rhB)R.rhB.visible=false;if(R.lh2)R.lh2.visible=false;if(R.clip)R.clip.visible=false;if(R.mag)R.mag.visible=true;if(R.nmag)R.nmag.visible=false;if(R.bay)R.bay.visible=level<=12||!!(VM32.pal.bay&&VM32.pal.bay[level]);
@@ -234,7 +234,7 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
 function thrArm32(u){const A=VM32.TA;if(!A)return;A.visible=u<.6;const gr=A.userData.gr;gr.visible=u<.34;let x,y,z,r;if(u<.25){const q=ez32(u/.25);x=-.26+.08*q;y=-.42+.4*q;z=-.28;r=.7*q}else if(u<.4){const q=ez32((u-.25)/.15);x=-.18+.12*q;y=-.02+.04*q;z=-.28-.3*q;r=.7-1.5*q}else{const q=ez32((u-.4)/.2);x=-.06-.15*q;y=.02-.45*q;z=-.58+.2*q;r=-.8}A.position.set(x,y,z);A.rotation.set(r,.2,0)}
 /* fusil: ciclo de cerrojo tras cada disparo (levantar, atrás —sale la vaina—, adelante, abajo) dentro del tiempo de recarga del disparo; recarga con peine */
 function rifleMech32(R,rl,w){const g=R.gun,bo=R.bolt,b0=R.b.bolt,K=R.knob;let lift=0,back=0,hand=false,appr=0;
- if(rl>=0){const tl=ez32(rl/.12)*(1-ez32((rl-.9)/.1));g.rotation.set(.1*tl,-.15*tl,.38*tl);g.position.set(-.03*tl,-.025*tl,-.07*tl);
+ if(rl>=0){const tl=ez32(rl/.12)*(1-ez32((rl-.9)/.1));g.rotation.set(.1*tl,-.15*tl,.38*tl);g.position.set(-.02*tl,-.045*tl,-.1*tl);
   lift=win32(rl,.1,.15,.84,.89);back=win32(rl,.15,.24,.76,.84);hand=rl>.06&&rl<.95;appr=1-win32(rl,.06,.1,.9,.95);
   const out=win32(rl,.2,.3,.7,.8);R.lh.position.set(-.05*out,-.32*out,.12*out);R.lh.visible=!(rl>.3&&rl<.7);
   if(rl>.28&&rl<.72){const up=win32(rl,.28,.38,.62,.72),pr=rl>.42&&rl<.62?Math.max(0,Math.sin((rl-.42)/.2*Math.PI*3))*.012:0;R.lh2.visible=true;R.lh2.position.set(-.08*(1-up),-.32*(1-up)-pr,.1*(1-up))}
@@ -273,7 +273,10 @@ function vmTick32(dt){if(VM32.cas.length||VM32.smk.length)fxUpd32(Math.min(dt,.0
  VM32.own=own;VM32.on=own;if(!own){if(VM32.built)hide32();return}if(VM32.err)return;try{vmPose32(dt)}catch(e){VM32.err=e;console.error('v32_vm',e)}}
 {const _u=update;update=function(dt){VM32.frame++;_u(dt);vmTick32(dt)}}
 {const _r=rend.render;rend.render=function(s,c,...a){VM32.drew=false;_r.call(this,s,c,...a);if(s===scene&&VM32.on&&!VM32.drew&&VM32.built&&!VM32.err){VM13.cam.aspect=cam.aspect;VM13.cam.updateProjectionMatrix();const ac=this.autoClear;this.autoClear=false;this.clearDepth();_r.call(this,VM13.scene,VM13.cam);this.autoClear=ac}}}
-{const _f=fire;fire=function(){const c=P.cur,w=P.weapons&&P.weapons[c],m0=w?w.mag:0,n0=bullets.length,r=_f.apply(this,arguments);if(w&&!P.mg&&(w.mag<m0||bullets.length>n0))try{shot32(c)}catch(e){console.error('v32_vm',e)}return r}}
+{const _f=fire;fire=function(){const c=P.cur,w=P.weapons&&P.weapons[c],m0=w?w.mag:0,n0=bullets.length;VM32.inF=true;let r;try{r=_f.apply(this,arguments)}finally{VM32.inF=false}if(w&&!P.mg&&(w.mag<m0||bullets.length>n0))try{shot32(c)}catch(e){console.error('v32_vm',e)}return r}}
 {const _r=reload;reload=function(){const w=P.weapons&&P.weapons[P.cur],m0=w?w.mag:-1,full=w&&w.mag>=w.max,r0=P.rel;const r=_r.apply(this,arguments);if(P.rel>0&&!(r0>0))VM32.relE=m0===0;else if(full&&level<=12&&fpv&&playing&&!(P.rel>0)&&P.cur!=='sword')VM32.ins=2.4;return r}}
 {const _g=throwG;throwG=function(){const n=P.grenades,r=_g.apply(this,arguments);if(P.grenades<n&&VM32.on){VM32.thr=0;if(VM32.TA)VM32.TA.visible=true}return r}}
 {const _h=hitP;hitP=function(d){const h=P.hp,r=_h.apply(this,arguments);if(P.hp<h){VM32.fl=Math.min(1,.5+(h-P.hp)/30);VM32.flx=rnd32()<.5?-1:1}return r}}
+/* en primera persona, el fogonazo y las chispas del modelo en tercera persona nacían junto a la cámara (bloques amarillos): se sustituyen por los del modelo VM */
+{const _m=muzzleFX;muzzleFX=function(o,v,big){if(VM32.on&&fpv)return;return _m.apply(this,arguments)}}
+{const _b=burst;burst=function(x,y,z){if(VM32.inF&&VM32.on&&fpv&&typeof cam!=='undefined'&&Math.abs(x-cam.position.x)+Math.abs(y-cam.position.y)+Math.abs(z-cam.position.z)<2.6)return;return _b.apply(this,arguments)}}
