@@ -809,3 +809,11 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - Torre del vigía arreglada: las vigas se dibujaban en el origen del mundo.
   - Enfermeras con rostro femenino; marinero que estaba sobre el agua reubicado.
 - **Terreno**: textura de suelo procedural y calcomanías instanciadas (barro, grava, huellas, cráteres, quemado, aceite) en Taikin, el fiordo, la ciudad del tanque y la misión XII.
+
+## v31 · Iron Foundry
+- **Operación Nachtfall (nivel 16):** los paracaidistas ahora aterrizan (ya no quedan colgados en el aire); hay patrullas entre las baterías AA y una patrulla de reacción después de cada voladura; vuelve la brújula/minimapa; Taikin suma más edificios (fila ribereña, iglesia de aldea, ruinas, manzanas, galpones, puestos de mercado).
+- **Máscara de gas:** una capucha de goma que cubre toda la cabeza, con oculares, válvula y filtro.
+- **Casco de paracaidista:** de inspiración Fallschirmjäger: sin ala, con el borde levantado al frente y barbijo en Y.
+- **Nivel 12 (misión XI):** más detalle en la base del cepelín y en la ciudad (techos, casas bombardeadas, fábricas, cráteres).
+- **Nivel 13 (misión XII):** granero y casa con interior, cobertizo, accesorios de granja, recinto ferroviario y detalle del puente.
+- **Nivel 14 (misión XIII):** fachadas, tiendas, balcones, mansardas, daños, catedral y palacio. Para Android se adorna solo lo que se ve desde las rutas, con unos 120k vértices extra.
