@@ -21,7 +21,7 @@ const vhDet32=()=>+(G.detail||0);
 function vhSide32(s){return(s==='volsk'||s==='v'||s==='ally'||s==='a'||s===true||s==='vol')?'volsk':'veyrn'}
 const vhVC32={volsk:{a:0x56604a,b:0x434b3a,c:0x66705a,m:0x2a2c26,tk:'sh'},veyrn:{a:0x4c5158,b:0x363a40,c:0x5e636a,m:0x222428,tk:'en'}};
 const vhBURNT32=new T.MeshLambertMaterial({vertexColors:true,color:0x3a3632,map:typeof vehT!=='undefined'?vehT:null});
-const vhGLINT32=new T.SpriteMaterial({color:0xfff2c0,transparent:true,opacity:.95,blending:T.AdditiveBlending,depthWrite:false,fog:false});
+const vhGLINT32=new T.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.2,'rgba(255,240,190,.9)');g.addColorStop(1,'rgba(255,200,120,0)');x.fillStyle=g;x.fillRect(0,0,64,64);x.fillStyle='rgba(255,250,220,.8)';x.fillRect(0,30,64,4);x.fillRect(30,0,4,64);return new T.CanvasTexture(c)})(),color:0xfff2c0,transparent:true,opacity:.95,blending:T.AdditiveBlending,depthWrite:false,fog:false});
 function vhFlo32(x,z){if(VEH32.floor)return VEH32.floor(x,z);if(typeof floor17==='function'&&VEH32.X===X17)return floor17(x-X17,z)||0;return 0}
 /* ---------- marcas, remaches, ruedas ---------- */
 function vhMark32(q,x,y,z,ax,s,side){const X=ax==='x';const d=(r,c,o)=>pCyl(q,r,r,.02,c,x+(X?o:0),y,z+(X?0:o),X?0:1.5708,0,X?1.5708:0,14);const o=X?Math.sign(x||1):Math.sign(z||1);

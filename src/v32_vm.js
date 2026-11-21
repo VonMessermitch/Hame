@@ -102,8 +102,8 @@ function smg32(o){o=o||{};const lmg=!!o.lmg,drum=!!o.drum,R=rig32('s',o.key||'Sm
  cz(s,null,.021,.021,.32,ST32,0,.02,-.12,12);cz(s,null,.023,.023,.016,ST32b,0,.02,.046,12);cz(s,null,J,J,Lb,ST32,0,.02,-.28-Lb/2,lmg?12:10);
  if(!lo)for(let i=0;i<(lmg?7:4);i++)for(let k=0;k<(hi?6:3);k++){const a=k*(hi?1.05:2.1)+.5;bx(s,null,.006,.006,.012,0x0e0e10,Math.cos(a)*J,.02+Math.sin(a)*J,-.31-i*.05,0,0,a)}
  if(lmg)for(let i=0;i<6;i++)bx(s,null,.002,.06,.36,ST32b,0,.02,-.47,0,0,i*.52);
- const ze=-.28-Lb;cz(s,null,.009,.009,.06,ST32b,0,.02,ze-.02,8);bx(s,null,.016,.022,.022,ST32,0,.036,ze+.02);bx(s,null,.0026,.012,.003,ST32b,0,.042,ze+.02);
- bx(s,null,.016,.008,.02,ST32,0,.04,.0);bx(s,null,.004,.006,.004,ST32,.005,.045,.004);bx(s,null,.004,.006,.004,ST32,-.005,.045,.004);
+ const ze=-.28-Lb;cz(s,null,.009,.009,.06,ST32b,0,.02,ze-.02,8);bx(s,null,.016,.03,.022,ST32,0,.038,ze+.02);bx(s,null,.0026,.012,.003,ST32b,0,.049,ze+.02);
+ bx(s,null,.016,.014,.02,ST32,0,.042,.0);bx(s,null,.004,.007,.004,ST32,.005,.0515,.004);bx(s,null,.004,.007,.004,ST32,-.005,.0515,.004);
  bx(s,null,.028,.05,.045,ST32,0,-.016,-.15);bx(w,null,.03,.105,.044,WD32b,0,-.052,.036,.32);bx(s,null,.012,.004,.07,ST32,0,-.04,-.012);bx(s,null,.012,.024,.004,ST32,0,-.028,-.048);
  bx(w,null,.038,.06,.24,WD32,0,-.026,.2,.12);bx(w,null,.036,.05,.1,WD32,0,-.006,.1,.06);bx(s,null,.04,.068,.008,ST32b,0,-.04,.32,.12);
  if(drum||lmg)bx(w,null,.036,.036,.16,WD32,0,-.01,-.36);if(lmg){bx(s,null,.006,.006,.2,ST32,.012,-.03,-.5,.25);bx(s,null,.006,.006,.2,ST32,-.012,-.03,-.5,.25)}
@@ -119,7 +119,7 @@ function smg32(o){o=o||{};const lmg=!!o.lmg,drum=!!o.drum,R=rig32('s',o.key||'Sm
  else hand32(B,FH32([-.032,-.055,-.15],[.1,-.25,-.96],[-1,-.1,0]),-1,{c:[1.45,1.5,1.55,1.6],c2:[1.3,1.3,1.3,1.3],th:[1,.3,.9,.3],el:[-.26,-.38,.0]});F32(B,lh);
  R.nmag=mk(g,0);R.nmag.visible=false;
  flash32(R,0,.02,ze-.06,lmg?.12:.085);R.ej=V3(.022,.03,-.09);R.cas={r:lmg?.006:.0046,l:lmg?.054:.022};
- R.hip=lmg?[.11,-.12,-.36]:[.1,-.105,-.32];R.aim=lmg?[0,-.042,-.25]:[0,-.0455,-.23];R.W={kz:lmg?.8:.45,kr:lmg?.6:.4,sw:lmg?1.5:1,imp:lmg?1.3:.9};R.drum=drum;R.lmg=lmg;return R}
+ R.hip=lmg?[.11,-.12,-.36]:[.1,-.105,-.32];R.aim=lmg?[0,-.055,-.3]:[0,-.055,-.3];R.W={kz:lmg?.8:.45,kr:lmg?.6:.4,sw:lmg?1.5:1,imp:lmg?1.3:.9};R.drum=drum;R.lmg=lmg;return R}
 /* ---------- pistola semiautomática (Lugy) con corredera, cargador y apoyo a dos manos ---------- */
 function pistol32(){const R=rig32('p','P'),g=R.gun,hi=G.detail>=2;let B=B32();const s=B.s,w=B.w;
  bx(s,null,.026,.02,.15,ST32,0,.004,-.075);cz(s,null,.009,.009,.03,0x1a1b1e,0,.03,-.182,8);bx(s,null,.012,.004,.05,ST32,0,-.023,-.045);bx(s,null,.012,.024,.004,ST32,0,-.012,-.07);F32(B,g);
@@ -134,7 +134,7 @@ function pistol32(){const R=rig32('p','P'),g=R.gun,hi=G.detail>=2;let B=B32();co
  flash32(R,0,.03,-.2,.07);R.ej=V3(.016,.05,-.05);R.cas={r:.0045,l:.018};R.hip=[.11,-.1,-.36];R.aim=[0,-.0535,-.31];R.W={kz:.7,kr:1.3,sw:.7,imp:2.1};R.idx=null;return R}
 /* ---------- revólveres dobles (niveles 1–12): tambor que bascula, martillo ---------- */
 function revGun32(par,side){const gg=grp32(par,side*.13,0,0),B=B32(),s=B.s,hi=G.detail>=2;
- bx(s,null,.024,.034,.07,ST32,0,.02,-.0);put32(s,gCyl(.0095,.0095,.17,8),ST32,null,0,.032,-.12,1.5708,0,.39);bx(s,null,.006,.02,.15,ST32,0,.012,-.105);bx(s,null,.003,.008,.012,ST32b,0,.044,-.198);bx(s,null,.014,.006,.04,ST32,0,.04,.02);
+ bx(s,null,.024,.034,.07,ST32,0,.02,-.0);put32(s,gCyl(.0095,.0095,.17,8),ST32,null,0,.032,-.12,1.5708,0,0);bx(s,null,.006,.02,.15,ST32,0,.012,-.105);bx(s,null,.003,.008,.012,ST32b,0,.044,-.198);bx(s,null,.014,.006,.04,ST32,0,.04,.02);
  bx(B.w,null,.026,.09,.036,WD32,0,-.036,.05,.38);bx(s,null,.028,.012,.04,ST32b,0,-.078,.073,.38);bx(s,null,.01,.004,.05,ST32,0,-.02,.0);bx(s,null,.01,.02,.004,ST32,0,-.01,-.024);F32(B,gg);
  const cy=grp32(gg,0,.024,-.012),q=B32();cz(q.s,null,.0195,.0195,.04,0x44484e,0,0,0,12);if(hi)for(let i=0;i<6;i++){const a=i*1.047;bx(q.s,null,.004,.004,.03,0x1a1b1e,Math.cos(a)*.019,Math.sin(a)*.019,0,0,0,a)}F32(q,cy);
  const hm=grp32(gg,0,.036,.036),h=B32();bx(h.s,null,.006,.016,.008,ST32b,0,.006,0,-.4);bx(h.s,null,.008,.004,.01,ST32b,0,.014,.006);F32(h,hm);
@@ -158,7 +158,7 @@ function throwArm32(){const g=new T.Group(),B=B32();hand32(B,FH32([0,0,0],[.2,.1
 /* ---------- vainas en el mundo (12, con rebote) y humo junto a la boca (8, en la escena VM) ---------- */
 function casPool32(){if(VM32.cas.length)return;const m=new T.MeshPhongMaterial({color:0xc8a040,shininess:70,specular:0x806030,emissive:0x1a1004}),g=gCyl(1,1,1,7);
  for(let i=0;i<12;i++){const c=new T.Mesh(g,m);c.visible=false;c.frustumCulled=false;VM32.cas.push({m:c,v:new T.Vector3(),w:new T.Vector3(),t:0,b:0,rest:false})}}
-function smkPool32(){if(VM32.smk.length||!VM13.scene)return;const F=fxTex32();for(let i=0;i<8;i++){const s=new T.Sprite(new T.SpriteMaterial({map:F.puff,transparent:true,depthWrite:false,opacity:0}));s.visible=false;VM13.scene.add(s);VM32.smk.push({s,v:new T.Vector3(),t:0,T:1})}}
+function smkPool32(){if(VM32.smk.length||!VM13.scene)return;const F=fxTex32();for(let i=0;i<8;i++){const s=new T.Sprite(new T.SpriteMaterial({map:F.puff,color:0xa8a8a2,transparent:true,depthWrite:false,opacity:0}));s.visible=false;VM13.scene.add(s);VM32.smk.push({s,v:new T.Vector3(),t:0,T:1})}}
 const _c32=new T.Vector3(),_d32=new T.Vector3();
 function eject32(R,n){if(!R||!VM13.cam||typeof cam==='undefined')return;casPool32();R.gun.updateMatrixWorld(true);for(let k=0;k<(n||1);k++){
  const pt=R.gs?R.gs[k%2].g:R.gun;pt.updateMatrixWorld(true);_c32.copy(R.ej).applyMatrix4(pt.matrixWorld);const dist=_c32.length();_c32.project(VM13.cam);
@@ -166,12 +166,12 @@ function eject32(R,n){if(!R||!VM13.cam||typeof cam==='undefined')return;casPool3
  if(c.m.parent!==scene)scene.add(c.m);c.m.position.copy(cam.position).addScaledVector(_d32,Math.max(.25,dist));const rv=R.gs;
  c.v.set(rv?(rnd32()-.5)*.6:.9+rnd32()*.5,rv?-.4:1.1+rnd32()*.5,rv?.2:.25+rnd32()*.2).applyQuaternion(cam.quaternion);c.v.x+=(P.mvx||0)*.8;c.v.z+=(P.mvz||0)*.8;
  c.w.set(8+rnd32()*10,rnd32()*6,10+rnd32()*8);c.m.scale.set(R.cas.r,R.cas.l,R.cas.r);c.m.rotation.set(rnd32()*6,rnd32()*6,rnd32()*6);c.t=6;c.b=0;c.rest=false;c.m.visible=true}}
-function smoke32(R,n){smkPool32();if(!VM32.smk.length||!R.fs)return;R.gun.updateMatrixWorld(true);for(let k=0;k<n;k++){const s=VM32.smk.find(s=>!s.s.visible)||VM32.smk[0];s.s.position.copy(R.mz).applyMatrix4(R.gun.matrixWorld);s.s.position.z-=.02;
- s.v.set(.02+rnd32()*.03,.05+rnd32()*.05,-.02-rnd32()*.03);s.T=s.t=.8+rnd32()*.7;s.s.scale.setScalar(.04+rnd32()*.03);s.s.material.rotation=rnd32()*6;s.s.visible=true}}
+function smoke32(R,n){smkPool32();if(!VM32.smk.length||!R.fs)return;R.gun.updateMatrixWorld(true);for(let k=0;k<n;k++){const s=VM32.smk.find(s=>!s.s.visible)||VM32.smk[0];s.s.position.copy(R.mz).applyMatrix4(R.gun.matrixWorld);s.s.position.z-=.05;
+ s.v.set(.02+rnd32()*.03,.05+rnd32()*.05,-.02-rnd32()*.03);s.T=s.t=.7+rnd32()*.6;s.s.scale.setScalar(.018+rnd32()*.014);s.s.material.rotation=rnd32()*6;s.s.visible=true}}
 function fxUpd32(dt){for(const c of VM32.cas){if(!c.m.visible)continue;c.t-=dt;if(c.t<=0){c.m.visible=false;continue}if(c.rest)continue;
   c.v.y-=9.8*dt;c.m.position.addScaledVector(c.v,dt);c.m.rotation.x+=c.w.x*dt;c.m.rotation.y+=c.w.y*dt;c.m.rotation.z+=c.w.z*dt;
   const fy=P.g.position.y+c.m.scale.x;if(c.m.position.y<fy){c.m.position.y=fy;if(c.v.y<-.7&&c.b<4){c.v.y=-c.v.y*.36;c.v.x*=.5;c.v.z*=.5;c.w.multiplyScalar(.5);c.b++;if(c.b<3&&typeof tn18==='function'&&c.m.position.distanceToSquared(P.g.position)<16)tn18('triangle',2600+rnd32()*1400,2000,.04,.01)}else{c.rest=true;c.m.rotation.set(1.5708,rnd32()*6,0)}}}
- for(const s of VM32.smk){if(!s.s.visible)continue;s.t-=dt;if(s.t<=0){s.s.visible=false;continue}const u=1-s.t/s.T;s.s.position.addScaledVector(s.v,dt);s.v.multiplyScalar(Math.pow(.6,dt));s.s.scale.multiplyScalar(1+dt*1.6);s.s.material.opacity=.42*Math.sin(Math.min(1,u*3)*1.5708)*(1-u);s.s.material.rotation+=dt*.4}}
+ for(const s of VM32.smk){if(!s.s.visible)continue;s.t-=dt;if(s.t<=0){s.s.visible=false;continue}const u=1-s.t/s.T;s.s.position.addScaledVector(s.v,dt);s.v.multiplyScalar(Math.pow(.6,dt));s.s.scale.multiplyScalar(1+dt*1.6);s.s.material.opacity=.24*Math.sin(Math.min(1,u*3)*1.5708)*(1-u);s.s.material.rotation+=dt*.4}}
 /* ---------- montaje: sustituye los modelos VM13 y añade los de 1–12 ---------- */
 function vmBuild32(){if(VM32.built)return;if(!VM13.scene&&typeof vmInit13==='function')vmInit13();if(!VM13.scene)return;VM32.built=true;const S=VM13.scene;
  for(const w of[VM13.P,VM13.Rf,VM13.Sm])if(w&&w.root)S.remove(w.root);for(const s of VM13.sh)s.m.visible=false;VM13.sh=[];
@@ -188,10 +188,10 @@ function pal32(){const p=VM32.pal,lv=level;let o=p[lv]||(lv>=17?p[17]:lv>=13?p[1
 const _W32=new T.Color(0xffffff);
 /* ---------- disparo: muelle de retroceso, fogonazo, humo, vaina, mecanismo ---------- */
 function shot32(c){const k=level<=12?(c==='rifle'?'Rf':c==='smg'?'Sm':'rv'):(c==='rifle'?'Rf':c==='smg'?(VM32.pal.drum[level]?'dr':'Sm'):c==='lmg'?'lm':'P'),R=VM32.R[k];if(!R)return;
- VM32.rv+=R.W.imp*(.85+rnd32()*.3);VM32.rz=(rnd32()-.5)*2;VM32.fxT=.05;VM32.sl=1;VM32.trT=.09;VM32.shotN=(VM32.shotN||0)+1;
+ VM32.rv+=R.W.imp*(.85+rnd32()*.3);VM32.rz=(rnd32()-.5)*2;VM32.fxT=.04;VM32.sl=1;VM32.trT=.09;VM32.shotN=(VM32.shotN||0)+1;
  if(R.gs){const sd=P.alt?0:1;VM32.gk=VM32.gk||[0,0];VM32.gkv=VM32.gkv||[0,0];VM32.gkv[sd]+=7;VM32.cy[sd]+=1.0472;VM32.gside=sd}
  if(!VM32.on)return;if(c==='rifle'){VM32.boltS=1;VM32.ej=false}else if(!R.gs)eject32(R);smoke32(R,c==='rifle'?2:c==='smg'?(rnd32()<.35?1:0):1);
- if(R.gs)R.fx=R.fxs[VM32.gside||0];R.fx.rotation.z=rnd32()*6.3;R.fx.scale.setScalar(.8+rnd32()*.5);R.fx.children[1].scale.x=R.fs*(1.6+rnd32()*1.4);R.fx.children[2].scale.x=R.fs*(1.6+rnd32()*1.4)}
+ if(R.gs)R.fx=R.fxs[VM32.gside||0];R.fx.rotation.z=rnd32()*6.3;R.fx.scale.setScalar((.75+rnd32()*.45)*(1-.45*VM32.aimK));R.fx.children[1].scale.x=R.fs*(1.6+rnd32()*1.4);R.fx.children[2].scale.x=R.fs*(1.6+rnd32()*1.4)}
 /* ---------- pose completa de cada fotograma ---------- */
 function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05);const t=VM32.t+=dt;pal32();
  /* cambio de arma: bajar el arma vieja, subir la nueva (el sable de un ataque aparece al instante) */
@@ -199,8 +199,9 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
  const R=VM32.R[VM32.key]||VM32.R.P;hide32();R.root.visible=true;const k=R.k,w=P.weapons&&P.weapons[P.cur]||{cd:.4,mag:1,max:1};
  /* movimiento del jugador */const pp=P.g.position;if(!VM32.lp)VM32.lp=pp.clone();let sp=Math.hypot(pp.x-VM32.lp.x,pp.z-VM32.lp.z)/dt;if(sp>30)sp=0;VM32.lp.copy(pp);VM32.spd+=(Math.min(sp,10)-VM32.spd)*Math.min(1,dt*8);
  const gnd=P.gnd!==false,mv=Math.min(1,VM32.spd/6),rl=P.rel>0&&P.reloading===P.cur&&P.rld>0?1-P.rel/P.rld:-1;
+ const bw=VM32.boltS&&P.cd>0&&P.cur==='rifle'&&R.k==='r'?Math.sin(clamp(1-P.cd/(w.cd||.42),0,1)*Math.PI):0;
  const run=gnd&&rl<0&&!(P.aim>0)&&!(VM32.fxT>0)&&(VM32.spd>7.3||((keys.ShiftLeft||(tmOn&&Math.hypot(tm.x,tm.y)>.92))&&VM32.spd>2.5));
- VM32.runK+=((run?1:0)-VM32.runK)*Math.min(1,dt*7);const rk=VM32.runK,aimK=VM32.aimK+=((P.aim>0&&!run&&rl<0&&k!=='b'?1:0)-VM32.aimK)*Math.min(1,dt*13);
+ VM32.runK+=((run?1:0)-VM32.runK)*Math.min(1,dt*7);const rk=VM32.runK;VM32.aimK+=((P.aim>0&&!run&&rl<0&&k!=='b'?1:0)-VM32.aimK)*Math.min(1,dt*13);const aimK=VM32.aimK*(1-.55*bw);
  if(VM32.air&&gnd)VM32.ldv=(VM32.ldv||0)+Math.min(1.2,Math.max(0,-VM32.vyp)/12)*3;VM32.air=!gnd;VM32.vyp=P.vy||0;VM32.ld=VM32.ld||0;VM32.ldv=(VM32.ldv||0)+(-90*VM32.ld-12*VM32.ldv)*dt;VM32.ld+=VM32.ldv*dt;
  if(typeof V16!=='undefined'&&V16.bob!==undefined)VM32.bob=V16.bob;else if(gnd)VM32.bob+=dt*VM32.spd*1.25;const bob=VM32.bob;
  /* inercia de giro (muelle) */const dyw=VM32.ly===null?0:angD12(yaw,VM32.ly),dpt=VM32.lx===null?0:pitch-VM32.lx;VM32.ly=yaw;VM32.lx=pitch;const Wsw=R.W.sw*(1-aimK*.6);
@@ -208,10 +209,10 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
  const sx=clamp(VM32.sx,-.25,.25),sy=clamp(VM32.sy,-.2,.2);VM32.fl=Math.max(0,VM32.fl-dt*3.2);VM32.fxT-=dt;VM32.trT-=dt;VM32.sl*=Math.pow(.00005,dt);
  const lift=Math.min(ez32(VM32.sw),level>=13&&VM13.lift!==undefined?VM13.lift:1);
  /* base: cadera ↔ puntería */const H=R.hip,A=R.aim;let px=H[0]+(A[0]-H[0])*aimK,py=H[1]+(A[1]-H[1])*aimK,pz=H[2]+(A[2]-H[2])*aimK,rx=0,ry=.05*(1-aimK),rz=0;
- const ia=1-.75*aimK;py+=Math.sin(t*1.6)*.0022*ia;rx+=Math.sin(t*1.6+.8)*.006*ia;ry+=(Math.sin(t*.43)+.6*Math.sin(t*.97+1.3))*.006*ia;rz+=(Math.sin(t*.31+.5)+.5*Math.sin(t*.83))*.008*ia;
+ if(k==='b'){rx-=.6;rz+=.35;ry-=.1}const ia=1-.75*aimK;py+=Math.sin(t*1.6)*.0022*ia;rx+=Math.sin(t*1.6+.8)*.006*ia;ry+=(Math.sin(t*.43)+.6*Math.sin(t*.97+1.3))*.006*ia;rz+=(Math.sin(t*.31+.5)+.5*Math.sin(t*.83))*.008*ia;
  const ba=mv*(1+rk*.9)*(1-aimK*.75)*(gnd?1:.15);px+=Math.cos(bob-.3)*.012*ba;py+=Math.sin(bob*2-.7)*.009*ba;rz+=Math.cos(bob)*.028*ba;rx+=Math.sin(bob*2-.4)*.014*ba;ry+=Math.cos(bob-.3)*.01*ba;
  if(!gnd){py+=clamp(-(P.vy||0)*.002,-.02,.03);rx+=clamp((P.vy||0)*.004,-.05,.05)}
- if(k==='p'){px-=.01*rk;py-=.06*rk;pz+=.04*rk;rx-=.75*rk;ry+=.25*rk;rz+=.15*rk}else if(k==='v'){py-=.05*rk;rx-=.6*rk}else if(k==='b'){py-=.04*rk;rx+=.35*rk;rz-=.2*rk}else{px-=.035*rk;py-=.03*rk;pz+=.04*rk;rx-=.3*rk;ry+=.8*rk;rz+=.6*rk}
+ if(k==='p'){px-=.01*rk;py-=.06*rk;pz+=.04*rk;rx-=.75*rk;ry+=.25*rk;rz+=.15*rk}else if(k==='v'){py-=.05*rk;rx-=.6*rk}else if(k==='b'){py-=.04*rk;rx+=.35*rk;rz-=.2*rk}else{px-=.05*rk;py+=.005*rk;pz+=.02*rk;rx-=.22*rk;ry+=.7*rk;rz+=.5*rk}
  px+=sx*.05;ry+=sx*.6;rz+=sx*.3;py-=sy*.035;rx+=sy*.5;py-=VM32.ld*.05;rx-=VM32.ld*.1;py-=(1-lift)*.32;rx-=(1-lift)*.8;
  if(VM32.thr>=0){VM32.thr+=dt;const q=win32(VM32.thr,0,.12,.45,.62);py-=.14*q;rx-=.35*q;px+=.04*q;rz-=.3*q;thrArm32(VM32.thr);if(VM32.thr>.62){VM32.thr=-1;VM32.TA.visible=false}}
  /* cuerpo a cuerpo */let mel=0;
@@ -233,7 +234,7 @@ function vmPose32(dt){vmBuild32();if(!VM32.built)return;dt=Math.min(dt||.016,.05
 function thrArm32(u){const A=VM32.TA;if(!A)return;A.visible=u<.6;const gr=A.userData.gr;gr.visible=u<.34;let x,y,z,r;if(u<.25){const q=ez32(u/.25);x=-.26+.08*q;y=-.42+.4*q;z=-.28;r=.7*q}else if(u<.4){const q=ez32((u-.25)/.15);x=-.18+.12*q;y=-.02+.04*q;z=-.28-.3*q;r=.7-1.5*q}else{const q=ez32((u-.4)/.2);x=-.06-.15*q;y=.02-.45*q;z=-.58+.2*q;r=-.8}A.position.set(x,y,z);A.rotation.set(r,.2,0)}
 /* fusil: ciclo de cerrojo tras cada disparo (levantar, atrás —sale la vaina—, adelante, abajo) dentro del tiempo de recarga del disparo; recarga con peine */
 function rifleMech32(R,rl,w){const g=R.gun,bo=R.bolt,b0=R.b.bolt,K=R.knob;let lift=0,back=0,hand=false,appr=0;
- if(rl>=0){const tl=ez32(rl/.12)*(1-ez32((rl-.9)/.1));g.rotation.set(.12*tl,-.2*tl,.45*tl);g.position.set(-.03*tl,.02*tl,.03*tl);
+ if(rl>=0){const tl=ez32(rl/.12)*(1-ez32((rl-.9)/.1));g.rotation.set(.1*tl,-.15*tl,.38*tl);g.position.set(-.03*tl,-.025*tl,-.07*tl);
   lift=win32(rl,.1,.15,.84,.89);back=win32(rl,.15,.24,.76,.84);hand=rl>.06&&rl<.95;appr=1-win32(rl,.06,.1,.9,.95);
   const out=win32(rl,.2,.3,.7,.8);R.lh.position.set(-.05*out,-.32*out,.12*out);R.lh.visible=!(rl>.3&&rl<.7);
   if(rl>.28&&rl<.72){const up=win32(rl,.28,.38,.62,.72),pr=rl>.42&&rl<.62?Math.max(0,Math.sin((rl-.42)/.2*Math.PI*3))*.012:0;R.lh2.visible=true;R.lh2.position.set(-.08*(1-up),-.32*(1-up)-pr,.1*(1-up))}
