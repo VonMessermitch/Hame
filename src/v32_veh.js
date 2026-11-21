@@ -57,7 +57,7 @@ function vhCrewGeo32(side,pose){const k=side+pose;if(vhCRW32[k])return vhCRW32[k
  return vhCRW32[k]=pbGeo(q)}
 function vhCrew32(par,side,pose,x,y,z,ry,list){const m=new T.Mesh(vhCrewGeo32(side,pose),VCM);m.position.set(x,y,z);m.rotation.y=ry||0;m.name='crew';par.add(m);if(list)list.push(m);return m}
 /* oruga: banda con textura de eslabones (material propio por instancia para animarla) */
-const vhTRKM32=new T.MeshLambertMaterial({map:typeof trkT!=='undefined'?trkT:null,color:0xffffff});
+const vhTRKM32=new T.MeshLambertMaterial({map:typeof trkT!=='undefined'?trkT:null,color:0x8a8a82});
 function vhTrackRun32(g,X,w,pts,name){const t=PB();for(let i=0;i<pts.length-1;i++){const[a,b]=[pts[i],pts[i+1]],dy=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dy,dz);pBox(t,w,.09,L+.06,0xffffff,X,(a[0]+b[0])/2,(a[1]+b[1])/2,-Math.atan2(dy,dz),0,0,0)}const m=pbMesh(t,g,vhTRKM32);m.name=name;return m}
 /* ---------- montajes de armas ---------- */
 function vhMount32(par,name,x,y,z){const y_=new T.Group();y_.position.set(x,y,z);y_.name='tur'+name;par.add(y_);const p=new T.Group();p.name='gun'+name;y_.add(p);const m=new T.Object3D();m.name='muz'+name;p.add(m);return{y:y_,p,m}}
@@ -68,12 +68,12 @@ function vhMount32(par,name,x,y,z){const y_=new T.Group();y_.position.set(x,y,z)
 function vhTplLight32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=0x161614,D=vhDet32(),g=new T.Group(),q=PB(),W=[];
  /* bastidores de oruga laterales que envuelven el tren de rodaje */
  for(const s of[-1,1]){const X=s*.78;pBox(q,.1,.62,3.9,B,X+s*.17,.62,.15);pBox(q,.1,.5,3.9,shade(B,.85),X-s*.17,.6,.15);pBox(q,.42,.08,3.9,B,X,.95,.15);
-  pBox(q,.1,.5,.9,B,X+s*.17,.95,2.3,-.55);vhRiv32(q,X+s*.23,.86,-1.7,X+s*.23,.86,2.0,16,shade(B,.7));vhRiv32(q,X+s*.23,.38,-1.7,X+s*.23,.38,2.0,16,shade(B,.7));
+  pBox(q,.1,.5,.9,B,X+s*.17,.95,2.3,.55);vhRiv32(q,X+s*.23,.86,-1.7,X+s*.23,.86,2.0,16,shade(B,.7));vhRiv32(q,X+s*.23,.38,-1.7,X+s*.23,.38,2.0,16,shade(B,.7));
   for(let i=0;i<3;i++)pBox(q,.04,.34,.5,DK,X+s*.23,.55,-1.2+i*1.25);/* aberturas de barro */
   pCyl(q,.06,.06,.4,MT,X,.62,2.35,0,0,1.5708,6)}
  /* casco central, frente alto del conductor con doble escotilla, cubierta del motor */
- pBox(q,1.14,.86,3.5,A,0,1.0,.05);pBox(q,1.14,.1,1.1,shade(A,.9),0,1.55,1.55,-.5);pBox(q,1.1,.6,.1,A,0,1.18,2.0,-.25);
- pBox(q,.9,.08,.55,shade(A,.85),0,1.66,1.18,-.2);for(const s of[-1,1])pBox(q,.42,.05,.5,shade(A,.8),s*.22,1.72,1.2,-.35,0,s*.05);pBox(q,.5,.06,.04,DK,0,1.5,1.92);
+ pBox(q,1.14,.86,3.5,A,0,1.0,.05);pBox(q,1.14,.1,1.1,shade(A,.9),0,1.5,1.5,.45);pBox(q,1.1,.6,.1,A,0,1.18,2.0,-.25);
+ pBox(q,.9,.08,.55,shade(A,.85),0,1.66,1.18,.2);for(const s of[-1,1])pBox(q,.42,.05,.5,shade(A,.8),s*.22,1.72,1.2,.3,0,s*.05);pBox(q,.5,.06,.04,DK,0,1.5,1.92);
  pBox(q,1.14,.36,1.7,shade(A,.95),0,1.42,-.9);if(D)for(let i=0;i<6;i++)pBox(q,.8,.03,.08,DK,0,1.61,-.3-i*.22);pBox(q,1.0,.5,.1,A,0,1.0,-1.72,.3);
  vhRiv32(q,-.58,1.42,1.9,-.58,1.42,-1.7,14,shade(A,.7));vhRiv32(q,.58,1.42,1.9,.58,1.42,-1.7,14,shade(A,.7));
  /* cola anti-zanjas */for(const s of[-1,1]){pBox(q,.08,.1,1.4,MT,s*.42,.95,-2.35,-.35);pBox(q,.08,.5,.08,MT,s*.42,.75,-2.95)}pBox(q,.92,.08,.08,MT,0,.55,-3.0);
@@ -93,7 +93,7 @@ function vhTplLight32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=0x
 /* --- carro medio veyrno «Vrak» (casco en caja, barbetas laterales con ametralladora, cañón corto 57 mm) --- */
 function vhTplMedium32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=0x141416,D=vhDet32(),g=new T.Group(),q=PB(),W=[];
  pBox(q,1.7,.9,6.1,B,0,.88,0);/* superestructura que sobresale sobre las orugas */pBox(q,2.56,1.0,4.3,A,0,1.82,.05);pBox(q,2.56,.1,4.3,shade(A,.9),0,2.36,.05);
- pBox(q,2.4,.12,1.5,A,0,1.62,2.75,-.42);pBox(q,2.0,.75,.12,shade(A,.95),0,.95,3.12,.5);pBox(q,2.4,.12,1.1,A,0,1.7,-2.6,.55);pBox(q,2.3,.7,.12,shade(A,.9),0,1.0,-3.05,-.2);
+ pBox(q,2.4,.12,1.5,A,0,1.72,2.7,.42);pBox(q,1.7,.75,.12,shade(A,.95),0,.95,3.12,-.5);pBox(q,2.4,.12,1.1,A,0,1.95,-2.55,-.4);pBox(q,1.7,.7,.12,shade(A,.9),0,1.0,-3.05,.2);
  /* cabina del conductor y ametralladora de proa */pBox(q,.75,.5,.6,shade(A,.95),-.6,2.1,2.0);pBox(q,.5,.05,.03,DK,-.6,2.18,2.31);pa(q,gSph(.17,8,6),shade(A,.85),.6,1.75,2.62);pCyl(q,.035,.035,.55,DK,.6,1.75,2.9,1.5708,0,0,6);
  /* barbetas laterales */for(const s of[-1,1]){pCyl(q,.48,.48,.92,A,s*1.28,1.78,.55,0,0,0,10);pCyl(q,.5,.5,.06,shade(A,.85),s*1.28,2.26,.55,0,0,0,10);vhRiv32(q,s*1.3,2.32,-1.9,s*1.3,2.32,2.0,18,shade(A,.7));vhRiv32(q,s*1.3,1.36,-1.9,s*1.3,1.36,2.0,18,shade(A,.7));vhMark32(q,s*1.29,1.8,-1.2,'x',.6,side)}
  /* faldones sobre el rodaje, rejillas, escape, viga de desatasco */
@@ -105,7 +105,7 @@ function vhTplMedium32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=0
  const pts=[[.06,-2.6],[.06,2.5],[.5,3.15],[.92,3.15],[1.12,2.7],[1.12,-2.7],[.75,-3.12],[.35,-3.05],[.06,-2.6]];for(const s of[-1,1])vhTrackRun32(g,s*1.08,.48,pts,'trk');
  const rg=vhRoad32(.32,C.tk);for(const s of[-1,1]){for(let i=0;i<7;i++)vhWheel32(g,rg,s*1.08,.36,-2.2+i*.73,.32,W);vhWheel32(g,vhWSpoke32(.45,.44,8,0x1c1c1a,B,shade(B,.8)),s*1.08,.68,2.82,.45,W);vhWheel32(g,sprocketGeo(C.tk),s*1.08,.62,-2.78,.48,W)}
  /* torre con frente inclinado, cúpula del jefe abierta */
- const M=vhMount32(g,'0',0,2.4,.75),tq=PB();pBox(tq,1.45,.78,1.6,Cc,0,.39,-.1);pBox(tq,1.45,.1,.6,Cc,0,.62,.82,-.6);pBox(tq,1.45,.6,.1,Cc,0,.32,.84,-.15);for(const s of[-1,1])pBox(tq,.1,.72,1.6,shade(Cc,.95),s*.74,.36,-.1,0,0,s*.12);
+ const M=vhMount32(g,'0',0,2.4,.75),tq=PB();pBox(tq,1.45,.78,1.6,Cc,0,.39,-.1);pBox(tq,1.45,.1,.6,Cc,0,.62,.82,.6);pBox(tq,1.45,.6,.1,Cc,0,.32,.84,-.15);for(const s of[-1,1])pBox(tq,.1,.72,1.6,shade(Cc,.95),s*.74,.36,-.1,0,0,s*.12);
  pBox(tq,1.2,.4,.5,shade(Cc,.9),0,.42,-1.1);pCyl(tq,.3,.32,.32,shade(Cc,.85),.3,.94,-.3,0,0,0,10);pBox(tq,.5,.06,.5,shade(Cc,.8),.3,1.3,-.62,-1.2);for(let i=0;i<5;i++){const a=i/5*6.28;pBox(tq,.08,.04,.02,DK,.3+Math.sin(a)*.31,.96,-.3+Math.cos(a)*.31,0,a,0)}
  vhRiv32(tq,-.7,.76,.5,.7,.76,.5,9,shade(Cc,.6));vhRiv32(tq,-.7,.76,-.85,.7,.76,-.85,9,shade(Cc,.6));vhMark32(tq,.79,.4,-.3,'x',.42,side);vhMark32(tq,-.79,.4,-.3,'x',.42,side);pbMesh(tq,M.y);
  vhCrew32(M.y,side,'head',.3,1.15,-.3,0);
@@ -121,7 +121,7 @@ function vhTplArmcarV32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=
  pBox(q,1.12,.75,1.6,A,0,1.18,1.95);for(const s of[-1,1])pBox(q,.62,.06,1.6,shade(A,.92),s*.27,1.62,1.95,0,0,s*.22);pBox(q,1.18,.95,.1,A,0,1.22,2.78);for(let i=0;i<6;i++)pBox(q,1.0,.04,.06,DK,0,.85+i*.13,2.84,.5);
  for(const s of[-1,1]){pCyl(q,.13,.11,.24,MT,s*.66,1.45,2.78,1.5708,0,0,8);pBox(q,.3,.18,.3,A,s*.66,1.62,2.72,.4)}
  /* guardabarros */for(const s of[-1,1]){for(let i=0;i<4;i++){const a=-1.0+i*.65;pBox(q,.36,.05,.45,shade(A,.85),s*.9,.52+Math.cos(a)*.66,1.9+Math.sin(a)*.66,-a)}pBox(q,.38,.05,2.0,shade(A,.85),s*.92,.86,.35);for(let i=0;i<3;i++){const a=-.7+i*.7;pBox(q,.6,.05,.45,shade(A,.85),s*.86,.52+Math.cos(a)*.64,-1.3+Math.sin(a)*.64,-a)}}
- /* cabina con frente inclinado y viseras */pBox(q,1.76,1.05,1.1,A,0,1.52,.75);pBox(q,1.76,.1,.7,shade(A,.9),0,2.12,1.15,-.55);for(const s of[-1,1]){pBox(q,.5,.12,.04,DK,s*.42,1.95,1.31);pBox(q,.52,.16,.05,shade(A,.8),s*.42,2.06,1.36,-.6)}
+ /* cabina con frente inclinado y viseras */pBox(q,1.76,1.05,1.1,A,0,1.52,.75);pBox(q,1.76,.1,.7,shade(A,.9),0,2.0,1.2,.55);for(const s of[-1,1]){pBox(q,.5,.12,.04,DK,s*.42,1.95,1.31);pBox(q,.52,.16,.05,shade(A,.8),s*.42,2.06,1.36,.6)}
  /* caja de combate, puesto de conducción trasero */pBox(q,1.96,1.3,2.4,A,0,1.7,-.95);pBox(q,1.96,.1,2.4,shade(A,.9),0,2.38,-.95);pBox(q,1.2,.7,.1,shade(A,.9),0,1.6,-2.18);pBox(q,.4,.08,.04,DK,0,1.95,-2.24);
  for(const s of[-1,1]){pBox(q,.05,.8,.6,shade(A,.85),s*1.0,1.55,-.3);pBox(q,.03,.06,.3,DK,s*1.01,1.95,-1.5);vhMark32(q,s*.99,1.6,-1.3,'x',.55,side);vhRiv32(q,s*.99,2.3,-2.1,s*.99,2.3,1.2,16,shade(A,.7));vhRiv32(q,s*.99,1.1,-2.1,s*.99,1.1,1.2,16,shade(A,.7))}
  if(D){pBox(q,.5,.4,.7,0x4a4a36,.8,1.15,-.1);pBox(q,.06,.06,1.2,0x5a3a20,-.98,1.1,.2);pCyl(q,.05,.05,1.0,0x1a1a18,-.75,.6,-.4,1.5708,0,0,6)}
@@ -138,8 +138,8 @@ function vhTplArmcarV32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=
 function vhTplArmcarE32(side){const C=vhVC32[side],A=C.a,B=C.b,Cc=C.c,MT=C.m,DK=0x121214,D=vhDet32(),g=new T.Group(),q=PB(),W=[];
  for(const s of[-1,1])pBox(q,.14,.2,5.3,MT,s*.55,.66,0);
  /* casco anguloso: proa en cuña, flancos inclinados hacia adentro */
- pBox(q,1.82,.78,4.2,A,0,1.2,-.25);for(const s of[-1,1]){pBox(q,.1,.62,4.2,shade(A,.92),s*.82,1.85,-.25,0,0,-s*.32);pa(q,gBox(.1,.78,1.5),A,s*.55,1.2,2.45,0,s*.62,0)}
- pBox(q,1.5,.1,4.2,shade(A,.9),0,2.14,-.25);pBox(q,1.2,.1,1.5,shade(A,.88),0,1.9,2.25,-.35);pBox(q,.9,.7,.1,A,0,1.2,3.0);pBox(q,1.3,.1,1.0,A,0,1.65,2.6,-.5);
+ pBox(q,1.82,.78,4.2,A,0,1.2,-.25);for(const s of[-1,1]){pBox(q,.1,.62,4.2,shade(A,.92),s*.82,1.85,-.25,0,0,-s*.32);pa(q,gBox(.1,.78,1.45),A,s*.68,1.2,2.4,0,-s*.5,0)}
+ pBox(q,1.5,.1,4.2,shade(A,.9),0,2.14,-.25);pBox(q,1.2,.1,1.5,shade(A,.88),0,1.9,2.25,.35);pBox(q,.9,.7,.1,A,0,1.2,3.0);pBox(q,1.3,.1,1.0,A,0,1.65,2.6,.5);
  for(const s of[-1,1]){pBox(q,.3,.06,.04,DK,s*.3,1.88,2.95);pCyl(q,.12,.12,.2,MT,s*.55,1.4,2.95,1.5708,0,0,8);vhMark32(q,s*.95,1.35,.2,'x',.55,side)}
  pBox(q,1.7,.6,.1,shade(A,.9),0,1.3,-2.4,.2);/* rueda de repuesto lateral y bastidor de antena */
  if(D){for(const s of[-1,1])pBox(q,.04,.04,3.6,MT,s*.68,2.42,-.3);for(const z of[-2,-.3,1.4])for(const s of[-1,1])pBox(q,.04,.3,.04,MT,s*.68,2.28,z);pBox(q,.4,.4,.7,0x3e3e34,-.98,1.1,-1.6)}
@@ -161,7 +161,7 @@ function vhTplTruck32(side){const C=vhVC32[side],A=C.a,MT=0x262622,D=vhDet32(),g
  pBox(q,1.9,.06,1.5,CV,0,2.78,1.0,.03);pBox(q,1.6,.28,.55,0x3a2a1a,0,1.25,.85);pBox(q,1.6,.5,.1,0x3a2a1a,0,1.55,.58);pa(q,gTor(.18,.025,4,10),0x1a1410,.4,1.85,1.35,-.9,0,0);
  /* caja de carga y toldo */const BZ=-1.6,BL=3.9,BW=2.2,FY=1.02;pBox(q,BW,.12,BL,WD,0,FY,BZ);for(const s of[-1,1]){pBox(q,.06,.55,BL,WD,s*BW/2,FY+.32,BZ);if(D)for(let i=0;i<5;i++)pBox(q,.08,.6,.06,shade(WD,.7),s*(BW/2+.02),FY+.32,BZ-BL/2+.2+i*(BL-.4)/4)}
  pBox(q,BW,.55,.06,WD,0,FY+.32,BZ+BL/2);pBox(q,BW,.55,.06,WD,0,FY+.32,BZ-BL/2);
- pa(q,new T.CylinderGeometry(1.12,1.12,BL,10,1,true,-1.5708,3.1416),CV,0,FY+.6,BZ,1.5708,0,0,1,1,1,.05);for(const s of[-1,1])pBox(q,.04,.6,BL,CV,s*1.1,FY+.3,BZ);
+ pa(q,new T.CylinderGeometry(1.12,1.12,BL,10,1,true,1.5708,3.1416),CV,0,FY+.6,BZ,1.5708,0,0,1,1,1,.05);for(const s of[-1,1])pBox(q,.04,.6,BL,CV,s*1.1,FY+.3,BZ);
  for(let i=0;i<4;i++)pa(q,gTor(1.13,.03,4,12,3.1416),shade(CV,.75),0,FY+.6,BZ-BL/2+.2+i*(BL-.4)/3);pa(q,new T.CircleGeometry(1.1,10,0,3.1416),shade(CV,.85),0,FY+.6,BZ+BL/2-.02);
  pBox(q,2.0,.65,.04,0x141410,0,FY+.88,BZ-BL/2+.04);pBox(q,2.1,.5,.06,CV,0,FY+1.5,BZ-BL/2-.02,-.15);
  if(side==='volsk')for(const s of[-1,1])vhMark32(q,s*1.13,FY+.32,BZ,'x',.5,side);else for(const s of[-1,1])vhMark32(q,s*1.13,FY+.32,BZ,'x',.45,side);
@@ -198,7 +198,7 @@ function vhTplWagon32(kind,side){const g=new T.Group(),q=PB(),D=vhDet32(),BK=0x2
  for(const z of[-2.4,2.4])for(const s of[-1,1]){pBox(q,.1,.4,.9,0x2a2a26,s*.82,.62,z);if(D)for(let i=0;i<3;i++)pBox(q,.11,.03,.9-i*.2,0x1a1a18,s*.82,.82-i*.04,z)}
  pBox(q,2.6,.1,8.4,kind==='flat'?0x5a4630:0x3a2a1c,0,1.2,0);
  if(kind==='box'||kind==='troop'){pBox(q,2.6,2.0,8.2,col,0,2.25,0);if(D)for(let i=0;i<14;i++)for(const s of[-1,1])pBox(q,.03,1.9,.04,shade(col,.7),s*1.31,2.25,-3.9+i*.6);
-  pa(q,new T.CylinderGeometry(3.2,3.2,8.4,12,1,false,-.42,.84),shade(col,.6),0,.08,0,1.5708,0,0,1,1,1,.03);
+  pa(q,new T.CylinderGeometry(3.2,3.2,8.4,12,1,false,3.1416-.42,.84),shade(col,.6),0,.3,0,1.5708,0,0,1,1,1,.03);
   for(const s of[-1,1]){pBox(q,.05,1.8,1.5,shade(col,.9),s*1.33,2.2,kind==='troop'&&s>0?.9:0);pBox(q,.06,.06,3.4,0x2a2a26,s*1.34,3.15,.4)}
   if(kind==='troop'){pBox(q,.04,1.7,1.4,0x0e0c0a,1.31,2.15,0);for(const z of[-3,3])for(const s of[-1,1])pBox(q,.04,.35,.5,0x10100e,s*1.32,2.85,z);pCyl(q,.08,.08,.7,0x1a1a18,.6,3.65,-2.5,0,0,0,6);pCyl(q,.12,.12,.08,0x1a1a18,.6,4.0,-2.5,0,0,0,6);vhMark32(q,-1.34,2.3,-2,'x',.6,side);
    vhCrew32(g,side,'stand',1.0,1.25,.3,1.5708);vhCrew32(g,side,'sit',1.0,1.25,-.4,1.5708)}else{pBox(q,.4,.25,.04,0xd8d0b0,1.34,1.6,-2.8)}}
