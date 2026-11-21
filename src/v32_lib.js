@@ -17,7 +17,7 @@ const VOLSK32={tunic:0x68704e,tunicK:0x8c8660,breech:0x3a332c,coat:0x6e6e68,coat
  lea:0x5a3820,leaD:0x3a2414,canvas:0x8a7e58,canvasD:0x6a6040,boot:0x15110d,fur:0xd8c8a2,sheep:0x9a7e56,hood:0x8e8672,papakha:0x1a1612,brass:0xb0903a,steel:0x5a5e5e,roll:0x5e5a42,
  cockade:[0xe6e2d6,0x2c6a3a,0x1c2648]};
 const VEYRN32={tunic:0x4c5258,tunicB:0x272d37,helm:0x2e3236,helmN:0x3c434c,web:0x5b5a3c,puttee:0x464640,navy:0x1b2236,collar:0x2e4c7e,white:0xdedcd2,coat:0x24282e,band:0x0c0c0c,
- lea:0x1c1814,ochre:0xb88a2a,armor:0x5c6268,canister:0x4a5048,canvas:0x6a6a4e,badge:0x8a8670,pants:0x363a40};
+ lea:0x1c1814,ochre:0xb88a2a,armor:0x767c78,canister:0x4a5048,canvas:0x6a6a4e,badge:0x8a8670,pants:0x363a40};
 const GCL32={};
 const gkL32=(k,f)=>k in GCL32?GCL32[k]:(GCL32[k]=f());
 /* las geometrías cacheadas nunca se liberan con los cadáveres */
@@ -130,7 +130,7 @@ function partEL32(kind,bone,L,D,q){const P=VEYRN32,C=L.coatC;
    pBox(q,.06,.9,.025,P.web,0,.37,.225,0,0,.72);pBox(q,.06,.9,.025,P.web,0,.37,.23,0,0,-.72)}
   if(kind==='rifle'||kind==='naval'||kind==='eng'){pBox(q,.4,.36,.16,P.canvas,0,.38,-.28);pCyl(q,.07,.07,.5,0x4a4a40,0,.6,-.28,0,0,1.5708,D?8:6)}
   if(kind==='eng'){pBox(q,.04,.7,.04,0x5a4028,.14,.42,-.39,0,0,.3);pBox(q,.4,.05,.05,0x4a4e4a,.24,.76,-.39,0,0,.3)}
-  if(kind==='assault'){pBox(q,.62,.2,.1,P.armor,0,.56,.235,.04,0,0);pBox(q,.58,.18,.1,P.armor,0,.38,.245);pBox(q,.54,.16,.1,P.armor,0,.21,.24,-.05,0,0);for(const s of[-1,1])pBox(q,.22,.06,.38,P.armor,s*.3,.73,0,0,0,s*.22);
+  if(kind==='assault'){pBox(q,.6,.15,.1,P.armor,0,.57,.24,.05,0,0);pBox(q,.56,.15,.1,shade(P.armor,.92),0,.4,.25);pBox(q,.52,.14,.1,P.armor,0,.23,.245,-.05,0,0);pBox(q,.2,.05,.03,0x1a1a1a,0,.62,.295);for(const s of[-1,1])pBox(q,.22,.06,.38,P.armor,s*.3,.73,0,0,0,s*.22);
    if(D>1)for(const y of[.56,.38,.21])for(const s of[-1,1])pBox(q,.025,.025,.02,0x1a1a1a,s*.22,y,.29)}
   if(kind==='assault'||kind==='gren'){for(const s of[-1,1]){pBox(q,.05,.62,.025,P.web,s*.14,.42,.27,0,0,s*.2);pBox(q,.2,.22,.1,P.canvas,s*.17,.08,.31);pBox(q,.21,.05,.11,shade(P.canvas,.8),s*.17,.18,.31);
     if(D)pBox(q,.03,.12,.03,0x6a4a2a,s*.17+.04,.25,.31);if(D>1)pBox(q,.03,.12,.03,0x6a4a2a,s*.17-.04,.25,.31)}}
