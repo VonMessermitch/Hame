@@ -240,8 +240,8 @@ function palace14(q){const X=X14,z0=-690,W=50,D=30,H=7;const C=0xc8bca0,C2=0xa89
  for(const [x,z,r] of[[27,-684,.4],[33,-683,2],[37,-685,-.8]]){pBox(q,.5,.06,.5,WD,X+x,H+.45,z,0,r,1.4);pBox(q,.5,.7,.06,WD,X+x+.2,H+.35,z,0,r,0)}
  for(const x of[21,26,31])cot(x,-702.6,H,0);desk(43,-699,H,0);pBox(q,.9,1.1,.8,0x2a2a2e,X+47.8,H+.55,-702.8);oB14({x:47.8,z:-702.8,hw:.5,hd:.45,h:H+1.1,y0:H});
  /* galerías del salón: emplazamiento de ametralladora en la ventana central, cajas de munición, teléfono de campaña */
- crate(-6.5,-686,H,0);crate(6.5,-686,H,.2);pBox(q,.4,.3,.3,0x2a2a24,X-6.5,H+.95,-686);
- oB14({x:-6.5,z:-686,hw:.6,hd:.45,h:H+.8,y0:H});oB14({x:6.5,z:-686,hw:.6,hd:.45,h:H+.8,y0:H});
+ crate(-13.6,-686.6,H,0);crate(13.6,-686.6,H,.2);pBox(q,.4,.3,.3,0x2a2a24,X-13.6,H+.95,-686.6);
+ oB14({x:-13.6,z:-686.6,hw:.6,hd:.45,h:H+.8,y0:H});oB14({x:13.6,z:-686.6,hw:.6,hd:.45,h:H+.8,y0:H});
  /* puestos de tirador: ventanas del piso noble (fachada) agrupadas por sala */
  const PZ=ZFI-.75;for(const u of FW){const room=u<-35?'pL2':u<-16?'pL1':u<16?'pH':'pR';post14(room,u,PZ,H,0)}
  for(const u of FW)if(Math.abs(u)>4&&Math.abs(u)<35){const room=u<-16?'gL1':u<16?'gH':'gR1';post14(room,u,PZ,0,0)}}
@@ -359,7 +359,8 @@ function go14(ph,jump){const X=X14,g=L14.tank;setPh14(ph);L13.sneak=false;L13.lo
  if(ph===8){spawn14(8);obj14('SECTOR C · Cruzá la plaza de la catedral: neutralizá ametralladoras y tiradores',0,-530);L14.cp=[X,-466]}
  if(ph===9){spawn14(9);obj14('PALACIO REAL · Avanzá por los jardines destruidos hasta la puerta principal',0,-615);L14.cp=[X,-588]}
  if(ph===10){spawn14(10);obj14('INTERIOR DEL PALACIO · Gran salón, escalera monumental, piso superior y torre',0,-690);L14.cp=[X,-662]}
- if(ph===11){obj14('OBJETIVO: RETIRE LA BANDERA ENEMIGA',L14.ter.x-X,L14.ter.z)}}
+ if(ph===11){obj14('OBJETIVO: RETIRE LA BANDERA ENEMIGA',L14.ter.x-X,L14.ter.z)}
+ vStage14(ph,!!jump)}
 function upd14(dt){const ph=L14.ph,X=X14,pp=L14.inTank?L14.tank.position:P.g.position;L14.T+=dt;const T_=L14.T;
  if(ph===1){const left=L14.atg.filter(a=>a.alive).length+L14.etk.filter(a=>a.alive).length;L14.ot=L14.ot.replace(/ \(\d+ restantes\)$/,'')+' ('+left+' restantes)';if(once14('v',25))talk([['Soldado','¡Vanguardia! ¡Detrás de los tanques!']]);if(once14('h',60)&&left)ln13('Brenner','Esos cañones se esconden en las bocacalles, Hell. Use las calles laterales si hace falta.');if(left===0&&pp.z<-185)go14(2);else if(left===0&&once14('ok'))obj14('Periferia despejada · Seguí por la avenida hacia el distrito residencial',0,-190)}
  else if(ph===2){if(L14.facDown&&once14('fd'))talk([['Soldado','¡La fachada cayó! ¡Adentro, adentro!'],['Soldado','¡Vanguardia! ¡A la siguiente manzana!']]);if(L14.facDown&&pp.z<-275)go14(3)}
@@ -406,12 +407,12 @@ function vSync14(){if(!vOK14()||!AL14.v.length)return;for(const a of L14.atg.con
 function vNew14(x,z,r){if(!vOK14())return null;try{vWrap14();if(VEH32.origin)VEH32.origin(X14);else VEH32.X=X14;const v=tank32('volsk');v.name='tanque aliado';vehSpawn32(v,x,z,r===undefined?Math.PI:r);AL14.v.push(v);return v}catch(e){console.warn('vNew14',e);return null}}
 function vGo14(v,path,mode){if(!v||!v.alive)return;try{if(VEH32.origin)VEH32.origin(X14);if(typeof vehOrder32==='function')vehOrder32(v,{mode:mode||'advance',path});else if(typeof vehPath32==='function')vehPath32(v,path)}catch(e){console.warn('vGo14',e)}}
 function vPut14(v,x,z,r){if(!v)return;v.g.position.set(X14+x,0,z);v.g.rotation.y=r;v.v=0;if(typeof vhObUpd32==='function')vhObUpd32(v)}
-const VR14=[[[-46,-60],[-46,-120],[-46,-185],[-40,-214]],[[46,-60],[46,-120],[46,-185],[40,-214]],
+const VR14=[[[-46,10],[-46,-60],[-46,-120],[-46,-185],[-40,-214]],[[46,10],[46,-60],[46,-120],[46,-185],[40,-214]],
  [[-40,-250],[-40,-300],[-24,-342],[-20,-372],[-10,-402]],[[40,-250],[40,-300],[24,-342],[20,-372],[6,-400]],
  [[60,-552],[44,-552],[30,-566],[14,-600]],[[60,-552],[44,-552],[34,-574],[-10,-604]]];
 function vStage14(ph,jump){if(!vOK14())return;const st=ph<=3?0:ph<=7?1:2;if(st===AL14.st&&!jump)return;if(ph===4||ph===5)return;AL14.st=st;let A=AL14.v.filter(v=>v.alive);
  if(jump||!A.length){for(const v of AL14.v){if(v.g.parent)v.g.parent.remove(v.g);v.on=false;if(v.ob){const i=obstB.indexOf(v.ob);if(i>=0)obstB.splice(i,1);v.ob=null}const i=VEH32.list.indexOf(v);if(i>=0)VEH32.list.splice(i,1)}AL14.v=[];
-  const S=st===0?(ph<=1?[[-46,18],[46,18]]:ph===2?[[-40,-176],[40,-176]]:[[-40,-214],[40,-214]]):st===1?(ph===6?[[-40,-262],[40,-262]]:[[-10,-402],[6,-400]]):(ph>=10?[[14,-600],[-10,-604]]:[[100,-552],[112,-552]]);
+  const S=st===0?(ph<=1?[[-46,50],[46,50]]:ph===2?[[-40,-176],[40,-176]]:[[-40,-214],[40,-214]]):st===1?(ph===6?[[-40,-262],[40,-262]]:[[-10,-402],[6,-400]]):(ph>=10?[[14,-600],[-10,-604]]:[[100,-552],[112,-552]]);
   A=S.map(p=>vNew14(p[0],p[1],st===2&&ph<10?-Math.PI/2:Math.PI)).filter(Boolean)}
  else if(st===2)A.forEach((v,i)=>vPut14(v,100+i*12,-552,-Math.PI/2));
  A.forEach((v,i)=>{const r=VR14[st*2+i];if(!r)return;let k=0,bd=1e9;r.forEach((p,j)=>{const d=Math.hypot(p[0]-(v.g.position.x-X14),p[1]-v.g.position.z);if(d<bd){bd=d;k=j}});const path=r.slice(k);if(path.length)vGo14(v,path,'advance')})}
