@@ -958,3 +958,10 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - Arrastre de cámara con curva de sensibilidad e indicadores de dirección del daño.
   - Sección CONTROLES TÁCTILES en Opciones, editor de botones y protección contra toques trabados.
 - **Fiordo:** sin pasos mientras se está a bordo de la torpedera.
+
+## v38 · Capítulo II «Operación Martillo de Nieve» (versión preliminar)
+- **Mapa** (`v38_env.js`): Distrito de Varnholt y Falkenbrück.
+- **Personajes, banderas y vehículos** (`v38_lib.js`): 12.º Regimiento, FRUST, pilotos, tropas de asalto y caballeros de Veyrn; bandera del 12.º; tractor F-7 con remolque, cañón autopropulsado, camión de munición, vehículo de observación y obús.
+- **Aviación** (`v38_air.js`): cazas V-19 A/B/D, grifos blindados con jinete y Rauth sobre Eisenkrall.
+- **Misión** (`v38_mission.js`): nivel 18 con 7 actos escritos. Se detuvo antes de las pruebas completas; solo se verificó que el Acto I arranca.
+- **Pendiente:** recorrido automático de los 7 actos, puntos de control 1–6, limpieza del menú viejo y del código sin uso.
