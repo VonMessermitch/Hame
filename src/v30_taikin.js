@@ -11,7 +11,7 @@ const once16=(k,t)=>{if(N16.ev[k]||N16.T<(t||0))return false;N16.ev[k]=1;return 
 function obj16(t,x,z){obj9(t,x===undefined?undefined:X16+x,z);N16.ot=t}
 function setPh16(ph){N16.ph=ph;N16.T=0;N16.ev={};N16.st=0;try{localStorage.setItem('nachtfall30cp',String(Math.max(ph,+(localStorage.getItem('nachtfall30cp')||0))))}catch(e){}}
 function ob16(x,z,hw,hd,h,y0){const o={x:X16+x,z,hw,hd,h};if(y0!==undefined)o.y0=y0;obstB.push(o);return o}
-function sp16(k,x,z,o){o=Object.assign({tag:'t'},o||{});if(o.pat)o.pat=o.pat.map(p=>[p[0]+X16-X13,p[1]]);const e=sp13(k,x+X16-X13,z,o);e.t13=o.tag;
+function sp16(k,x,z,o){o=Object.assign({tag:'t'},o||{});if(level===16&&N16.foot&&SAFE37(o.tag)){const r=safeSpot37(x,z,o.pat);x=r[0];z=r[1]}if(o.pat)o.pat=o.pat.map(p=>[p[0]+X16-X13,p[1]]);const e=sp13(k,x+X16-X13,z,o);e.t13=o.tag;
  const M={};M[PRG.coat]=ZH28.coat;M[PRG.pants]=ZH28.pants;M[PRG.bad]=ZH28.bad;e.g.traverse(m=>{if(!m.isMesh||!m.material||!m.material.color||m.material.vertexColors)return;const h=m.material.color.getHex();if(M[h]!==undefined)m.material=mc30(M[h])});zhKit30(e,o.kind||(k==='bar'?'support':'line'));if(o.y)e.g.position.y=o.y;return e}
 const alive16=tag=>enemies.filter(e=>e.t13===tag&&e.hp>0);
 /* =====================================================================
@@ -64,8 +64,7 @@ function aaSite16(name,x,z,k){const X=X16,q=PB();for(let i=0;i<22;i++){const a=i
 /* =====================================================================
    ACTUALIZACIÓN AMBIENTAL: fuego antiaéreo al cielo, reflectores, humos
    ===================================================================== */
-function sky16(dt){const act=N16.aa.filter(a=>a.alive);for(const a of N16.aa){for(const g of a.guns){gunKick30(g,dt);if(!a.alive)continue;const u=g.userData;const tz=N16.zepT;let ty=-.9-.3*Math.sin(time*.3+a.k),tyaw=time*.18*a.k;if(tz){const w=new T.Vector3();g.getWorldPosition(w);tyaw=Math.atan2(tz.x-w.x,tz.z-w.z)-g.rotation.y;ty=-Math.atan2(tz.y-w.y,Math.hypot(tz.x-w.x,tz.z-w.z))}u.yaw.rotation.y=TT28(u.yaw.rotation.y,AD30(0,tyaw),dt*.8);u.pitch.rotation.x+=(CL30(ty,-1.35,-.15)-u.pitch.rotation.x)*Math.min(1,dt*2)}
-  if(!a.alive)continue;a.cd-=dt;if(a.cd<=0&&a.guns[0]){a.cd=N16.zepT?.5:1.4+R()*1.6;const g=a.guns[R()*a.guns.length|0],u=g.userData;u.kick=1;for(let i=0;i<4;i++){const mz=u.muzzles[i],o=new T.Vector3();mz.getWorldPosition(o);const d=new T.Vector3();mz.getWorldDirection(d);fb12(o.x,o.y,o.z,.9,.06,0);if(i%2===0){const e=o.clone().addScaledVector(d,140+R()*80);trc16(o.clone(),e,0xffb060);later13(.4+R()*.4,()=>{smoke(e.x,e.y,e.z,5,3,0x141414,.3,.8);burst(e.x,e.y,e.z,0xffc060,5,.3,8);flashLight(e.x,e.y,e.z,1.5,.1,0xffc070)})}}if(cam.position.distanceTo(g.position)<260&&!(typeof aaQuad34==='function'&&aaQuad34(g.position.x,g.position.z)))tn18('square',150,70,.12,.05*CL30(1-cam.position.distanceTo(g.position)/260,0,1))}}
+function sky16(dt){const act=N16.aa.filter(a=>a.alive);flak37(dt);
  for(const s of N16.srch){s.t+=dt*s.sp;if(s.sky){s.m.rotation.set(Math.PI-.45+Math.sin(s.t*.7)*.3,0,Math.sin(s.t)*.5)}else{s.m.rotation.set(.6+Math.sin(s.t*.5)*.15,s.t*.6,0)}}
  N16.sk=(N16.sk||0)-dt;if(N16.sk<=0){N16.sk=.3;const p=N16.smk[R()*N16.smk.length|0];if(p)smoke(p[0],p[1],p[2],6,9,0x2a2826,2.6,.55)}
  /* destellos lejanos de fuego antiaéreo en el horizonte según la actividad que queda */N16.hz=(N16.hz||0)-dt;if(N16.hz<=0){N16.hz=(4-act.length)*1.5+1.2+R()*2;if(act.length){const x=X16+(R()-.5)*700,z=-200-R()*300;fb12(x,90+R()*60,z,6,.3,0);smoke(x,100+R()*40,z,8,4,0x121212,.2,.7)}}}
@@ -201,7 +200,7 @@ AMBL[16]=['wind','wind','arty','wind','dog'];
 {const _au=allyUpdate;allyUpdate=function(dt){if(level===16){for(const a of allies)if(a.name)a.g.visible=false;if(officer)officer.g.visible=false;return}return _au(dt)}}
 {const _mu=medUpd;medUpd=function(dt){if(level===16){if(MED)MED.g.visible=false;return}return _mu(dt)}}
 {const _ai=aiTick20;aiTick20=function(dt){if(level===16)return;return _ai(dt)}}
-{const _hp=hitP;hitP=function(d){if(level===16){if(!N16.foot)return;VM13.hit=1;d*=.8}_hp(d)}}
+{const _hp=hitP;hitP=function(d){if(level===16){if(!N16.foot&&!N16.fk)return;VM13.hit=1;d*=.8}_hp(d)}}
 {const _sw=swap;swap=function(){if(level===16&&playing){if(L9.cine||!N16.foot||VM13.seq)return;const A=N16.arm;P.cur=A[(A.indexOf(P.cur)+1)%A.length];P.rel=0;P.reloading=null;VM13.lift=0;return}_sw()}}
 {const _fi=fire;fire=function(){if(level===16&&playing){if(L9.cine||!N16.foot)return;if(!N16.arm.includes(P.cur))P.cur=N16.arm[0];const n=bullets.length;_fi();if(bullets.length>n){VM13.k=1;VM13.sl=1;vmShell13();L13.loud=true}return}return _fi()}}
 {const _in=interact;interact=function(){if(level===16&&playing&&!L9.cine){if(N16.desc){N16.desc.req=true;return}if(N16.ph===0&&!N16.kit){const pp=P.g.position;if(Math.hypot(pp.x-X12-14,pp.z-24)<2.6){N16.kit=true;feed('★ Paracaídas, máscara y munición revisados');talk([['Feldwebel Ostermann','Bien. Ahora a la rampa, que el cepelín no espera a los prolijos.',2.4]])}return}if(N16.work){N16.work=null;return}const pp=P.g.position;for(const c of works16())if(Math.hypot(pp.x-c.x,pp.z-c.z)<c.r){N16.work=Object.assign({},c,{t:0});return}return}return _in()}}
@@ -215,3 +214,121 @@ AMBL[16]=['wind','wind','arty','wind','dog'];
  const S='background:#302417;color:#f3e6c4;padding:10px;border:1px solid #a77b35';$('lvsel').parentElement.insertAdjacentHTML('afterend','<label id="cp16l">PUNTO DE CONTROL <select id="cp16" style="'+S+'"><option value="0">Base de cepelines (misión completa)</option><option value="2">El salto de emergencia</option><option value="3">Reagrupar la escuadra</option><option value="5">Las tres antiaéreas</option><option value="6">Solicitar refuerzos</option></select></label>');const sx=()=>{$('cp16l').style.display=$('lvsel').value==='16'?'':'none'};$('lvsel').addEventListener('change',sx);sx();const cm=$('cmCP');if(cm)cm.appendChild($('cp16l'))}
 try{if(sessionStorage.getItem('sel16')){const v=sessionStorage.getItem('sel16');sessionStorage.removeItem('sel16');$('lvsel').value='16';$('cp16').value=v;$('lvsel').dispatchEvent(new Event('change'))}}catch(e){}
 {const _g=$('go').onclick;$('go').onclick=function(){if($('lvsel').value!=='16')return _g.apply(this,arguments);if(N16.built||(typeof L12!=='undefined'&&L12.built)){try{sessionStorage.setItem('sel16',$('cp16').value)}catch(e){}if(N16.on||L12.built){location.reload();return}}V20.ps2=$('ps2fog').value;difficulty=$('difficulty').value;try{ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();startMusic()}catch(e){}$('menu').style.display='none';P.g.visible=true;cam.fov=65;cam.updateProjectionMatrix();startLevel16();try{rend.domElement.requestPointerLock()}catch(e){}}}
+/* =====================================================================
+   v37 · AIRE (nivel 16 «Nachtfall»): dotaciones visibles en las antiaéreas
+   (apuntar, girar, cargar, disparar, retroceso), paso coherente de la dotación
+   a infantería cuando las atacan, flak con calentamiento, seguimiento,
+   anticipación y ráfagas peligrosas en vuelo y descenso, y más patrullas con
+   rutas, investigación de ruidos y coordinación con los guardias fijos
+   ===================================================================== */
+const AA37={sh:0,bu:0,near:0,dmg:0,crew:0,dis:0,inv:0,co:0,pat:0,unsafe:0,moved:0,t0:0,ph:{}};
+const W37a=new T.Vector3(),W37b=new T.Vector3(),W37c=new T.Vector3(),W37d=new T.Vector3();
+const SAFE37=t=>t==='pat'||t==='rx'||/^p37/.test(t||'');
+const inObs37=(wx,wz)=>obstB.some(o=>!(o.y0>2)&&Math.abs(wx-o.x)<o.hw+.6&&Math.abs(wz-o.z)<o.hd+.6);
+/* ¿el punto (mundo) está a la vista del jugador o encima de él? */
+function seen37(wx,wz){const pp=P.g.position,d=Math.hypot(wx-pp.x,wz-pp.z);if(d<45)return true;if(d>180)return false;cam.updateMatrixWorld();W37c.set(wx,1.4,wz).project(cam);if(W37c.z<1&&Math.abs(W37c.x)<1.15&&Math.abs(W37c.y)<1.15)return losClear(pp.x,1.6,pp.z,wx,1.4,wz);return false}
+/* punto de aparición seguro (coordenadas relativas a X16): un punto de la ruta fuera de vista, o alejado del jugador */
+function safeSpot37(x,z,pat){if(!seen37(X16+x,z))return[x,z];AA37.moved++;
+ if(pat){const n=pat.length,i0=R()*n|0;for(let k=0;k<n;k++){const w=pat[(i0+k)%n];if(!seen37(X16+w[0],w[1])&&!inObs37(X16+w[0],w[1]))return[w[0],w[1]]}}
+ const pp=P.g.position;let dx=X16+x-pp.x,dz=z-pp.z;const d=Math.hypot(dx,dz)||1;dx/=d;dz/=d;
+ for(let r=70;r<=190;r+=20)for(const a of[0,.5,-.5,1,-1]){const c=Math.cos(a),s=Math.sin(a),ux=dx*c-dz*s,uz=dx*s+dz*c,nx=pp.x+ux*r,nz=pp.z+uz*r;if(!seen37(nx,nz)&&!inObs37(nx,nz))return[nx-X16,nz]}
+ AA37.unsafe++;return[x,z]}
+/* ---------- dotaciones de las antiaéreas ---------- */
+let SHELL37=null,CLIP37=null,RACK37=null;
+function prop37(e,kind){const u=e.g.userData;if(!e.prop37){if(!CLIP37){CLIP37=new T.Mesh(new T.BoxGeometry(.14,.22,.36),new T.MeshLambertMaterial({color:0x3a3a30}));SHELL37=new T.Mesh(new T.CylinderGeometry(.06,.06,.75,8),new T.MeshLambertMaterial({color:0xb08a40}))}e.prop37=(kind==='shell'?SHELL37:CLIP37).clone();e.prop37.position.set(0,-.62,.18);if(kind==='shell')e.prop37.rotation.x=1.3;u.aR.add(e.prop37)}e.prop37.visible=true}
+function rack37(a){if(a.rack)return;const q=PB(),x=X16+a.x+3.2,z=a.z+4.2;pBox(q,1.3,.08,.3,0x4a3a28,x,1.15,z-.1);for(let i=0;i<4;i++){pBox(q,.06,1.25,.07,0x3a2a1a,x-.45+i*.3,.62,z+.05,-.18,0,0);pBox(q,.035,.5,.04,0x2a2a2a,x-.45+i*.3,1.2,z-.06,-.18,0,0)}pbMesh(q,scene,VCV);a.rack={x,z:z+.8}}
+function crewSpawn37(){if(N16.crew37||!N16.built)return;N16.crew37=true;
+ for(const a of N16.aa){a.crew=[];for(const g of a.guns)g.userData.crew37=[];if(a.f88)a.f88.userData.crew37=[];if(!a.alive)continue;rack37(a);
+  const add=(g,role,lx,lz)=>{g.updateMatrixWorld(true);const u=g.userData;u.yaw.localToWorld(W37a.set(lx,0,lz));const e=sp16(role==='load'||role==='load88'?'mosin':R()<.5?'stv':'mosin',W37a.x-X16,W37a.z,{tag:'aac'+a.k,un:true,hold:true,kind:'line'});
+   e.aaC={a,g,role,st:'op',t:R()*3,cy:R()*6,lx,lz,ls:'idle',lt:1+R()*2};e.g.userData.mR.visible=false;a.crew.push(e);u.crew37.push(e);AA37.crew++;return e};
+  a.guns.forEach((g,i)=>{add(g,'gun',-1.15,-.35);if(i===0)add(g,'aim',1.15,-.35);add(g,'load',1.95,.5)});
+  if(a.f88){add(a.f88,'lay',-.95,-.4);add(a.f88,'load88',.9,-2.1)}}}
+const SEATED37={gun:1,aim:1,lay:1};
+function crewOK37(u){const C=u.crew37;if(!C||!C.length)return !N16.crew37;for(const e of C)if(e.hp>0&&e.aaC&&e.aaC.st==='op'&&SEATED37[e.aaC.role])return true;return false}
+function crewAlarm37(a,why){let n=0;for(const e of a.crew){const C=e.aaC;if(!C||C.st!=='op'||e.hp<=0)continue;C.st='alarm';C.t=0;C.dl=.35+n*.25+R()*.5;n++}
+ if(n&&(!a.sh37||time-a.sh37>8)){a.sh37=time;const L={baja:['«¡Le dieron a Wen! ¡Abajo del cañón!»','«¡Cayó el apuntador! ¡A cubierto!»'],carga:['«¡Una carga en el cañón! ¡Fuera de ahí!»'],ataque:['«¡Nos atacan! ¡Dejen la pieza, tomen los fusiles!»','«¡Paracaidistas! ¡Todos abajo, a los fusiles!»']}[why]||['«¡Alarma en la batería!»'];
+  const pp=P.g.position;if(Math.hypot(X16+a.x-pp.x,a.z-pp.z)<120)say(L[R()*L.length|0],1.8)}}
+/* la dotación solo abandona la pieza si la amenaza está cerca de SU posición (no por una alarma general lejana) */
+function near37(a){const pp=P.g.position,x=X16+a.x;if(Math.hypot(x-pp.x,a.z-pp.z)<160)return true;for(const n of(N16.sq||[]))if(n.g&&Math.hypot(x-n.g.position.x,a.z-n.g.position.z)<70)return true;return false}
+{const _al=alert13;alert13=function(e,grp){if(e&&e.aaC&&e.aaC.st!=='free'){if(e.aaC.st==='op'){e.sus=0;if(near37(e.aaC.a))crewAlarm37(e.aaC.a,'ataque')}return}return _al(e,grp)};var AL37=_al}
+function pose37(e,sit,ar,al,er,el){const u=e.g.userData;u.l1.position.y=u.l2.position.y=.8;u.l1.rotation.x=u.l2.rotation.x=-1.45*sit;u.k1.rotation.x=u.k2.rotation.x=1.45*sit;u.aR.rotation.x=ar;u.aL.rotation.x=al;if(u.eR)u.eR.rotation.x=er;if(u.eL)u.eL.rotation.x=el}
+function place37(e,x,y,z,f){const p=e.g.position;p.set(x,y,z);if(e.hold){e.hold[0]=x;e.hold[1]=y;e.hold[2]=z}else e.hold=[x,y,z];e.ph13=f;e.g.rotation.y=f;e.vx=e.vz=0}
+function walk37(e,tx,tz,sp,dt){const p=e.g.position,dx=tx-p.x,dz=tz-p.z,d=Math.hypot(dx,dz);if(d<.15)return true;const k=Math.min(d,sp*dt)/d;place37(e,p.x+dx*k,0,p.z+dz*k,Math.atan2(dx,dz));animE(e,1,0,dt,false);return d<.3}
+function crewUpd37(dt){if(!N16.crew37)return;const pp=P.g.position;
+ for(const a of N16.aa){if(!a.crew||!a.crew.length)continue;let lost=false;
+  for(const e of a.crew){const C=e.aaC;if(!C)continue;if(e.hp<=0||!enemies.includes(e)){if(!C.dead){C.dead=1;if(C.st!=='free')lost=true;if(e.prop37)e.prop37.visible=false}continue}
+   if(C.st==='free')continue;C.t+=dt;const g=C.g,u=g.userData,F=u.fk||{},kick=u.kick||0,eu=e.g.userData;
+   if(C.st==='op'){if(e.hp<e.max-.5||!a.alive||a.charge){e.unaware=true;crewAlarm37(a,a.charge?'carga':'ataque')}else if(!e.unaware){e.unaware=true;if(near37(a))crewAlarm37(a,'ataque')}}
+   const wy=g.rotation.y+u.yaw.rotation.y;
+   if(SEATED37[C.role]&&(C.st==='op'||C.st==='alarm')){/* sentado en la pieza: manivelas, mira, retroceso */g.updateMatrixWorld(true);u.yaw.localToWorld(W37a.set(C.lx,.5,C.lz));place37(e,W37a.x,W37a.y-.75,W37a.z,wy);
+    const op=C.st==='op',rate=op?(C.role==='aim'?Math.abs(F.pr||0)*3:Math.abs(F.yr||0)*2.5):0;C.cy+=dt*(2+rate*9);const cr=op?Math.sin(C.cy)*(.12+Math.min(.45,rate*.6)):0;
+    pose37(e,1,-1.15+cr,-1.15-cr,-.5,-.5);eu.ch.rotation.x=-.14*kick;eu.hd.rotation.x=op?(C.role==='aim'?-.45:-.3)+u.pitch.rotation.x*.25:0;
+    if(!op){const f=Math.atan2(pp.x-e.g.position.x,pp.z-e.g.position.z);eu.hd.rotation.y=CL30(AD30(wy,f),-1.1,1.1)*Math.min(1,C.t*3)}else eu.hd.rotation.y=0;
+    if(C.st==='alarm'&&C.t>C.dl){C.st='climb';C.t=0;C.p0=e.g.position.clone();u.yaw.localToWorld(W37b.set(C.lx*1.9,0,C.lz-.6));C.p1=new T.Vector3(W37b.x,0,W37b.z);eu.hd.rotation.y=0}}
+   else if(C.st==='climb'){/* baja de la pieza: se levanta, pasa la pierna, salta al suelo */const k=Math.min(1,C.t/.9),s=k*k*(3-2*k);W37a.copy(C.p0).lerp(C.p1,s);W37a.y=C.p0.y*(1-s)+Math.sin(s*Math.PI)*.25;place37(e,W37a.x,W37a.y,W37a.z,wy+s*1.2*Math.sign(C.lx||1));pose37(e,1-s,-.6-s*.3,-.6,-.4,-.4);eu.ch.rotation.x=.25*Math.sin(s*Math.PI);if(k>=1){eu.ch.rotation.x=0;C.st='grab';C.t=0}}
+   else if(C.st==='op'&&(C.role==='load'||C.role==='load88')){/* cargador: busca munición en las cajas y alimenta la pieza */const big=C.role==='load88';g.updateMatrixWorld(true);u.yaw.localToWorld(W37a.set(C.lx,0,C.lz));const gx=W37a.x,gz=W37a.z,ax=X16+a.x+5.4,az=a.z-3.9;
+    if(C.ls==='idle'){const f=Math.atan2(g.position.x-gx,g.position.z-gz);place37(e,gx,0,gz,f);pose37(e,0,-.35+Math.sin(time*1.3+C.cy)*.05,-.3,-.3,-.3);eu.ch.rotation.x=0;C.lt-=dt;if(C.lt<=0&&(F.bl||0)>=(big?1:2)){C.ls='fetch';F.bl=0;if(big)F.ready=false}else if(C.lt<=0)C.lt=.8}
+    else if(C.ls==='fetch'){if(walk37(e,ax,az,2.2,dt)){C.ls='pick';C.lt=.9}eu.ch.rotation.x=0}
+    else if(C.ls==='pick'){C.lt-=dt;animE(e,0,0,dt,true);pose37(e,0,-1.6,-1.6,-.2,-.2);eu.ch.rotation.x=.5;if(C.lt<=0){prop37(e,big?'shell':'clip');C.ls='ret';eu.ch.rotation.x=0;tn18('square',300,200,.05,.02)}}
+    else if(C.ls==='ret'){if(walk37(e,gx,gz,1.8,dt)){C.ls='ins';C.lt=.8}pose37(e,0,-1.25,-1.25,-.5,-.5)}
+    else if(C.ls==='ins'){C.lt-=dt;const f=Math.atan2(g.position.x-gx,g.position.z-gz);place37(e,gx,0,gz,f);const k=1-C.lt/.8;pose37(e,0,big?-1.5:-2.5+k*.4,big?-1.5:-2.5+k*.4,-.2,-.2);eu.ch.rotation.x=big?.15*Math.sin(k*Math.PI):-.1;if(C.lt<=0){if(e.prop37)e.prop37.visible=false;C.ls='idle';C.lt=.6+R();if(big)F.ready=true;tn18('square',big?260:420,big?160:300,.08,.04);if(u.fk)u.fk.ready=true}}}
+   else if(C.st==='alarm'){/* cargador en el suelo: suelta lo que lleva y mira al atacante */if(e.prop37)e.prop37.visible=false;const p=e.g.position;place37(e,p.x,0,p.z,Math.atan2(pp.x-p.x,pp.z-p.z));pose37(e,0,-.4,-.4,-.3,-.3);if(C.t>C.dl){C.st='grab';C.t=0}}
+   if(C.st==='grab'){/* corre al armero de la posición */const R_=a.rack,tx=R_.x+(a.crew.indexOf(e)%4-1.5)*.4,tz=R_.z;if(walk37(e,tx,tz,3,dt)||C.t>5){C.st='arm';C.t=0}}
+   else if(C.st==='arm'){/* toma el fusil, lo carga y se pone a cubierto */animE(e,0,0,dt,true);pose37(e,.3,-1.2,-1.4,-.4,-.4);if(C.t>.35&&!eu.mR.visible){eu.mR.visible=true;tn18('square',1500,900,.04,.03)}
+    if(C.t>.8){C.st='free';delete e.hold;e.unaware=true;AL37(e);e.alert=.15+R()*.3;AA37.dis++;eu.ch.rotation.x=0;eu.hd.rotation.set(0,0,0);if(e.a33&&typeof findCover==='function'){try{findCover(e)}catch(_){}}}}}
+  if(lost)crewAlarm37(a,'baja')}}
+/* ---------- flak: calentamiento, seguimiento, giro limitado, anticipación y ráfagas de tiempo ---------- */
+function aaTg37(){const L=[];if(L9.cine&&N16.zepT)L.push({p:N16.zepT,k:'zep'});
+ if(N16.desc&&!L9.cine&&P.g.position.y>16)L.push({p:P.g.position,k:'pl'});
+ if(N16.ph>=2&&N16.ph<=3)for(const n of N16.paras)if(n.desc&&n.g.position.y>25)L.push({p:n.g.position,k:'para'});
+ if(!L9.cine&&L12.zp&&L12.zp.visible&&N16.ph>=2&&N16.ph<=4&&L12.zp.position.y>40)L.push({p:L12.zp.position,k:'zep'});return L}
+function flak37(dt){N16.ftT=(N16.ftT||0)-dt;if(N16.ftT<=0){N16.ftT=.25;N16.ftL=aaTg37()}const L=N16.ftL||[];
+ for(const a of N16.aa){const G=a.f88?[...a.guns,a.f88]:a.guns;for(const g of G){gunKick30(g,dt);if(!a.alive)continue;const u=g.userData,is88=g===a.f88;
+  const F=u.fk||(u.fk={tg:null,acq:0,cd:1+R()*2,bl:0,bi:0,lp:new T.Vector3(),vel:new T.Vector3(),wp:null,ready:true,yr:0,pr:0});
+  if(!F.wp){g.updateMatrixWorld(true);F.wp=new T.Vector3();u.pitch.getWorldPosition(F.wp)}
+  const man=crewOK37(u),rg=is88?2400:1000;let tg=null,bd=rg;if(man)for(const t of L){const d=t.p.distanceTo(F.wp);const w=t.k==='pl'?d*.8:d;if(w<bd){bd=w;tg=t}}if(tg)bd=tg.p.distanceTo(F.wp);
+  if(!tg||!F.tg||tg.p!==F.tg.p){F.tg=tg;F.acq=0;if(tg){F.lp.copy(tg.p);F.vel.set(0,0,0)}}
+  let ty,tp;if(tg){F.vel.lerp(W37a.copy(tg.p).sub(F.lp).divideScalar(Math.max(dt,1e-3)),Math.min(1,dt*2.5));F.lp.copy(tg.p);const tof=bd/(is88?650:560);W37b.copy(tg.p).addScaledVector(F.vel,tof);F.aim=F.aim||new T.Vector3();F.aim.copy(W37b);
+   const dx=W37b.x-F.wp.x,dy=W37b.y-F.wp.y,dz=W37b.z-F.wp.z;ty=AD30(0,Math.atan2(dx,dz)-g.rotation.y);tp=CL30(-Math.atan2(dy,Math.hypot(dx,dz)),-1.4,-.08)}
+  else{ty=AD30(0,time*.18*a.k+(is88?1.2:0)+(a.guns.indexOf(g)*.8));tp=-.9-.3*Math.sin(time*.3+a.k)}
+  if(!man){u.pitch.rotation.x+=(-.15-u.pitch.rotation.x)*Math.min(1,dt*.5);F.yr=F.pr=0;continue}
+  const ys=(is88?.42:1.05)*dt,ps=(is88?.32:.85)*dt,y0=u.yaw.rotation.y,p0=u.pitch.rotation.x;u.yaw.rotation.y=TT28(y0,ty,ys);u.pitch.rotation.x=p0+CL30(tp-p0,-ps,ps);F.yr=(u.yaw.rotation.y-y0)/Math.max(dt,1e-3);F.pr=(u.pitch.rotation.x-p0)/Math.max(dt,1e-3);
+  const err=Math.abs(AD30(u.yaw.rotation.y,ty))+Math.abs(tp-u.pitch.rotation.x);F.cd-=dt;
+  if(tg){if(err<.12)F.acq+=dt;else F.acq=Math.max(0,F.acq-dt*.6);
+   if(F.cd<=0&&err<.12&&F.acq>(is88?3:1.6)&&(!is88||F.ready!==false)){const spr=bd*(is88?.05:.06)*Math.max(.45,1.5-F.acq/8),aim=F.aim.clone();
+    if(is88){F.cd=3.2+R()*.8;F.bl++;shot37(g,F,true,aim,spr,1);if(!(typeof gun88_34==='function'&&gun88_34(F.wp.x,F.wp.z)))expSnd(F.wp.x,F.wp.z,.9)}
+    else{F.cd=1.05+R()*.7;F.bl++;const n=5+(R()*3|0);for(let i=0;i<n;i++)later13(i*.1,()=>{if(a.alive&&crewOK37(u))shot37(g,F,false,aim,spr,i%3===1?1:0)});if(!(typeof aaQuad34==='function'&&aaQuad34(F.wp.x,F.wp.z)))tn18('square',150,70,.12,.05*CL30(1-cam.position.distanceTo(F.wp)/300,0,1))}}}
+  else if(F.cd<=0&&N16.ph>=2&&N16.ph<=5){/* fuego de barrera al azar mientras no hay blanco: mantiene vivo el cielo */F.cd=(is88?7:2.6)+R()*3;if(is88&&F.ready===false)continue;F.bl++;const mz=u.muzzles[0];mz.getWorldPosition(W37a);mz.getWorldDirection(W37b);const aim=W37a.clone().addScaledVector(W37b,300+R()*200);
+   if(is88){shot37(g,F,true,aim,30,1);typeof gun88_34==='function'&&gun88_34(F.wp.x,F.wp.z)}else{for(let i=0;i<4;i++)later13(i*.11,()=>{if(a.alive&&crewOK37(u))shot37(g,F,false,aim,25,i===2?1:0)});typeof aaQuad34==='function'&&aaQuad34(F.wp.x,F.wp.z)}}}}}
+function shot37(g,F,is88,aim,spr,fuse){const u=g.userData,mz=u.muzzles[(F.bi++)%u.muzzles.length];mz.getWorldPosition(W37a);u.kick=1;AA37.sh++;
+ const b=aim.clone();b.x+=(R()+R()-1)*spr;b.y+=(R()+R()-1)*spr;b.z+=(R()+R()-1)*spr;fb12(W37a.x,W37a.y,W37a.z,is88?2.6:.9,.06,0);if(is88)smoke(W37a.x,W37a.y,W37a.z,2,2,0x4a4a4a,.5,.5);
+ const end=fuse?b:W37d.copy(b).sub(W37a).multiplyScalar(1.4).add(W37a).clone();trc16(W37a.clone(),end,is88?0xffd090:0xffb060);
+ if(fuse){const tof=Math.min(2.6,W37a.distanceTo(b)/(is88?650:560));later13(tof,()=>burst37(b,is88))}}
+function burst37(b,is88){AA37.bu++;AA37.lb=b;smoke(b.x,b.y,b.z,is88?12:6,3,0x262422,is88?.6:.35,is88?1.2:.9);burst(b.x,b.y,b.z,0xffc060,is88?10:6,.3,9);flashLight(b.x,b.y,b.z,is88?3.4:2,.14,0xffc070);fb12(b.x,b.y,b.z,is88?10:4.5,is88?.4:.22,0);
+ const dc=cam.position.distanceTo(b);if(dc<300&&(is88||R()<.5))expSnd(b.x,b.z,is88?.8:.35);
+ if(N16.desc&&!L9.cine){const p=P.g.position,d=Math.hypot(p.x-b.x,p.y+1-b.y,p.z-b.z),Rl=is88?14:6.5;if(d<Rl*2.4){AA37.near++;shake=Math.max(shake,(is88?1.8:.9)*(1-d/(Rl*2.4)))}
+  if(d<Rl){let dm=(is88?30:12)*Math.pow(1-d/Rl,.7)*({easy:.6,normal:1,hard:1.3}[difficulty]||1);dm=Math.min(dm,Math.max(0,P.hp-12));if(dm>.5){N16.fk=1;try{hitP(dm)}finally{N16.fk=0}AA37.dmg+=dm;if(!N16.fkS||time-N16.fkS>5){N16.fkS=time;say(['¡Esquirlas! ¡Maniobrá con el paracaídas para salir del fuego!','¡Flak encima! ¡Cambiá de rumbo!','¡Te están siguiendo con la cuádruple! ¡Zigzagueá!'][R()*3|0],2)}}}}}
+/* ---------- más patrullas: rutas por caminos y calles, investigación y coordinación ---------- */
+const PR37={3:[['p37a',[[-250,120],[-150,118],[-40,122],[60,120]],2],['p37b',[[-110,130],[-110,200],[-110,270]],2],['p37c',[[40,150],[92,170],[100,250],[40,272]],2,true]],
+ 4:[['p37d',[[-230,96],[-120,98],[0,100],[120,98],[230,96]],2]],
+ 5:[['p37e',[[-150,30],[-150,-30],[-150,-110]],3],['p37f',[[4,25],[4,-60],[4,-95],[8,-104],[8,-125],[4,-200]],3],['p37g',[[60,-205],[110,-205],[200,-205]],2]]};
+const PTAG37=t=>t==='pat'||t==='lzp'||t==='rx'||/^p37/.test(t||'');
+function patSpawn37(ph){const L=PR37[ph];if(!L||N16['pr37_'+ph])return;N16['pr37_'+ph]=1;
+ for(const [tag,path,n,loop] of L){const pp=loop?path:path.concat(path.slice(1,-1).reverse());for(let k=0;k<n;k++){const off=k*1.5;const e=sp16(k===2?'bar':k===1?'stv':'mosin',pp[0][0]+off,pp[0][1]+off*.5,{tag,un:true,lamp:k===0,kind:k===0?'recon':'line',pat:pp.map(p=>[p[0]+off,p[1]+off*.5])});e.grp37=tag;AA37.pat++}}}
+function patUpd37(dt){N16.pt37=(N16.pt37||0)-dt;const pp=P.g.position;
+ /* desplazamiento extra al investigar (stealth13 camina a 1,3 m/s) */for(const e of enemies){const I=e.inv37;if(!I||!e.unaware||e.hp<=0)continue;const p=e.g.position,dx=I.x-p.x,dz=I.z-p.z,d=Math.hypot(dx,dz);if(d>1.5){p.x+=dx/d*1.1*dt;p.z+=dz/d*1.1*dt}}
+ if(N16.pt37>0)return;N16.pt37=.25;
+ /* ruidos nuevos: disparos del jugador o de su escuadra y explosiones */const NS=[];if(typeof AI33!=='undefined'&&AI33.N){for(const q of AI33.N)if(q.t>(N16.nT37||0)&&(q.src==='player'||q.src==='ally'||q.src==='boom')&&q.r>=30)NS.push(q);if(AI33.N.length)N16.nT37=Math.max(N16.nT37||0,AI33.N[AI33.N.length-1].t)}else if(firing&&P.cd>0)NS.push({x:pp.x,z:pp.z,r:75});
+ for(const e of enemies){if(e.hp<=0)continue;const p=e.g.position;
+  /* coordinación: el que se alerta avisa a los cercanos (patrullas, guardias fijos, dotaciones) */
+  if(e.wasU37&&!e.unaware&&(e.co37||0)<2&&(PTAG37(e.t13)||e.hold||/^(per|aa\d|aac|lz)/.test(e.t13||''))){AA37.co++;const dep=(e.co37||0)+1;if(!N16.coS||time-N16.coS>5){N16.coS=time;say(['«¡Alarma! ¡Paracaidistas en el sector!»','«¡Por acá! ¡Refuerzos, rápido!»','«¡Contacto! ¡Avisen al puesto!»'][R()*3|0],1.6)}
+   for(const q of enemies){if(q===e||!q.unaware||q.hp<=0)continue;const d=q.g.position.distanceTo(p);if(d<48)later13(.4+d/40+R()*.6,()=>{if(q.hp>0&&q.unaware&&enemies.includes(q)){q.sus=1;q.co37=dep;alert13(q)}})}}
+  e.wasU37=e.unaware;if(!e.unaware||!e.pat||e.aaC)continue;
+  const I=e.inv37;if(I){I.t+=.25;const d=Math.hypot(I.x-p.x,I.z-p.z);if(d<2.2){I.w+=.25;e.ph13+=Math.sin(time*1.7+e.t)*.25}if(I.w>5||I.t>30){e.pat=I.pat;e.pi=I.pi;e.inv37=null}continue}
+  for(const n of NS){const d=Math.hypot(n.x-p.x,n.z-p.z);if(d>10&&d<n.r*1.6){const ix=n.x+(R()-.5)*10,iz=n.z+(R()-.5)*10;e.inv37={x:ix,z:iz,t:0,w:0,pat:e.pat,pi:e.pi};e.pat=[[ix,iz]];e.pi=0;e.sus=Math.max(e.sus||0,.45);AA37.inv++;if(!N16.ivS||time-N16.ivS>6){N16.ivS=time;if(d<90)say(['«¿Oyeron eso? Vamos a mirar.»','«Disparos hacia allá… ¡en línea, despacio!»'][R()*2|0],1.6)}break}}}}
+/* ---------- enganches ---------- */
+{const _g=go16;go16=function(ph,jump){if(jump){N16.crew37=false;for(const k of[3,4,5])N16['pr37_'+k]=0}_g(ph,jump);if(level!==16)return;if(ph<=5)crewSpawn37();if(ph>=3&&ph<=5)patSpawn37(ph)}}
+{const _c=cineFlight16;cineFlight16=function(){_c();crewSpawn37()}}
+{const _s=startDescent16;startDescent16=function(){crewSpawn37();AA37.t0=time;AA37.sh0=AA37.sh;_s()}}
+{const _st=startLevel16;startLevel16=function(){N16.crew37=false;for(const k of[3,4,5])N16['pr37_'+k]=0;Object.assign(AA37,{sh:0,bu:0,near:0,dmg:0,crew:0,dis:0,inv:0,co:0,pat:0,unsafe:0,moved:0});return _st.apply(this,arguments)}}
+{const _u=update;update=function(dt){const r=_u(dt);if(level===16&&N16.built&&playing){try{crewUpd37(dt);if(N16.foot&&!L9.cine)patUpd37(dt)}catch(err){if(!AA37.err){AA37.err=String(err);console.warn('v37 aa',err)}}}return r}}

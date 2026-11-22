@@ -296,7 +296,7 @@ function vehSpawn32(v,x,z,rot){const S=v.spec,g=v.g;g.position.set(VEH32.X+x,v.t
  if(!v.hit&&typeof HIT9!=='undefined'){v.hit={foe:!v.ally,x:()=>v.g.position.x,z:()=>v.g.position.z,y0:0,y1:S.h,r:Math.min(S.hw,S.hd)+.35+(v.type==='ship'?S.hd*.5:0),ok:()=>v.on&&(v.alive||v.crewHp>0&&v.type!=='ship')&&!v.ally,dmg:(d,k)=>vhVehDmg32(v,d,k,P.g.position.x,P.g.position.z)};HIT9.push(v.hit)}
  return v}
 function vhObUpd32(v){const o=v.ob;if(!o)return;const S=v.spec,a=v.g.rotation.y,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a));o.x=v.g.position.x+Math.sin(a)*S.cz;o.z=v.g.position.z+Math.cos(a)*S.cz;o.hw=c*S.hw+s*S.hd;o.hd=s*S.hw+c*S.hd}
-function vehPath32(v,pts,opts){opts=opts||{};v.path=pts.map(p=>[VEH32.X+p[0],p[1]]);v.pi=0;v.loop=!!opts.loop;v.vmax=opts.speed||v.spec.vmax||5;v.onEnd=opts.onEnd||null;v.halt=!!opts.halt;v.arrived=false;v.hold=false;return v}
+function vehPath32(v,pts,opts){opts=opts||{};v.path=pts.map(p=>[VEH32.X+p[0],p[1]]);v.pi=0;v.loop=!!opts.loop;{const C=vhC32(v);v.vmax=C&&C.speed>0?(opts.speed?Math.min(opts.speed,C.road||C.speed):C.speed):(opts.speed||v.spec.vmax||5)}if(v.ai){v.ai.sT=0;v.ai.gb=false;v.ai.stk.length=0;v.ai.anc=null;if(opts.loop&&v.ai.mode==='advance')v.ai.mode='patrol'}v.onEnd=opts.onEnd||null;v.halt=!!opts.halt;v.arrived=false;v.hold=false;return v}
 /* ---------- objetivos ---------- */
 function vhAllies32(){if(VEH32.allies)return VEH32.allies()||[];return(typeof L13!=='undefined'&&L13.sq)||[]}
 const vhDIF32=()=>({easy:.7,normal:1,hard:1.25}[difficulty]||1);
@@ -304,7 +304,7 @@ function vhTOk32(m){const t=m.tgt;if(!t)return false;switch(m.tk){case'P':return
 function vhTPos32(m,o){const t=m.tgt;if(m.tk==='P'){o.copy(P.g.position);o.y+=P.cr?.8:1.15}else if(m.tk==='V'){o.copy(t.g.position);o.y+=t.spec.h*.42}else{o.copy(t.g.position);o.y+=1.1}return o}
 function vhPick32(v,m){const o=m.y.getWorldPosition(vh_va32),gy=v.g.rotation.y;let best=null,bk='',bs=1e9,los=0;const rng=m.rng*(v.rngK||1);
  const consider=(t,k,x,y,z,bias,needLos)=>{const d=Math.hypot(x-o.x,z-o.z);if(d>rng||(m.min&&d<m.min))return;const s=d+bias;if(s>=bs)return;if(m.arc<3){const rel=vhAD32(0,Math.atan2(x-o.x,z-o.z)-gy-m.base);if(Math.abs(rel)>m.arc+.15)return}
-  if(needLos){if(los>5)return;los++;if(!losClear(o.x,o.y+.3,o.z,x,y,z))return}bs=s;best=t;bk=k};
+  if(needLos){if(los>5)return;los++;if(!losClear(o.x,o.y+.3,o.z,x,y,z)||vhSmokeBlk32(o.x,o.z,x,z))return}bs=s;best=t;bk=k};
  const lo=m.kind!=='mortar',mg=m.kind==='mg';
  if(v.ally){for(const e of enemies){if(e.hp<=0)continue;const p=e.g.position;consider(e,'E',p.x,1.2,p.z,m.vs==='veh'?60:0,lo)}}
  else{if(playing&&P.hp>0){const p=P.g.position;consider(P,'P',p.x,p.y+1.1,p.z,-12,lo)}const A=vhAllies32();for(const n of A){if(!n.g||!n.g.visible||n.down29)continue;const p=n.g.position;consider(n,'A',p.x,1.2,p.z,m.vs==='veh'?60:4,lo)}}
@@ -335,11 +335,12 @@ function vhImpact32(x,y,z,k,side,dmg,r,tv,src,kind,by){const wet=vhIsWater32(x,z
  for(const w of VEH32.list){if(!w.on||w===tv||(!all&&w.ally===(side==='volsk')))continue;if(!w.alive&&w.crewHp<=0)continue;const dd=Math.hypot(w.g.position.x-x,w.g.position.z-z)-Math.min(w.spec.hw,w.spec.hd);if(dd<r)vhVehDmg32(w,180*k*(1-Math.max(0,dd)/r),'x',x,z)}
  if(all||side!=='volsk'){if(dp<r&&P.g.position.y<y+4){const c=losClear(x,y+.6,z,P.g.position.x,P.g.position.y+1,P.g.position.z)?1:.4;hitP(dmg*(1-dp/r*.7)*c*(P.pr?.6:1))}
   for(const n of vhAllies32()){if(!n.g||!n.g.visible||n.down29)continue;const d=Math.hypot(n.g.position.x-x,n.g.position.z-z);if(d<r)vhAllyHit32(n,dmg*(1-d/r*.7))}}
- if(all||side==='volsk'){for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];if(!e||e.hp<=0)continue;const d=Math.hypot(e.g.position.x-x,e.g.position.z-z);if(d<r*1.15)hurt(e,dmg*1.7*(1-d/(r*1.15)*.6),'m',by||{name:'La artillería'})}}
+ if(all||side==='volsk'){for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];if(!e||e.hp<=0)continue;const d=Math.hypot(e.g.position.x-x,e.g.position.z-z);if(d<r*1.15){hurt(e,dmg*1.7*(1-d/(r*1.15)*.6),'m',by||{name:'La artillería'});if(e.hp<=0&&src)VEH32.dbg.killsE++}}}
  if(typeof sbHit==='function'&&k>=.7)try{sbHit(x,z,1.6*k)}catch(e){}}
-function vhAllyHit32(n,d){if(VEH32.onAllyHit)return VEH32.onAllyHit(n,d);n.hp=(n.hp===undefined?100:n.hp)-d;if(n.hp<=0){if(VEH32.allyDown&&typeof down29==='function')down29(n);else n.hp=25}}
+function vhAllyHit32(n,d){if(VEH32.onAllyHit){const r=VEH32.onAllyHit(n,d);if(n.down17||n.down29||n.dead17)VEH32.dbg.killsA++;return r}n.hp=(n.hp===undefined?100:n.hp)-d;if(n.hp<=0){if(VEH32.allyDown&&typeof down29==='function')down29(n);else n.hp=25}}
 /* ---------- daño a vehículos ---------- */
 function vhVehDmg32(v,d,kind,sx,sz){if(!v.on)return;const S=v.spec,p=v.g.position;let k=1;
+ if(v.alive&&sx!==undefined&&isFinite(sx)){const at=kind==='ap'||kind==='at'||kind==='g'||(kind==='x'&&d>=150);if(!v.thr||at||!v.thr.at||time-v.thr.t>3)v.thr={x:sx,z:sz,t:time,at,d,k:kind}}
  if(sx!==undefined&&(kind==='g'||kind==='ap'||kind==='x')&&v.type!=='gun'&&v.type!=='mortar'){const ang=Math.abs(vhAD32(v.g.rotation.y,Math.atan2(sx-p.x,sz-p.z)));if(ang<.7)k=.6;else if(ang>2.3)k=1.5}
  if(kind==='b'){if(v.crewHp>0){v.crewHp-=d*.55;vhCrewCheck32(v)}d*=S.armB;if(S.armB<.2&&R()<.5)burst(p.x+(R()-.5)*S.hw,1+R()*S.h*.5,p.z+(R()-.5)*S.hd,0xffe0a0,3,.15,4)}
  else if(kind==='x'||kind==='m'){if(v.crewHp>0){v.crewHp-=d*.9;vhCrewCheck32(v)}d*=(v.type==='tank'&&d>=450)?.9:S.armX*k}
@@ -348,7 +349,7 @@ function vhVehDmg32(v,d,kind,sx,sz){if(!v.on)return;const S=v.spec,p=v.g.positio
 function vhCrewCheck32(v){const n=v.crew.length;if(!n)return;const alive=Math.max(0,Math.ceil(v.crewHp/v.crewMax*n));let i=0;for(const c of v.crew){if(c.visible&&i>=alive){c.visible=false;const w=c.getWorldPosition(vh_vd32);burst(w.x,1,w.z,0x8a1a10,6,.4,3)}if(c.visible)i++}
  if(v.crewHp<=0&&v.alive&&(v.type==='gun'||v.type==='mortar'))vhVehKill32(v,'crew')}
 const vhSC32={tank:1500,car:800,truck:400,gun:600,mortar:300,loco:1000,wagon:300,ship:3000};
-function vhVehKill32(v,how){if(!v.alive)return;v.alive=false;v.hp=0;v.v=0;v.how=how;const S=v.spec,p=v.g.position,x=p.x,z=p.z;for(const m of v.mounts){m.burst=0;m.tele=0;if(m.gl)m.gl.visible=false}
+function vhVehKill32(v,how){if(!v.alive)return;VEH32.dbg.vk++;if(v.ai){v.ai.st='destroyed';v.ai.tx=null}v.alive=false;v.hp=0;v.v=0;v.how=how;const S=v.spec,p=v.g.position,x=p.x,z=p.z;for(const m of v.mounts){m.burst=0;m.tele=0;if(m.gl)m.gl.visible=false}
  if(how==='crew'){for(const c of v.crew)c.visible=false;feed('★ '+v.name.replace(/^el |^la /,'').replace(/^./,c=>c.toUpperCase())+' silenciado')}
  else{const k={tank:1.3,car:1,truck:.9,loco:1.5,wagon:v.kind==='wagon_tank'?2:1,gun:.8,mortar:.6,ship:3}[v.type]||1;
   if(typeof bx12==='function'&&typeof FB12!=='undefined'&&FB12.length)bx12(x,p.y+1,z,k*.45,v.kind==='wagon_tank'?'fuel':undefined);burst(x,p.y+1.5,z,0xffa040,24,.9,12*k);burst(x,p.y+1,z,0x2a2420,20,1.6,9*k);smoke(x,p.y+3,z,8*k,6,0x1e1c1a,2.5,.7);flashLight(x,p.y+3,z,7*k,.5,0xffa050);expSnd(x,z,1.6*k);
@@ -363,17 +364,17 @@ function vhVehKill32(v,how){if(!v.alive)return;v.alive=false;v.hp=0;v.v=0;v.how=
  if(v.ob){v.ob.nolos=false;v.ob.h=S.h*.75}if(v.type!=='ship'&&typeof covers!=='undefined')covers.push({x,z,r:Math.min(S.hw,S.hd)+.6});
  try{VEH32.onKill(v)}catch(e){console.warn(e)}}
 /* ---------- disparo ---------- */
-function vhFireMG32(v,m){const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=o.distanceTo(t);t.x+=(R()-.5)*(.6+d*.02);t.y+=(R()-.5)*.6;t.z+=(R()-.5)*(.6+d*.02);
+function vhFireMG32(v,m){VEH32.dbg.shots++;const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=o.distanceTo(t);t.x+=(R()-.5)*(.6+d*.02);t.y+=(R()-.5)*.6;t.z+=(R()-.5)*(.6+d*.02);
  trc16(o,t,v.ally?0xffe0a0:0xffc070);if(R()<.5)burst(o.x,o.y,o.z,0xffd080,2,.08,2);if(m.burst%2)npcShot('mg',o.x,o.z);
  let acc=vhCL32(.42-d/320,.07,.38)*(Math.abs(v.v)>1?.7:1);if(m.tk==='P'){acc*=vhDIF32()*(P.cr?.7:1)}if(R()>acc){if(R()<.3)burst(t.x,.1,t.z,0x8a7a62,2,.3,2);return}
- const tg=m.tgt;if(m.tk==='P')hitP(m.dmg);else if(m.tk==='A')vhAllyHit32(tg,m.dmg*1.2);else if(m.tk==='E')hurt(tg,22,'b',{name:v.name.replace(/^./,c=>c.toUpperCase())});else if(m.tk==='V')vhVehDmg32(tg,22,'b')}
-function vhFireGun32(v,m){const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=o.distanceTo(t),cal=m.cal,mov=Math.abs(v.v)>.6?1.5:1;let tv=null;
- if(m.tk==='V'){if(R()<vhCL32(.7-d/500,.25,.7)/mov){tv=m.tgt}else{const a=R()*6.28,e=3+R()*4;t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z)}}
+ const tg=m.tgt;if(m.tk==='P'){VEH32.dbg.hitsP++;hitP(m.dmg)}else if(m.tk==='A'){VEH32.dbg.hitsA++;vhAllyHit32(tg,m.dmg*1.2)}else if(m.tk==='E'){hurt(tg,22,'b',{name:v.name.replace(/^./,c=>c.toUpperCase())});if(tg.hp<=0)VEH32.dbg.killsE++}else if(m.tk==='V')vhVehDmg32(tg,22,'b')}
+function vhFireGun32(v,m){VEH32.dbg.shots++;const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=o.distanceTo(t),cal=m.cal,mov=Math.abs(v.v)>.6?1.5:1;let tv=null;
+ if(m.tk==='V'){if(R()<vhCL32(.7-d/500,.25,.7)/mov*(m.tgt.smkT>time?.35:1)){tv=m.tgt}else{const a=R()*6.28,e=3+R()*4;t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z)}}
  else{const err=(m.kind==='naval'?14:1.4)+d*.02*mov*(m.tk==='P'?vhDIF32():1),a=R()*6.28,e=err*Math.sqrt(R());t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z)}
  trc16(o,t,0xffd090);if(typeof FB12!=='undefined'&&FB12.length)fb12(o.x,o.y,o.z,2.2*cal,.16,0);burst(o.x,o.y,o.z,0xffc060,8,.2,6*cal);smoke(o.x,o.y,o.z,2.4*cal,2.4,0xa8a49c,.8,.55);flashLight(o.x,o.y,o.z,2.5*cal,.15,0xffc070);
  if(cal>=.8)(typeof tkf36==='function'&&cal>=.5&&tkf36(o.x,o.z))||expSnd(o.x,o.z,.5*cal);else npcShot('big',o.x,o.z);if(v.type==='gun')burst(v.g.position.x,.3,v.g.position.z,0x9a8a6a,8,.6,4);
  m.rec=1;v.kick=cal;vhShot32(m.kind,o.x,o.y,o.z,t.x,t.y,t.z,Math.max(.08,d/(m.kind==='naval'?380:460)),0,cal,v.ally?'volsk':'veyrn',m.dmg,m.r,tv,v,false,0)}
-function vhFireMortar32(v,m){const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=Math.hypot(t.x-o.x,t.z-o.z);const a=R()*6.28,e=m.brk*(.5+R()*.5);m.brk=Math.max(m.tk==='P'?3.5/vhDIF32():2.5,m.brk*.62);t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z);
+function vhFireMortar32(v,m){VEH32.dbg.shots++;const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=Math.hypot(t.x-o.x,t.z-o.z);const a=R()*6.28,e=m.brk*(.5+R()*.5);m.brk=Math.max(m.tk==='P'?3.5/vhDIF32():2.5,m.brk*.62);t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z);
  smoke(o.x,o.y,o.z,1.6,2,0xb8b4ac,1,.5);burst(o.x,o.y,o.z,0xffc060,4,.15,4);const vv=vhCamVol32(o.x,o.z,140);if(vv>.02){tn18('sine',110,45,.25,.12*vv);nz18(.002,.25,'lowpass',900,200,.1*vv)}m.rec=1;
  vhShot32('mortar',o.x,o.y,o.z,t.x,t.y,t.z,2.6+d/110,12+d*.35,m.cal,v.ally?'volsk':'veyrn',m.dmg,m.r,null,v,true,0)}
 /* ---------- actualización ---------- */
@@ -391,7 +392,7 @@ function vhMountUpd32(v,m,dt){m.rec=Math.max(0,m.rec-dt*2.5);if(m.p!==m.y)m.p.po
  /* cañones: aviso visible y audible antes de disparar al jugador */
  if(m.tele>0){m.tele-=dt;if(m.gl){m.gl.visible=true;m.gl.scale.setScalar((.55+.45*Math.abs(Math.sin(time*18)))*(1.6-m.tele*.4)*(m.cal+.4))}if(m.tele<=0){if(m.gl)m.gl.visible=false;m.cd=m.cd0*(.85+R()*.3);vhFireGun32(v,m)}return}
  if(ok&&m.cd<=0){if(m.tk==='P'||m.tk==='A'){m.tele=m.tk==='P'?1.2+R()*.5:.5;if(m.tk==='P'){const vv=vhCamVol32(o.x,o.z,120);if(vv>.02){tn18('square',240,190,.07,.05*vv);tn18('square',180,150,.09,.04*vv,.12)}if(VEH32.warn&&time-(VEH32.wt||-99)>9){VEH32.wt=time;feed('⚠ ¡'+v.name.replace(/^./,c=>c.toUpperCase())+' te apunta! ¡Cubrite!')}}}else{m.cd=m.cd0*(.85+R()*.3);vhFireGun32(v,m)}}}
-function vhDrive32(v,dt){const S=v.spec,g=v.g,p=g.position;let st=0,yr=0;const wheeled=v.type==='car'||v.type==='truck';
+function vhDriveOld32(v,dt){const S=v.spec,g=v.g,p=g.position;let st=0,yr=0;const wheeled=v.type==='car'||v.type==='truck';
  if(v.path&&!v.arrived&&v.alive&&!v.hold){const w=v.path[v.pi],dx=w[0]-p.x,dz=w[1]-p.z,dist=Math.hypot(dx,dz),err=vhAD32(g.rotation.y,Math.atan2(dx,dz)),last=v.pi>=v.path.length-1&&!v.loop;
   st=v.vmax*vhCL32(1-Math.abs(err)/(wheeled?1.6:1.3),wheeled?.3:.12,1);if(last)st=Math.min(st,Math.sqrt(2*(S.acc||1)*.8*dist)+.2);
   if(v.type==='tank'||v.type==='ship'){const tr=S.turn*(v.type==='ship'?vhCL32(Math.abs(v.v)/2,.2,1):1);yr=vhCL32(err*1.8,-tr,tr)}else{v.steerA+=(vhCL32(err*1.6,-.6,.6)-v.steerA)*Math.min(1,dt*3);yr=vhCL32(v.v*Math.tan(v.steerA)/(S.wb||3),-S.turn,S.turn)}
@@ -401,6 +402,8 @@ function vhDrive32(v,dt){const S=v.spec,g=v.g,p=g.position;let st=0,yr=0;const w
   for(const o of VEH32.list){if(o===v||!o.on||o.type==='ship')continue;const qx=o.g.position.x-p.x,qz=o.g.position.z-p.z,f=qx*fx+qz*fz,l=Math.abs(qx*fz-qz*fx);if(f>0&&f<S.zf+o.spec.hd+3&&l<S.hw+o.spec.hw+.6)st=Math.min(st,o.alive&&o.v>.5?o.v:0)}}
  v.st=st;const acc=S.acc||1,v0=v.v;v.v+=vhCL32(st-v.v,-acc*1.8*dt,acc*dt);if(!wheeled)v.yr+=(yr-v.yr)*Math.min(1,dt*3);else v.yr=yr;
  if(Math.abs(v.v)>.01||Math.abs(v.yr)>.01){g.rotation.y+=v.yr*dt;p.x+=Math.sin(g.rotation.y)*v.v*dt;p.z+=Math.cos(g.rotation.y)*v.v*dt}
+ vhAnim32(v,dt,v0,wheeled)}
+function vhAnim32(v,dt,v0,wheeled){const S=v.spec,g=v.g,p=g.position;
  v.t+=dt;const sp=Math.abs(v.v);
  if(v.type==='ship'){p.y=VEH32.seaY+Math.sin(v.t*.55)*.22;g.rotation.z=Math.sin(v.t*.43)*.025;g.rotation.x=Math.sin(v.t*.31)*.008}
  else{p.y+=(vhFlo32(p.x,p.z)-p.y)*Math.min(1,dt*8);const a=(v.v-v0)/Math.max(dt,1e-3),bump=sp>.3?Math.sin(v.t*(wheeled?11:7))*.006*Math.min(1,sp/3):0;v.kick=Math.max(0,v.kick-dt*3);
@@ -409,6 +412,169 @@ function vhDrive32(v,dt){const S=v.spec,g=v.g,p=g.position;let st=0,yr=0;const w
  for(const t of v.trk)if(t.material.map)t.material.map.offset.x-=(v.v+Math.abs(v.yr)*1.5)*dt*.18;for(const s of v.steer)s.rotation.y=v.steerA;
  if(v.alive&&v.type!=='ship'&&v.type!=='gun'&&v.type!=='mortar'){v.smT-=dt;if(v.smT<=0){v.smT=sp>.5?.25:.7;const bx=p.x-Math.sin(g.rotation.y)*(-S.zb*.9),bz=p.z-Math.cos(g.rotation.y)*(-S.zb*.9);smoke(bx,p.y+1,bz,.7+sp*.08,1.4,0x3a3a3a,.6,.38);if(sp>3&&R()<.5)burst(p.x+(R()-.5)*2,.2,p.z+(R()-.5)*2,0x7a6a52,2,.5,1.5)}
   if(sp>2&&v.ally&&(v.type==='tank'||v.type==='car'))for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];if(!e||e.hp<=0)continue;const qx=e.g.position.x-p.x,qz=e.g.position.z-p.z;if(Math.hypot(qx,qz)<S.hd*.8&&qx*Math.sin(g.rotation.y)+qz*Math.cos(g.rotation.y)>S.hd*.4)hurt(e,300,'x',{name:v.name.replace(/^./,c=>c.toUpperCase())})}}}
+/* =====================================================================
+   v37 · IA DE VEHÍCULOS (reutilizable en cualquier nivel)
+   · Clases VEH32.cls: velocidad, aceleración y frenado progresivos, giro (ruedas: Ackermann con
+     radio mínimo; orugas: pivote), blindaje, alcance de detección y de ataque, táctica.
+   · Máquina de estados: patrol/advance/recon/engage/maneuver/cover/retreat/disabled/destroyed.
+   · Detección con línea de vista (presupuestada), reacción al antitanque (frente al tirador,
+     marcha atrás, humo, repliegue a cobertura), retirada con daño grave.
+   · Evitación: rejilla espacial de obstB + zonas vedadas (trincheras/alambradas) + restos y otros
+     vehículos; antenas de dirección, frenado ante obstáculos, colisión dura OBB (SAT) y
+     recuperación de atascos (marcha atrás girando).
+   · Órdenes: vehOrder32(v,{mode,path,goal,speed}); vehPath32 sigue funcionando igual.
+   ===================================================================== */
+VEH32.cls={
+ recon:{speed:5.4,road:8,acc:1.5,brake:3.6,turn:.55,steer:.6,wheeled:true,armor:'light',detect:150,attack:120,standoff:24,tactics:'recon',retreat:.65,smoke:1,cover:16},
+ light:{speed:3.3,road:4.2,acc:.7,brake:1.9,turn:.5,wheeled:false,armor:'medium',detect:140,attack:170,standoff:36,tactics:'assault',retreat:.3,smoke:2,cover:14},
+ medium:{speed:2.6,road:3.3,acc:.5,brake:1.5,turn:.34,wheeled:false,armor:'heavy',detect:140,attack:190,standoff:46,tactics:'assault',retreat:.25,smoke:2,cover:14},
+ truck:{speed:6.5,road:10,acc:1.4,brake:3.2,turn:.5,steer:.6,wheeled:true,armor:'none',detect:90,attack:0,standoff:0,tactics:'transport',retreat:0,smoke:0,cover:10},
+ at:{speed:0,acc:0,turn:0,armor:'shield',detect:220,attack:220,tactics:'static'},
+ field:{speed:0,acc:0,turn:0,armor:'shield',detect:300,attack:300,tactics:'static'},
+ mortar:{speed:0,acc:0,turn:0,armor:'none',detect:320,attack:320,tactics:'static'}};
+VEH32.clsOf={armcar:'recon',tank_light:'light',tank_medium:'medium',truck:'truck',atgun:'at',fieldgun:'field',mortar:'mortar'};
+VEH32.dbg={think:0,stuck:0,giveup:0,bump:0,shots:0,hitsP:0,hitsA:0,killsE:0,killsA:0,vk:0,retreat:0,smoke:0,maneuver:0,engage:0,dismount:0,los:0};
+VEH32.noGo=[];VEH32.smk=[];VEH32.losN=0;
+const vhO1={},vhO2={},vhMTV32={x:0,z:0},vhEMPTY32=[];
+function vhC32(v){if(v.cls!==undefined)return v.cls;const k=v.clsK||VEH32.clsOf[v.kind];return v.cls=k&&VEH32.cls[k]?VEH32.cls[k]:null}
+function vhAI32(v){return v.ai||(v.ai={st:'advance',mode:'advance',t:0,th:R()*.25,sT:0,tx:null,tz:0,spd:0,face:null,faceT:0,fh:0,hs:v.g.rotation.y,ff:99,fc:99,lc:0,arr:1.5,pf:false,
+ foe:null,fk:'',fx:0,fz:0,fd:1e9,ft:-99,lt:-99,hits:0,caution:0,mp:null,rg:null,revT:0,cT:0,hT:0,rec:0,recS:1,recD:-1,sc:0,lx:0,lz:0,lpt:0,stk:[],side:R()<.5?1:-1,smk:0,gb:false,hist:{}})}
+/* ---------- rejilla espacial de obstáculos estáticos ---------- */
+const VG32={cs:8,m:new Map(),big:[],n:-1,ng:-1,lv:-2,t:0,pad:4};
+function vhGK32(ix,iz){return ix*131071+iz}
+function vhGrid32(force){const G_=VG32,lv=typeof level!=='undefined'?level:0;G_.t-=1;if(!force&&obstB.length===G_.n&&VEH32.noGo.length===G_.ng&&lv===G_.lv&&G_.t>0)return;
+ G_.n=obstB.length;G_.ng=VEH32.noGo.length;G_.lv=lv;G_.t=300;G_.m.clear();G_.big.length=0;const cs=G_.cs,pd=G_.pad;
+ const add=b=>{const x0=Math.floor((b.x-b.hw-pd)/cs),x1=Math.floor((b.x+b.hw+pd)/cs),z0=Math.floor((b.z-b.hd-pd)/cs),z1=Math.floor((b.z+b.hd+pd)/cs);if((x1-x0+1)*(z1-z0+1)>300){G_.big.push(b);return}
+  for(let i=x0;i<=x1;i++)for(let j=z0;j<=z1;j++){const k=vhGK32(i,j);let a=G_.m.get(k);if(!a)G_.m.set(k,a=[]);a.push(b)}};
+ for(const b of obstB){if(b.veh32||!(b.h>=.35)||(b.y0||0)>=3.2||!isFinite(b.x))continue;add(b)}for(const b of VEH32.noGo)add(b)}
+function vhCell32(x,z){return VG32.m.get(vhGK32(Math.floor(x/VG32.cs),Math.floor(z/VG32.cs)))||vhEMPTY32}
+function vhBlkOk32(v,b){return !b.ng||!b.side||b.side===v.side}
+/* zona vedada a vehículos (coordenadas locales): trincheras, alambradas, refugios */
+function vehNoGo32(x0,z0,x1,z1,o){o=o||{};const b={x:VEH32.X+(x0+x1)/2,z:(z0+z1)/2,hw:Math.abs(x1-x0)/2,hd:Math.abs(z1-z0)/2,h:2,ng:true,side:o.side?vhSide32(o.side):null,tag:o.tag||''};VEH32.noGo.push(b);VG32.ng=-1;return b}
+/* nivel 17: la línea de las Tres Cruces y la trinchera norte son infranqueables para vehículos */
+function vhNoGo17(){if(VEH32.ng17||typeof level==='undefined'||level!==17||typeof K17==='undefined'||!K17||VEH32.X!==X17)return;VEH32.ng17=true;
+ const lz=K17.lineZ||-243;vehNoGo32(-132,lz-3.6,112,lz+14.2,{tag:'line'});for(const x of[-45,30])vehNoGo32(x-2.6,-269,x+2.6,lz-3,{tag:'comm'});
+ const N=K17.north;if(N){const tz=N.trenchZ||-842,gx=-20;vehNoGo32(-116,tz-4,gx-5.2,tz+14,{tag:'north'});vehNoGo32(gx+5.2,tz-4,76,tz+14,{tag:'north'})}}
+/* ---------- geometría: OBB del vehículo y SAT ---------- */
+function vhOBB32(v,o){const S=v.spec,a=v.g.rotation.y,s=Math.sin(a),c=Math.cos(a),cz=((S.zf||S.hd)+(S.zb||-S.hd))/2;o.x=v.g.position.x+s*cz;o.z=v.g.position.z+c*cz;o.ux=s;o.uz=c;o.hl=((S.zf||S.hd)-(S.zb||-S.hd))/2;o.hw=S.hw;return o}
+function vhSatAB32(A,bx,bz,bw,bd,pad){let best=1e9,nx=0,nz=0;const dx=A.x-bx,dz=A.z-bz,wx=A.uz,wz=-A.ux;
+ for(let i=0;i<4;i++){const ax=i===0?1:i===1?0:i===2?A.ux:wx,az=i===0?0:i===1?1:i===2?A.uz:wz;const rA=A.hw*Math.abs(wx*ax+wz*az)+A.hl*Math.abs(A.ux*ax+A.uz*az),rB=bw*Math.abs(ax)+bd*Math.abs(az),d=dx*ax+dz*az,ov=rA+rB+pad-Math.abs(d);if(ov<=0)return 0;if(ov<best){best=ov;nx=d<0?-ax:ax;nz=d<0?-az:az}}
+ vhMTV32.x=nx;vhMTV32.z=nz;return best}
+function vhSatBB32(A,B){let best=1e9,nx=0,nz=0;const dx=A.x-B.x,dz=A.z-B.z,awx=A.uz,awz=-A.ux,bwx=B.uz,bwz=-B.ux;
+ for(let i=0;i<4;i++){const ax=i===0?A.ux:i===1?awx:i===2?B.ux:bwx,az=i===0?A.uz:i===1?awz:i===2?B.uz:bwz;const rA=A.hw*Math.abs(awx*ax+awz*az)+A.hl*Math.abs(A.ux*ax+A.uz*az),rB=B.hw*Math.abs(bwx*ax+bwz*az)+B.hl*Math.abs(B.ux*ax+B.uz*az),d=dx*ax+dz*az,ov=rA+rB-Math.abs(d);if(ov<=0)return 0;if(ov<best){best=ov;nx=d<0?-ax:ax;nz=d<0?-az:az}}
+ vhMTV32.x=nx;vhMTV32.z=nz;return best}
+/* ¿punto (círculo r) bloqueado para v? */
+function vhPtBlk32(v,x,z,r){for(const b of vhCell32(x,z))if(Math.abs(x-b.x)<b.hw+r&&Math.abs(z-b.z)<b.hd+r&&vhBlkOk32(v,b))return true;
+ for(const b of VG32.big)if(Math.abs(x-b.x)<b.hw+r&&Math.abs(z-b.z)<b.hd+r&&vhBlkOk32(v,b))return true;
+ for(const w of VEH32.list){if(w===v||!w.on||w.type==='ship'||!w.ob)continue;const B=vhOBB32(w,vhO2),dx=x-B.x,dz=z-B.z;if(Math.abs(dx)>B.hl+B.hw+r||Math.abs(dz)>B.hl+B.hw+r)continue;if(Math.abs(dx*B.ux+dz*B.uz)<B.hl+r&&Math.abs(dx*B.uz-dz*B.ux)<B.hw+r)return true}
+ if(typeof VEH32.water==='function'&&VEH32.water(x-VEH32.X,z))return true;return false}
+function vhProbe32(v,h,L,r,off){const p=v.g.position,s=Math.sin(h),c=Math.cos(h);for(let d=0;d<=L;d+=1.1)if(vhPtBlk32(v,p.x+s*(off+d),p.z+c*(off+d),r))return d;return L+1}
+/* colisión dura: el casco nunca entra en un obstáculo ni en otro vehículo */
+function vhCollide32(v){const O=vhOBB32(v,vhO1);let px=0,pz=0,hit=0;const chk=b=>{if(!vhBlkOk32(v,b))return;const ov=vhSatAB32(O,b.x,b.z,b.hw,b.hd,0);if(ov>0){const m=Math.min(ov,1.2);O.x+=vhMTV32.x*m;O.z+=vhMTV32.z*m;px+=vhMTV32.x*m;pz+=vhMTV32.z*m;hit++}};
+ for(const b of vhCell32(O.x,O.z))chk(b);for(const b of VG32.big)chk(b);
+ for(const w of VEH32.list){if(w===v||!w.on||w.type==='ship'||!w.ob)continue;if(Math.abs(w.g.position.x-O.x)>12||Math.abs(w.g.position.z-O.z)>12)continue;const B=vhOBB32(w,vhO2),ov=vhSatBB32(O,B);if(ov>0){const m=Math.min(ov,1.2)*(w.ai&&w.alive&&!w.train?.5:1);O.x+=vhMTV32.x*m;O.z+=vhMTV32.z*m;px+=vhMTV32.x*m;pz+=vhMTV32.z*m;hit++}}
+ if(hit){const p=v.g.position;p.x+=px;p.z+=pz;const f=px*Math.sin(v.g.rotation.y)+pz*Math.cos(v.g.rotation.y);if(f*v.v<0)v.v*=.35;VEH32.dbg.bump++;v.ai.bmp=(v.ai.bmp||0)+1}}
+/* prueba independiente de solapamiento (QA): cajas obstB estáticas que el casco invade más de 'tol' m */
+function vhOverlap32(v,tol){const O=vhOBB32(v,{});let n=0;tol=tol===undefined?.12:tol;for(const b of obstB){if(b.veh32||!(b.h>=.35)||(b.y0||0)>=3.2)continue;if(Math.abs(b.x-O.x)>b.hw+8||Math.abs(b.z-O.z)>b.hd+8)continue;if(vhSatAB32(O,b.x,b.z,b.hw,b.hd,-tol)>0)n++}
+ for(const b of VEH32.noGo)if(vhBlkOk32(v,b)&&vhSatAB32(O,b.x,b.z,b.hw,b.hd,-tol)>0)n+=1000;return n}
+/* ---------- humo ---------- */
+function vhSmoke32(v,tx,tz){const p=v.g.position,dx=tx-p.x,dz=tz-p.z,L=Math.hypot(dx,dz)||1,ux=dx/L,uz=dz/L,A=v.ai;A.smk++;VEH32.dbg.smoke++;
+ for(let i=-2;i<=2;i++){const d=7+R()*3,x=p.x+ux*d+uz*i*3.2,z=p.z+uz*d-ux*i*3.2;VEH32.smk.push({x,z,t:16+R()*4,c:R()*.3})}v.smkT=time+14;
+ burst(p.x,p.y+v.spec.h*.8,p.z,0xd8d8d0,6,.5,4);if(typeof npcShot==='function')npcShot('big',p.x,p.z);if(v.ally===false&&vhCamVol32(p.x,p.z,90)>.1)feed('¡El '+v.name.replace(/^el |^la /,'')+' tiende humo!')}
+function vhSmokeUpd32(dt){const L=VEH32.smk;for(let i=L.length-1;i>=0;i--){const s=L[i];s.t-=dt;s.c-=dt;if(s.c<=0){s.c=.75;smoke(s.x+(R()-.5)*2,1,s.z+(R()-.5)*2,5,6,0xc8c8c0,.25,.75)}if(s.t<=0)L.splice(i,1)}}
+function vhSmokeBlk32(ax,az,bx,bz){const L=VEH32.smk;if(!L.length)return false;const dx=bx-ax,dz=bz-az,l2=dx*dx+dz*dz||1;for(const s of L){if(s.t<2)continue;const t=vhCL32(((s.x-ax)*dx+(s.z-az)*dz)/l2,0,1),qx=ax+dx*t-s.x,qz=az+dz*t-s.z;if(qx*qx+qz*qz<12)return true}return false}
+/* ---------- percepción ---------- */
+function vhScan32(v,C){const p=v.g.position,S=v.spec;let best=null,bk='',bd=C.detect,bx=0,bz=0;const cons=(t,k,x,z)=>{const d=Math.hypot(x-p.x,z-p.z);if(d<bd){bd=d;best=t;bk=k;bx=x;bz=z}};
+ if(v.ally){for(const e of enemies){if(!e||e.hp<=0||!e.g.parent)continue;cons(e,'E',e.g.position.x,e.g.position.z)}}
+ else{if(playing&&P.hp>0)cons(P,'P',P.g.position.x,P.g.position.z);for(const n of vhAllies32()){if(!n.g||!n.g.visible||n.down29||n.down17||n.dead17)continue;cons(n,'A',n.g.position.x,n.g.position.z)}}
+ for(const w of VEH32.list){if(!w.alive||!w.on||w.ally===v.ally||w.type==='ship'||w.type==='wagon'||w.type==='loco')continue;cons(w,'V',w.g.position.x,w.g.position.z)}
+ if(!best||VEH32.losN>=6)return null;VEH32.losN++;VEH32.dbg.los++;if(bd>6&&(!losClear(p.x,p.y+S.h*.9,p.z,bx,1.3,bz)||vhSmokeBlk32(p.x,p.z,bx,bz)))return null;return{t:best,k:bk,x:bx,z:bz,d:bd}}
+function vhSense32(v,C){const A=v.ai,p=v.g.position;for(const m of v.mounts){if(m.tgt&&vhTOk32(m)){const t=vhTPos32(m,vh_vd32);A.foe=m.tgt;A.fk=m.tk;A.fx=t.x;A.fz=t.z;A.ft=time;A.fd=Math.hypot(t.x-p.x,t.z-p.z);return}}
+ const s=vhScan32(v,C);if(s){A.foe=s.t;A.fk=s.k;A.fx=s.x;A.fz=s.z;A.ft=time;A.fd=s.d}else if(A.foe)A.fd=Math.hypot(A.fx-p.x,A.fz-p.z)}
+/* ---------- reacciones ---------- */
+function vhRetreat32(v,C,tx,tz){const A=v.ai,p=v.g.position,S=v.spec;let ax=p.x-tx,az=p.z-tz,L=Math.hypot(ax,az)||1;ax/=L;az/=L;const R_=C.tactics==='recon'?55:40;let gx=p.x+ax*R_,gz=p.z+az*R_;
+ for(const a of[0,.45,-.45,.9,-.9,1.3,-1.3]){const c=Math.cos(a),s=Math.sin(a),x=p.x+(ax*c-az*s)*R_,z=p.z+(az*c+ax*s)*R_;if(!vhPtBlk32(v,x,z,S.hw+1)){gx=x;gz=z;break}}
+ if(typeof covers!=='undefined'){let bc=null,bd=24;for(const c of covers){if(!c||(c.r||1)>4)continue;const d=Math.hypot(c.x-gx,c.z-gz);if(d>=bd)continue;if(Math.hypot(c.x-tx,c.z-tz)<L+8)continue;bd=d;bc=c}
+  if(bc){let ux=bc.x-tx,uz=bc.z-tz;const l=Math.hypot(ux,uz)||1;const x=bc.x+ux/l*((bc.r||1)+S.hd+2),z=bc.z+uz/l*((bc.r||1)+S.hd+2);if(!vhPtBlk32(v,x,z,S.hw+.6)){gx=x;gz=z}}}
+ A.rg=[gx,gz];A.st='retreat';A.t=0;A.anc=null;A.tx0=tx;A.tz0=tz;const ang=Math.abs(vhAD32(v.g.rotation.y,Math.atan2(tx-p.x,tz-p.z)));A.revT=ang<1.5?3+R()*1.5:0;A.caution++;VEH32.dbg.retreat++;
+ if(A.smk<(C.smoke||0))vhSmoke32(v,tx,tz)}
+function vhManeuver32(v,C){const A=v.ai,p=v.g.position,S=v.spec;let ux=A.fx-p.x,uz=A.fz-p.z;const L=Math.hypot(ux,uz)||1;ux/=L;uz/=L;
+ for(const s of[A.side,-A.side]){const d=13+R()*10,x=p.x+uz*s*d-ux*3,z=p.z-ux*s*d-uz*3;if((!A.anc||Math.hypot(x-A.anc[0],z-A.anc[1])<34)&&!vhPtBlk32(v,x,z,S.hw+1.2)&&vhProbe32(v,Math.atan2(x-p.x,z-p.z),Math.min(d,14),S.hw+.4,0)>Math.min(d,14)*.6){A.mp=[x,z];A.side=-s;A.st='maneuver';A.t=0;VEH32.dbg.maneuver++;return true}}A.t=0;return false}
+function vhOnAT32(v,C,th){const A=v.ai,p=v.g.position;if(C.tactics==='transport'||C.tactics==='static')return;
+ if(C.tactics==='recon'||v.hp<v.maxhp*C.retreat){vhRetreat32(v,C,th.x,th.z);return}
+ const h=Math.atan2(th.x-p.x,th.z-p.z),ang=Math.abs(vhAD32(v.g.rotation.y,h));A.faceT=7;A.fh=h;A.fx=th.x;A.fz=th.z;A.ft=time;A.fd=Math.hypot(th.x-p.x,th.z-p.z);
+ if(ang>.7&&A.smk<(C.smoke||0))vhSmoke32(v,th.x,th.z);if(C===VEH32.cls.light&&ang<1.3)A.revT=2.5;if(A.st!=='retreat'){A.st='engage';A.t=0}}
+/* ---------- estados ---------- */
+function vhOrdS32(A){return A.mode==='recon'?'recon':A.mode==='patrol'?'patrol':A.mode==='hold'?'cover':A.mode==='retreat'?'cover':'advance'}
+function vhThink32(v,C,dt){const A=v.ai,p=v.g.position;VEH32.dbg.think++;
+ if(!v.alive){A.st='destroyed';A.tx=null;A.spd=0;return}
+ A.t+=dt;A.revT=Math.max(0,A.revT-dt);A.faceT=Math.max(0,A.faceT-dt);A.hT=Math.max(0,A.hT-dt);
+ if(A.st!=='disabled'&&v.hp<v.maxhp*.15&&C.speed>0&&v.type!=='truck'){A.st='disabled';A.t=0}
+ if(A.st==='disabled'||v.hold){A.tx=null;A.spd=0;A.face=null;A.pf=false;return}
+ vhSense32(v,C);const seen=time-A.ft<6,d=seen?A.fd:1e9,so=(C.standoff||0)+A.caution*12,ordS=vhOrdS32(A);
+ const th=v.thr;if(th&&th.t>A.lt){A.lt=th.t;if(th.at){A.hits++;vhOnAT32(v,C,th)}else if(!seen&&C.attack>0){A.fx=th.x;A.fz=th.z;A.ft=time-3;A.fd=Math.hypot(th.x-p.x,th.z-p.z)}}
+ const pathOn=v.path&&!v.arrived;
+ if(C.tactics==='transport'){if(A.st!=='retreat'&&A.st!=='cover')A.st=pathOn?ordS==='cover'?'advance':ordS:'cover';if(A.st==='retreat'&&(A.t>20||!A.rg))A.st='cover'}
+ else switch(A.st){
+  case'advance':case'patrol':case'recon':if(seen&&C.attack>0&&(d<so||(A.st==='recon'&&d<C.attack)||(!pathOn&&d<C.attack))){A.st='engage';A.t=0;VEH32.dbg.engage++}break;
+  case'engage':if(!A.anc)A.anc=[p.x,p.z];if(!seen&&A.t>4){A.st=ordS;A.t=0}else if(C.tactics==='recon'&&A.mode!=='hold'&&A.t>7+R()*5)vhManeuver32(v,C);else if(C.tactics==='assault'&&A.mode!=='hold'&&pathOn&&A.t>10+R()*6&&d>so+8){A.st=ordS;A.t=0}break;
+  case'maneuver':if(!A.mp||A.t>12||Math.hypot(A.mp[0]-p.x,A.mp[1]-p.z)<3){A.mp=null;A.st=seen?'engage':ordS;A.t=0}break;
+  case'retreat':if(!A.rg||A.t>25||Math.hypot(A.rg[0]-p.x,A.rg[1]-p.z)<3.5){A.st='cover';A.t=0;A.cT=(C.cover||14)+R()*6}break;
+  case'cover':if(A.mode==='hold'){if(seen&&C.attack>0&&d<C.attack){A.st='engage';A.t=0}break}A.cT-=dt;if(A.cT<=0){if(v.hp<=v.maxhp*Math.max(.3,(C.retreat||0)*.6))A.caution=Math.max(A.caution,Math.ceil((C.attack*.75-(C.standoff||0))/12));A.st=seen&&d<C.attack?'engage':ordS;A.t=0}break;
+  default:A.st=ordS}
+ vhPlan32(v,C,seen,d,so)}
+function vhPlan32(v,C,seen,d,so){const A=v.ai,p=v.g.position,S=v.spec,sp=Math.min(v.vmax||C.speed,C.road||C.speed);A.tx=null;A.spd=0;A.face=null;A.pf=false;
+ const foeH=seen?Math.atan2(A.fx-p.x,A.fz-p.z):null,m0=v.mounts[0];
+ const follow=k=>{if(!v.path||v.arrived)return false;const w=v.path[v.pi];A.tx=w[0];A.tz=w[1];A.pf=true;A.spd=sp*k;const last=v.pi>=v.path.length-1&&!v.loop;A.arr=last?(C.wheeled?1.8:1.6):(C.wheeled?4.5:3.2);return true};
+ if(A.revT>0&&A.st!=='retreat'){const b=v.g.rotation.y+Math.PI;A.tx=p.x+Math.sin(b)*12;A.tz=p.z+Math.cos(b)*12;A.spd=-Math.min(1.8,C.speed*.6);A.arr=1;return}
+ switch(A.st){
+  case'advance':case'patrol':case'recon':{let k=A.st==='recon'?.7:1;if(seen&&C.attack>0&&d<C.attack*1.15)k*=C.tactics==='recon'?.55:.7;
+   if(C.tactics==='assault'&&seen&&m0&&m0.tgt&&m0.cd<.9&&m0.kind==='gun'&&d<m0.rng)A.hT=2.6;if(A.hT>0)k=0;follow(k);if(k===0){A.tx=null;A.pf=false}break}
+  case'engage':if(C.tactics==='assault'&&A.mode!=='hold'&&d>so+10&&m0&&m0.cd>2.2&&!A.faceT){follow(.45)}
+   if(!A.tx&&!C.wheeled)A.face=A.faceT>0?A.fh:foeH;break;
+  case'maneuver':if(A.mp){A.tx=A.mp[0];A.tz=A.mp[1];A.spd=sp*.8;A.arr=2.5}break;
+  case'retreat':if(A.rg){A.tx=A.rg[0];A.tz=A.rg[1];A.arr=3;A.spd=A.revT>0?-Math.min(2.4,C.speed*.7):Math.min(sp*1.1,C.road||sp)}break;
+  case'cover':if(!C.wheeled&&(A.faceT>0||seen))A.face=A.faceT>0?A.fh:foeH;break}}
+/* ---------- conducción ---------- */
+const vhCAND32=[0,.3,-.3,.62,-.62,.95,-.95,1.35,-1.35,1.9,-1.9,2.5,-2.5];
+function vhSteer32(v,C,hd,rev){const A=v.ai,S=v.spec,sp=Math.abs(v.v),L=vhCL32(7+sp*2.6,8,20),cur=v.g.rotation.y+(rev?Math.PI:0),off=rev?(-(S.zb||-S.hd)-S.hw):((S.zf||S.hd)-S.hw);
+ A.ff=vhProbe32(v,cur,L,S.hw+.25,off);let best=hd,bs=-1e9,bf=0,bc=0;
+ for(const c of vhCAND32){const h=hd+c,f=vhProbe32(v,h,L,S.hw+.6,off);const s=Math.min(f,L)/L*2-Math.abs(c)*.5-Math.abs(vhAD32(cur,h))*.12+(Math.abs(c-A.lc)<.01?.15:0)+(f>L?.5:0)+(c>0?.02:0);if(s>bs){bs=s;best=h;bf=f;bc=c}if(c===0&&f>L)break}
+ A.hs=rev?best-Math.PI:best;A.fc=bf;A.lc=bc;A.gb=A.pf&&vhPtBlk32(v,A.tx,A.tz,S.hw+.3)}
+function vhWp32(v,A,C){const p=v.g.position,w=v.path[v.pi],dist=Math.hypot(w[0]-p.x,w[1]-p.z),last=v.pi>=v.path.length-1&&!v.loop,err=Math.abs(vhAD32(v.g.rotation.y,Math.atan2(w[0]-p.x,w[1]-p.z)));
+ const reach=dist<A.arr||(!last&&dist<9&&err>1.35)||(A.gb&&A.ff<2.2&&dist<26)||(A.gb&&A.sc>0&&dist<40);
+ if(!reach)return;A.gb=false;A.sT=0;if(last){v.arrived=true;A.tx=null;A.pf=false;if(v.onEnd)try{v.onEnd(v)}catch(e){console.warn(e)}}else{v.pi++;if(v.pi>=v.path.length)v.pi=0;const n=v.path[v.pi];A.tx=n[0];A.tz=n[1]}}
+function vhMove32(v,dt,C){const A=v.ai,S=v.spec,g=v.g,p=g.position,wh=!!C.wheeled;let want=0,yrT=0,stT=0;A.sT-=dt;
+ if(A.pf&&v.path&&!v.arrived)vhWp32(v,A,C);
+ if(A.rec>0){A.rec-=dt;want=A.recD*Math.min(2,C.speed*.6);if(wh)stT=-A.recD*A.recS*(C.steer||.6);else yrT=A.recS*C.turn}
+ else if(A.tx!==null&&v.alive){const dx=A.tx-p.x,dz=A.tz-p.z,dist=Math.hypot(dx,dz),rev=A.spd<0;let hd=Math.atan2(dx,dz);if(rev)hd+=Math.PI;
+  if(A.sT<=0){A.sT=.16+R()*.06;vhSteer32(v,C,hd,rev)}
+  const err=vhAD32(g.rotation.y,A.hs);let sp=Math.abs(A.spd);
+  sp=Math.min(sp,Math.sqrt(2*C.brake*.6*Math.max(0,dist-A.arr*.5))+.25);sp=Math.min(sp,Math.sqrt(2*C.brake*Math.max(0,A.ff-.35)));
+  if(wh){sp*=vhCL32(1-Math.abs(err)/2.4,.3,1);if(Math.abs(err)>1.2)sp=Math.min(sp,2.6)}else{sp*=vhCL32(1-Math.abs(err)/1.3,0,1);if(Math.abs(err)>.9)sp=Math.min(sp,.3)}
+  if(v.halt)for(const m of v.mounts)if(m.tele>0)sp=0;
+  if(v.ally&&!rev){const fx=Math.sin(g.rotation.y),fz=Math.cos(g.rotation.y),qx=P.g.position.x-p.x,qz=P.g.position.z-p.z,f=qx*fx+qz*fz,l=Math.abs(qx*fz-qz*fx);if(f>0&&f<(S.zf||S.hd)+4&&l<S.hw+1.4)sp=0}
+  want=rev?-sp:sp;if(wh)stT=vhCL32(err*1.5*(rev?-1:1),-(C.steer||.6),C.steer||.6);else yrT=vhCL32(err*1.8,-C.turn,C.turn)}
+ else if(A.face!==null&&!wh&&v.alive){const err=vhAD32(g.rotation.y,A.face);if(Math.abs(err)>.05)yrT=vhCL32(err*1.8,-C.turn,C.turn)}
+ /* atasco: quiere moverse y no avanza → marcha atrás girando hacia el lado libre */
+ A.lpt+=dt;if(A.lpt>=1){A.lpt=0;const mv=Math.hypot(p.x-A.lx,p.z-A.lz);A.lx=p.x;A.lz=p.z;if(A.rec<=0&&A.tx!==null&&Math.abs(A.spd)>.5&&mv<.3&&A.hT<=0){A.sc++;if(A.sc>=2){A.sc=0;vhUnstick32(v,C)}}else A.sc=0}
+ const v0=v.v,up=Math.abs(want)>Math.abs(v.v)&&(want*v.v>=0||Math.abs(v.v)<.05),ra=up?C.acc:C.brake;v.v+=vhCL32(want-v.v,-ra*dt,ra*dt);v.st=want;
+ if(wh){v.steerA+=vhCL32(stT-v.steerA,-1.6*dt,1.6*dt);v.yr=vhCL32(v.v*Math.tan(v.steerA)/(S.wb||3),-C.turn,C.turn)}else{v.yr+=(yrT-v.yr)*Math.min(1,dt*4);v.steerA=0}
+ if(Math.abs(v.v)>.005||Math.abs(v.yr)>.005){g.rotation.y+=v.yr*dt;p.x+=Math.sin(g.rotation.y)*v.v*dt;p.z+=Math.cos(g.rotation.y)*v.v*dt;vhCollide32(v)}
+ vhAnim32(v,dt,v0,wh)}
+function vhUnstick32(v,C){const A=v.ai,S=v.spec,h=v.g.rotation.y,fwd=A.spd>=0;A.recD=fwd?-1:1;const back=fwd?h+Math.PI:h,off=fwd?(-(S.zb||-S.hd)-S.hw):((S.zf||S.hd)-S.hw);
+ const fl=vhProbe32(v,back+.9,8,S.hw+.3,off),fr=vhProbe32(v,back-.9,8,S.hw+.3,off),fb=vhProbe32(v,back,6,S.hw+.25,off);
+ /* lado al que quiere quedar mirando: el más libre por delante */const l=vhProbe32(v,h+1.1,10,S.hw+.4,0),r=vhProbe32(v,h-1.1,10,S.hw+.4,0);A.recS=l>=r?1:-1;
+ if(fb<1.2&&fl<1.2&&fr<1.2){A.recD=-A.recD}A.rec=1.6+R()*1.2;A.sT=0;VEH32.dbg.stuck++;A.stk.push(time);while(A.stk.length&&time-A.stk[0]>40)A.stk.shift();
+ if(A.stk.length>=4&&v.path&&!v.arrived){A.stk.length=0;VEH32.dbg.giveup++;const last=v.pi>=v.path.length-1&&!v.loop;if(last){v.arrived=true;if(v.onEnd)try{v.onEnd(v)}catch(e){console.warn(e)}}else v.pi++}}
+function vhDrive32(v,dt){const C=vhC32(v);if(!C||v.type==='ship'||v.train||C.tactics==='static'||v.ai32===false)return vhDriveOld32(v,dt);
+ const A=vhAI32(v);A.th-=dt;if(A.th<=0){A.th+=.25;vhThink32(v,C,.25);A.hist[A.st]=(A.hist[A.st]||0)+1}vhMove32(v,dt,C)}
+/* ---------- órdenes ---------- */
+function vehOrder32(v,o){if(!v)return v;o=o||{};const A=vhAI32(v),m=o.mode||'advance';A.mode=m;if(o.cls&&VEH32.cls[o.cls]){v.clsK=o.cls;v.cls=VEH32.cls[o.cls]}
+ if(o.path&&o.path.length)vehPath32(v,o.path,{speed:o.speed,loop:m==='patrol'||!!o.loop,onEnd:o.onEnd});else if(o.goal&&m!=='retreat')vehPath32(v,[o.goal],{speed:o.speed,onEnd:o.onEnd});else if(m==='hold'){v.path=null;v.arrived=true}
+ if(o.speed)v.vmax=o.speed;A.mode=m;
+ if(m==='retreat'){const C=vhC32(v)||VEH32.cls.truck;if(o.goal){A.rg=[VEH32.X+o.goal[0],o.goal[1]];A.st='retreat';A.t=0;A.revT=0;v.path=null}else{const p=v.g.position;vhRetreat32(v,C,A.foe?A.fx:p.x+Math.sin(v.g.rotation.y)*30,A.foe?A.fz:p.z+Math.cos(v.g.rotation.y)*30)}}
+ else{A.st=vhOrdS32(A);A.t=0}A.th=0;return v}
 function vhPushP32(v,dt){const o=v.ob;if(!o)return;const q=P.g.position;if(q.y>o.h-.3)return;const dx=q.x-o.x,dz=q.z-o.z,px=o.hw+.45-Math.abs(dx),pz=o.hd+.45-Math.abs(dz);if(px<=0||pz<=0)return;
  if(px<pz)q.x+=Math.sign(dx||1)*px;else q.z+=Math.sign(dz||1)*pz;if(Math.abs(v.v)>2.5&&(!v.ht||time-v.ht>1.2)){v.ht=time;hitP(Math.abs(v.v)*(v.type==='loco'||v.type==='wagon'?9:4))}}
 function vhFx32(v,dt){const p=v.g.position,S=v.spec;v.smT2=(v.smT2||0)-dt;if(v.smT2>0)return;
@@ -416,6 +582,7 @@ function vhFx32(v,dt){const p=v.g.position,S=v.spec;v.smT2=(v.smT2||0)-dt;if(v.s
   if(v.type==='ship'&&S.stacks){v.smT2=.55;if(vhCamVol32(p.x,p.z,1400)>0)for(const s of S.stacks){vh_ve32.set(s[0],s[1],s[2]).applyMatrix4(v.g.matrixWorld);smoke(vh_ve32.x,vh_ve32.y,vh_ve32.z,3.5,6,0x2a2a2c,2,.5)}}}
  else if(v.ws>0){v.ws-=.5;v.smT2=.5;smoke(p.x+(R()-.5)*S.hw,p.y+S.h*.6,p.z+(R()-.5)*S.hd*.6,v.type==='ship'?9:3,v.type==='ship'?9:5,0x161514,2,.6)}else v.smT2=2}
 function vehUpd32(dt){if(typeof time!=='undefined'){if(time===VEH32.lt)return;VEH32.lt=time}dt=Math.min(dt||0,.05);if(!dt)return;
+ VEH32.losN=0;vhNoGo17();vhGrid32();vhSmokeUpd32(dt);
  for(const tr of VEH32.trains)vhTrainUpd32(tr,dt);
  let near=null,nd=70;
  for(const v of VEH32.list){if(!v.on)continue;if(!v.train)vhDrive32(v,dt);if(v.type==='ship'&&!v.alive){v.g.position.y=Math.max(VEH32.seaY-vhSink32(v),v.g.position.y-dt*.15);v.g.rotation.z=Math.min(.12,v.g.rotation.z+dt*.004)}
@@ -442,7 +609,8 @@ function navalShell32(x,z,opts){opts=opts||{};const wx=VEH32.X+x,k=opts.k||1.8,y
 /* ---------- limpieza entre niveles ---------- */
 function vhVehClear32(){for(const v of VEH32.list){if(v.g.parent)v.g.parent.remove(v.g);v.on=false;if(v.ob){const i=obstB.indexOf(v.ob);if(i>=0)obstB.splice(i,1);v.ob=null}if(v.hit&&typeof HIT9!=='undefined'){const i=HIT9.indexOf(v.hit);if(i>=0)HIT9.splice(i,1);v.hit=null}
   for(const f of v.fires){f.g.visible=false;if(f.g.parent)f.g.parent.remove(f.g);const i=FIRES.indexOf(f);if(i>=0)FIRES.splice(i,1)}v.fires.length=0}
- VEH32.list.length=0;VEH32.trains.length=0;for(const s of vhSH32){s.on=false;if(s.m)s.m.visible=false}}
+ VEH32.list.length=0;VEH32.trains.length=0;VEH32.noGo.length=0;VEH32.smk.length=0;VEH32.ng17=false;VEH32.X=X17;VG32.n=-1;for(const s of vhSH32){s.on=false;if(s.m)s.m.visible=false}}
 {const _c=clearStage;clearStage=function(){try{vhVehClear32()}catch(e){console.warn(e)}return _c.apply(this,arguments)}}
-Object.assign(VEH32,{armcar32,tank32,truck32,loco32,wagon32,fieldgun32,atgun32,mortar32,ship32,vehSpawn32,vehPath32,vehUpd32,trainRun32,navalShell32,clear:vhVehClear32,dmg:vhVehDmg32,kill:vhVehKill32,impact:vhImpact32,
+Object.assign(VEH32,{vehOrder32,vehNoGo32,order:vehOrder32,noGoBox:vehNoGo32,overlap:vhOverlap32,grid:vhGrid32,
+ origin:x0=>{VEH32.X=+x0||0;VG32.n=-1;return VEH32},armcar32,tank32,truck32,loco32,wagon32,fieldgun32,atgun32,mortar32,ship32,vehSpawn32,vehPath32,vehUpd32,trainRun32,navalShell32,clear:vhVehClear32,dmg:vhVehDmg32,kill:vhVehKill32,impact:vhImpact32,
  world:(x,z)=>[VEH32.X+x,z],local:(x,z)=>[x-VEH32.X,z],near:(x,z,r,side)=>VEH32.list.filter(v=>v.on&&v.alive&&(side===undefined||v.side===vhSide32(side))&&Math.hypot(v.g.position.x-VEH32.X-x,v.g.position.z-z)<r)});
