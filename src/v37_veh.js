@@ -30,13 +30,13 @@ function vgcThreat37(v,r){const p=v.g.position;let bd=r,b=null;
  else{if(playing&&P.hp>0){const d=Math.hypot(P.g.position.x-p.x,P.g.position.z-p.z);if(d<bd){bd=d;b=P}}for(const n of vhAllies32()){if(!n.g||!n.g.visible||n.down29||n.down17||n.dead17)continue;const d=Math.hypot(n.g.position.x-p.x,n.g.position.z-p.z);if(d<bd){bd=d;b=n}}}
  if(b&&bd>5&&!losClear(p.x,1.3,p.z,b.g.position.x,1.3,b.g.position.z))return null;return b?{t:b,d:bd}:null}
 /* un sirviente baja de la pieza y pasa a ser infantería del nivel */
-function vgcSpawn37(v,C,m,i){const w=m.getWorldPosition(new T.Vector3()),lx=w.x-VEH32.X,ry=v.g.rotation.y+(v.mounts[0]?v.mounts[0].yaw:0);let n=null;
+function vgcSpawn37(v,C,m,i){v.g.updateMatrixWorld(true);const w=m.getWorldPosition(new T.Vector3()),lx=w.x-VEH32.X,ry=v.g.rotation.y+(v.mounts[0]?v.mounts[0].yaw:0);let n=null;
  try{if(C.spawn)n=C.spawn(w.x,w.z,i,v);
   else if(C.side==='veyrn'){if(level===17&&typeof sp17==='function')n=sp17(i===0?'mosin':R()<.5?'stv':'mosin',lx,w.z,{tag:C.tag,kind:'crew'});
    else if(typeof sp13==='function'){n=sp13('mosin',w.x-X13,w.z,{tag:C.tag});if(typeof veyrn32==='function')try{veyrn32(n,'crew')}catch(e){}n.unaware=false;n.active=true}}
   else{if(level===17&&typeof ally17==='function')n=ally17(lx,w.z,{kind:'rifle',name:'Artillero '+['Vask','Orel','Tamm','Lev'][i%4]});
    else if(typeof npc11==='function'){n=npc11(w.x,w.z,{name:'Artillero',hat:'helm'});if(typeof arm13==='function')arm13(n,'r');if(typeof volsk32==='function')try{volsk32(n,'rifle')}catch(e){}n.lv=level}}}catch(e){console.warn('gunCrew32',e)}
- if(n&&n.g){n.g.position.set(w.x,vhFlo32(w.x,w.z),w.z);n.g.rotation.y=ry;n.gun32=v;C.men.push(n);VGC37.men++;VEH32.dbg.dismount++}return n}
+ if(n&&n.g){n.g.position.set(w.x,vhFlo32(w.x,w.z),w.z);n.g.rotation.y=ry;n.gun32=v;n.sp37=[Math.round(w.x-VEH32.X),Math.round(w.z)];C.men.push(n);VGC37.men++;VEH32.dbg.dismount++}return n}
 function vgcUpd37(v,dt){const C=v.gc;if(!C||C.state==='gone')return;if(!v.alive||!v.on){C.state='gone';return}C.tt-=dt;if(C.tt>0)return;C.tt=.3;
  if(C.state==='manned'){if(!C.abandon)return;const t=vgcThreat37(v,C.r);if(t){C.thr+=t.d<C.r*.45?.6:.3}else C.thr=Math.max(0,C.thr-.15);
   if(C.thr>=1.5||(t&&v.crewMax&&v.crewHp<v.crewMax*.35)){C.state='leaving';v.fire=false;for(const mm of v.mounts){mm.tele=0;mm.burst=0;if(mm.gl)mm.gl.visible=false}

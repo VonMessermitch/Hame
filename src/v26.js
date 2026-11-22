@@ -86,7 +86,7 @@ function apt14(q){const X=X14,z0=-444,w=32,d=30,H=3.2;const C=0x7e7262,CI=shade(
   if(f>0){/* forjado con el hueco de la escalera */slab14(q,-w/2+.25,WX0,ZN+.5,ZS-.5,y,0x6a5e50,0x5a4a3a,.3);slab14(q,WX0,WX1,ZN+.5,WZ0,y,0x6a5e50,0x5a4a3a,.3)}
   if(f<4){stair14(q,14.675,z0+5.6,0,.8,6,y,y+1.6-.45,2.1,{c:0x7a6a58,thin:true});
    /* descanso volado */pBox(q,WX1-WX0,.22,WZ1-(z0+10),0x7a6a58,X+(WX0+WX1)/2,y+1.6-.11,(WZ1+z0+10)/2);pBox(q,WX1-WX0,.3,.2,shade(0x7a6a58,.8),X+(WX0+WX1)/2,y+1.6-.35,z0+10.1);
-   {const b={x:(WX0+WX1)/2,z:(WZ1+z0+10)/2,hw:(WX1-WX0)/2,hd:(WZ1-z0-10)/2,h:y+1.6-.45,y0:y+1.6-.8};obstB.push(b);L14.obs.push(b)}
+   {const b={x:X+(WX0+WX1)/2,z:(WZ1+z0+10)/2,hw:(WX1-WX0)/2,hd:(WZ1-z0-10)/2,h:y+1.6-.45,y0:y+1.6-.8};obstB.push(b);L14.obs.push(b)}
    stair14(q,12.6,z0+9.6,0,-.8,6,y+1.6,y+H-.45,2,{c:0x7a6a58,thin:true})}}
  /* colisiones de los muros (altura completa) */
  oB14({x:-16,z:z0,hw:.3,hd:15,h:16});oB14({x:16,z:z0,hw:.3,hd:15,h:16});oB14({x:-4,z:z0-3.5,hw:.2,hd:3.5,h:16});oB14({x:-4,z:z0+8.5,hw:.2,hd:4.5,h:16});oB14({x:-12,z:z0-4,hw:3,hd:.2,h:16});oB14({x:-1,z:z0-4,hw:4,hd:.2,h:16});
@@ -110,13 +110,13 @@ function wall14(q,ax,c,u0,u1,t,y0,y1,holes,col,lv,obs){holes=holes||[];const cut
    const top=lv&&lv.some(v=>Math.abs(v-s1)<.01)?s1-.45:s1,o={x:cx,z:cz,hw:sw/2,hd:sd/2,h:top};if(s0>.01)o.y0=s0;oB14(o);if(obs)obs.push(o)}}}
 /* forjado (cara superior en F) con acabado; colisión pisable a F */
 function slab14(q,x0,x1,z0,z1,F,cs,cf,th){th=th||.4;pBox(q,x1-x0,th,z1-z0,cs,X14+(x0+x1)/2,F-th/2-.03,(z0+z1)/2);if(cf!==undefined)pBox(q,x1-x0,.06,z1-z0,cf,X14+(x0+x1)/2,F-.03,(z0+z1)/2);
- return oB14({x:(x0+x1)/2,z:(z0+z1)/2,hw:(x1-x0)/2,hd:(z1-z0)/2,h:F-.45,y0:F-.4})}
+ return oB14({x:(x0+x1)/2,z:(z0+z1)/2,hw:(x1-x0)/2+.02,hd:(z1-z0)/2+.02,h:F-.45,y0:F-.4})}
 /* escalera: escalones de huella |dx| o |dz|, alturas pisables base+(i+1)·r hasta top+.45; o.thin = peldaños volados (zanca inclinada, se puede pasar por debajo) */
 function stair14(q,x0,z0,dx,dz,n,base,top,wide,o){o=o||{};const X=X14,ax=Math.abs(dx)>Math.abs(dz),run=Math.abs(ax?dx:dz),col=o.c||0x8a7a66,r=(top+.45-base)/n,L=[];
  for(let i=0;i<n;i++){const x=x0+dx*i,z=z0+dz*i,w=base+(i+1)*r,sw=ax?run+.02:wide,sd=ax?wide:run+.02;
   if(o.thin)pBox(q,sw,.2,sd,col,X+x,w-.1,z);else pBox(q,sw,w-base,sd,col,X+x,(w+base)/2,z);
   if(o.nose!==false&&G.detail>0)pBox(q,ax?.06:wide+.04,.05,ax?wide+.04:.06,shade(col,1.15),X+x-(ax?Math.sign(dx)*run/2:0),w-.02,z-(ax?0:Math.sign(dz)*run/2));
-  const b={x,z,hw:sw/2,hd:sd/2,h:w-.45,step:true,y0:o.thin?w-.8:(base>0?base-.2:0)};obstB.push(b);L14.obs.push(b);L.push(b)}
+  const b={x:X+x,z,hw:sw/2,hd:sd/2,h:w-.45,step:true,y0:o.thin?w-.8:(base>0?base-.2:0)};obstB.push(b);L14.obs.push(b);L.push(b)}
  if(o.thin){const Lh=n*run,Rv=n*r,len=Math.hypot(Lh,Rv),a=Math.atan2(Rv,Lh),xs=x0-dx/2,zs=z0-dz/2,xe=x0+dx*(n-.5),ze=z0+dz*(n-.5),xm=(xs+xe)/2,zm=(zs+ze)/2,ym=base+Rv/2-.42;
   if(ax)pBox(q,len,.26,wide,shade(col,.85),X+xm,ym,zm,0,0,dx>0?a:-a);else pBox(q,wide,.26,len,shade(col,.85),X+xm,ym,zm,dz<0?a:-a,0,0)}
  return L}
@@ -269,15 +269,15 @@ function wreck14(a){const p=new T.Vector3(a.x,1,a.z);boom9(a.x,a.z,1.4,false);fb
 function mkAT14(x,z,r,o){const g=new T.Group(),q=PB();pCyl(q,.55,.55,.16,0x2a2a2a,-.9,.55,0,0,0,1.5708,12);pCyl(q,.55,.55,.16,0x2a2a2a,.9,.55,0,0,0,1.5708,12);pBox(q,1.3,.4,.8,0x4a4e42,0,.8,0);pCyl(q,.08,.11,2.6,0x2a2c2e,0,1.05,1.6,1.5708,0,0,8);pBox(q,1.8,1.2,.1,0x4a4e42,0,1.1,.5);pBox(q,.14,.14,2.2,0x3a3a36,-.4,.4,-1.4,.15,.2,0);pBox(q,.14,.14,2.2,0x3a3a36,.4,.4,-1.4,.15,-.2,0);pbMesh(q,g,VCV);g.position.set(X14+x,0,z);g.rotation.y=r;scene.add(g);
  const a={g,x:X14+x,z,r0:r,hp:1,alive:true,cd:3+R()*3,he:!!(o&&o.he),crew:[]};for(const s of[-1,1])a.crew.push(sp14('mosin',x+Math.cos(r)*s*1.4-Math.sin(r)*1.2,z+Math.sin(r)*s*1.4-Math.cos(r)*1.2,{tag:(o&&o.tag)||'c',hold:true}));L14.atg.push(a);oB14({x,z,hw:1.2,hd:1.2,h:1.6});return a}
 function mkETank14(x,z,r,path){const g=mkTank16('en');g.position.set(X14+x,0,z);g.rotation.y=r;scene.add(g);const a={g,x:X14+x,z,hp:340,alive:true,tank:true,cd:4+R()*3,path:path?path.map(p=>[X14+p[0],p[1]]):null,pi:0};L14.etk.push(a);return a}
-function artUpd14(dt){const tgt=L14.inTank?L14.tank.position:P.g.position;
- for(const a of L14.atg.concat(L14.etk)){if(!a.alive)continue;if(a.crew&&a.crew.length&&a.crew.every(e=>e.hp<=0)){a.alive=false;feed('★ Dotación del cañón eliminada');continue}
-  if(a.tank){const u=a.g.userData;if(a.path){const w=a.path[a.pi%a.path.length],dx=w[0]-a.g.position.x,dz=w[1]-a.g.position.z,d=Math.hypot(dx,dz);if(d<2){a.pw=(a.pw||0)+dt;if(a.pw>5){a.pw=0;a.pi++}}else{a.g.rotation.y=angL(a.g.rotation.y,Math.atan2(dx,dz),dt*.8);a.g.position.x+=Math.sin(a.g.rotation.y)*3*dt;a.g.position.z+=Math.cos(a.g.rotation.y)*3*dt;tankAnim(a.g,3,dt)}a.x=a.g.position.x;a.z=a.g.position.z}
+function artUpd14(dt){const tgt0=L14.inTank?L14.tank.position:P.g.position;vSync14();
+ for(const a of L14.atg.concat(L14.etk)){if(!a.alive)continue;let tgt=tgt0,tv=null;{const dp=Math.hypot(tgt0.x-a.x,tgt0.z-a.z);for(const v of AL14.v)if(v.alive&&v.on){const q=v.g.position,dv=Math.hypot(q.x-a.x,q.z-a.z);if(dv<110&&dv<dp-10){tgt=q;tv=v;break}}}if(a.crew&&a.crew.length&&a.crew.every(e=>e.hp<=0)){a.alive=false;feed('★ Dotación del cañón eliminada');continue}
+  if(a.tank){const u=a.g.userData;if(a.path){const w=a.path[a.pi%a.path.length],dx=w[0]-a.g.position.x,dz=w[1]-a.g.position.z,d=Math.hypot(dx,dz);if(d<2){a.pw=(a.pw||0)+dt;if(a.pw>5){a.pw=0;a.pi++}}else{a.g.rotation.y=angL(a.g.rotation.y,Math.atan2(dx,dz),dt*.8);a.g.position.x+=Math.sin(a.g.rotation.y)*3*dt;a.g.position.z+=Math.cos(a.g.rotation.y)*3*dt;resolve(a.g.position,1.9);tankAnim(a.g,3,dt);a.mv=3}else a.mv=0;a.x=a.g.position.x;a.z=a.g.position.z}
    u.tur.rotation.y=angL(u.tur.rotation.y,Math.atan2(tgt.x-a.x,tgt.z-a.z)-a.g.rotation.y,dt*.9)}else if(a.r0!==undefined){const df=angD12(Math.atan2(tgt.x-a.x,tgt.z-a.z),a.r0);a.g.rotation.y=angL(a.g.rotation.y,a.r0+Math.max(-.6,Math.min(.6,df)),dt*.5)}
   const d=Math.hypot(tgt.x-a.x,tgt.z-a.z);a.cd-=dt;if(a.cd>0||d>(a.tank?130:110)||!losClear(a.x,1.6,a.z,tgt.x,1.6,tgt.z))continue;a.cd=(a.tank?6:5)+R()*2.5;
   const o=new T.Vector3(a.x,a.tank?2.4:1.1,a.z);burst(o.x,o.y,o.z,0xffcc66,10,.25,8);smoke(o.x,o.y,o.z,2.4,2,0x9a9a90,1,.6);(typeof tkf36==='function'&&tkf36(a.x,a.z))||expSnd(a.x,a.z,.6);if(a.tank)a.g.userData.rec=1;
   const miss=R()<.3,tp=new T.Vector3(tgt.x+(miss?(R()-.5)*8:0),1.2,tgt.z+(miss?(R()-.5)*8:0));trc16(o,tp,0xffd080);
-  later13(d/350,()=>{if(level!==14)return;if(L14.inTank&&!miss){tankHit14(a.tank?14:11)}else boom14(tp.x,.3,tp.z,a.he||!L14.inTank?.9:.6,'e')})}
- if(L14.inTank)for(const b of ebul)if(Math.hypot(b.m.position.x-tgt.x,b.m.position.z-tgt.z)<2.2){b.life=0;if(R()<.3)sparks12(b.m.position.x,b.m.position.y,b.m.position.z)}}
+  later13(d/350,()=>{if(level!==14)return;if(tv){if(!miss&&tv.alive&&typeof vhVehDmg32==='function'){vhVehDmg32(tv,a.tank?150:170,'at',a.x,a.z);sparks12(tp.x,1.6,tp.z);burst(tp.x,1.4,tp.z,0xffd890,10,.4,6)}else boom14(tp.x,.3,tp.z,.7,'e');return}if(L14.inTank&&!miss){tankHit14(a.tank?14:11)}else boom14(tp.x,.3,tp.z,a.he||!L14.inTank?.9:.6,'e')})}
+ if(L14.inTank)for(const b of ebul)if(Math.hypot(b.m.position.x-tgt0.x,b.m.position.z-tgt0.z)<2.2){b.life=0;if(R()<.3)sparks12(b.m.position.x,b.m.position.y,b.m.position.z)}}
 function tankHit14(dmg){const p=L14.tank.position;L14.thp-=dmg;shake=Math.max(shake,1.6);sparks12(p.x,2,p.z);burst(p.x,1.5,p.z,0xffd890,12,.4,7);tn18('square',300,90,.35,.12);tn18('square',1400,600,.25,.06);fb12(p.x,2,p.z,4,.4,1);crew14('hit',3);if(L14.thp<=0&&L14.ph<3){L14.thp=0;say('El tanque arde. La tripulación sale como puede… Volvés al último punto.',3);later13(1.5,()=>{L14.thp=100;go14(L14.ph,true)})}}
 function facade14(){L14.facDown=true;fac14Ob();shake=1.6;const g=L14.fac;L14.facT=0;for(const e of[...enemies])if(e.t13==='fac')hurt(e,999,'x');for(let i=0;i<6;i++)later13(i*.15,()=>{fb12(L14.facP[0],2+i*1.5,L14.facP[1]+(R()-.5)*10,5,.6,2);smoke(L14.facP[0]+2,3,L14.facP[1]+(R()-.5)*10,8,6,0x8a7a66,1.5,.7)});expSnd(L14.facP[0],L14.facP[1],1.6);feed('★ Fachada derribada');score+=400}
 /* =====================================================================
@@ -388,9 +388,34 @@ function fx14(dt,cine){if(L13.tq.length){for(const q of L13.tq)q.t-=dt;const due
  L14.sk=(L14.sk||0)-dt;if(L14.sk<=0){L14.sk=.25;const p=smokePts14[R()*smokePts14.length|0];if(p&&Math.hypot(p[0]-cam.position.x,p[2]-cam.position.z)<220)smoke(p[0],p[1],p[2],5+R()*4,8,R()<.6?0x2a2826:0x5a544c,2.5,.55)}
  L14.ar=(L14.ar||3)-dt;if(L14.ar<=0){L14.ar=4+R()*6;const x=cam.position.x+(R()-.5)*300,z=cam.position.z-120-R()*200;nz18(0,1.2,'lowpass',300,90,.05,.2);if(R()<.4)fb12(x,4,z,12,.6,3)}
  if(L14.facDown&&L14.fac&&L14.fac.visible){L14.facT=(L14.facT||0)+dt;L14.fac.position.y=-L14.facT*6;L14.fac.position.x=L14.facT*3;if(L14.facT>1.6)L14.fac.visible=false}}
-function updT14(dt){fx14(dt,false);winUpd14(dt);if(L14.inTank){tankUpd14(dt);stealth13(dt);compUpd13(dt,L14.sq)}else{stealth13(dt);compUpd13(dt,L14.sq);workUpd14(dt);const w=P.weapons[P.cur],nm={revolver:'PISTOLA LUGY 7,65 mm',rifle:'FUSIL M.22 DE EISENMARK',smg:'SUBFUSIL CAPTURADO'}[P.cur];if(nm&&w)$('ammo').textContent=nm+(P.rel>0?' · RECARGANDO':' · '+w.mag+' / '+w.reserve)}
+function updT14(dt){fx14(dt,false);winUpd14(dt);vUpd14(dt);if(L14.inTank){tankUpd14(dt);stealth13(dt);compUpd13(dt,L14.sq)}else{stealth13(dt);compUpd13(dt,L14.sq);workUpd14(dt);const w=P.weapons[P.cur],nm={revolver:'PISTOLA LUGY 7,65 mm',rifle:'FUSIL M.22 DE EISENMARK',smg:'SUBFUSIL CAPTURADO'}[P.cur];if(nm&&w)$('ammo').textContent=nm+(P.rel>0?' · RECARGANDO':' · '+w.mag+' / '+w.reserve)}
  artUpd14(dt);upd14(dt);if(L14.ot&&!L9.cine)$('obj').textContent=L14.ot;const el=$('gar'),S=L14.sq.filter(n=>n.on);if(S.length&&!L9.cine){el.style.display='block';el.innerHTML=(L14.inTank?'TANQUE «HELL» · BLINDAJE <b>'+Math.round(L14.thp)+'%</b> · ':'')+'CON VOS <b>'+S.length+'</b>: '+S.map(n=>n.name.split(' ').pop()).join(' · ')}else el.style.display='none';ambUpd(dt,.9)}
 function vmClimb14(){if(VM13.C||!VM13.scene)return;const g=new T.Group();for(const s of[-1,1]){const h=new T.Group();h.position.set(s*.2,-.12,-.42);g.add(h);const q=PB();pBox(q,.085,.03,.1,GLV,0,.02,0);for(let i=0;i<4;i++)pBox(q,.017,.04,.03,GLV,-.03+i*.02,0,-.06);vmMesh(q,h);const f=new T.Group();f.position.set(0,0,.04);f.rotation.set(.9,s*-.3,0);h.add(f);const q2=PB();pBox(q2,.088,.084,.34,0x1e1e22,0,0,.2);vmMesh(q2,f)}const rim=new T.Mesh(gBox(.9,.05,.08),new T.MeshLambertMaterial({color:0x4a5640}));rim.position.set(0,-.15,-.44);g.add(rim);VM13.scene.add(g);VM13.C=g}
+
+/* =====================================================================
+   v37 · TANQUES ALIADOS (VEH32): avanzan por las calles laterales y luego por la avenida, combaten solos.
+   Los cañones AT y tanques enemigos del nivel (no VEH32) entran a VEH32.list como blancos "proxy".
+   ===================================================================== */
+const AL14={v:[],st:-1,w:0};
+function vOK14(){return typeof VEH32!=='undefined'&&VEH32&&Array.isArray(VEH32.list)&&typeof tank32==='function'&&typeof vehSpawn32==='function'}
+function vWrap14(){if(AL14.w||typeof vhVehDmg32!=='function')return;AL14.w=1;const _d=vhVehDmg32;vhVehDmg32=function(v,d,kind){if(v&&v.l14){const a=v.l14;if(!a.alive)return;
+  if(kind==='b'){if(!a.tank&&a.crew&&R()<.06){const c=a.crew.find(e=>e.hp>0);if(c)hurt(c,999,'b')}return}a.hp-=a.tank?d*.35:(d>=60?999:0);if(a.hp<=0){a.alive=false;v.alive=false;wreck14(a);feed('★ Un tanque aliado destruyó '+(a.tank?'un tanque enemigo':'un cañón antitanque'))}return}return _d.apply(this,arguments)}}
+function vPrx14(a){if(!a.vp){const tk=!!a.tank;a.vp={l14:a,g:a.g,kind:tk?'tank_l14':'atgun_l14',type:tk?'tank':'atg14',side:'veyrn',ally:false,alive:true,on:true,train:{l14:1},name:tk?'tanque enemigo':'cañón antitanque',hp:1,maxhp:1,
+  spec:{h:tk?2.6:1.5,hw:tk?1.7:1.2,hd:tk?3.2:1.3,cz:0,zf:3,zb:-3,type:tk?'tank':'atg14'},mounts:[],v:0,yr:0,crewHp:0,crewMax:0,fires:[],wh:[],whr:[],crew:[],ws:0,smT2:9}}return a.vp}
+function vSync14(){if(!vOK14()||!AL14.v.length)return;for(const a of L14.atg.concat(L14.etk)){const p=vPrx14(a);p.alive=a.alive;p.v=a.mv||0;if(a.alive&&!VEH32.list.includes(p))VEH32.list.push(p)}}
+function vNew14(x,z,r){if(!vOK14())return null;try{vWrap14();if(VEH32.origin)VEH32.origin(X14);else VEH32.X=X14;const v=tank32('volsk');v.name='tanque aliado';vehSpawn32(v,x,z,r===undefined?Math.PI:r);AL14.v.push(v);return v}catch(e){console.warn('vNew14',e);return null}}
+function vGo14(v,path,mode){if(!v||!v.alive)return;try{if(VEH32.origin)VEH32.origin(X14);if(typeof vehOrder32==='function')vehOrder32(v,{mode:mode||'advance',path});else if(typeof vehPath32==='function')vehPath32(v,path)}catch(e){console.warn('vGo14',e)}}
+function vPut14(v,x,z,r){if(!v)return;v.g.position.set(X14+x,0,z);v.g.rotation.y=r;v.v=0;if(typeof vhObUpd32==='function')vhObUpd32(v)}
+const VR14=[[[-46,-60],[-46,-120],[-46,-185],[-40,-214]],[[46,-60],[46,-120],[46,-185],[40,-214]],
+ [[-40,-250],[-40,-300],[-24,-342],[-20,-372],[-10,-402]],[[40,-250],[40,-300],[24,-342],[20,-372],[6,-400]],
+ [[60,-552],[44,-552],[30,-566],[14,-600]],[[60,-552],[44,-552],[34,-574],[-10,-604]]];
+function vStage14(ph,jump){if(!vOK14())return;const st=ph<=3?0:ph<=7?1:2;if(st===AL14.st&&!jump)return;if(ph===4||ph===5)return;AL14.st=st;let A=AL14.v.filter(v=>v.alive);
+ if(jump||!A.length){for(const v of AL14.v){if(v.g.parent)v.g.parent.remove(v.g);v.on=false;if(v.ob){const i=obstB.indexOf(v.ob);if(i>=0)obstB.splice(i,1);v.ob=null}const i=VEH32.list.indexOf(v);if(i>=0)VEH32.list.splice(i,1)}AL14.v=[];
+  const S=st===0?(ph<=1?[[-46,18],[46,18]]:ph===2?[[-40,-176],[40,-176]]:[[-40,-214],[40,-214]]):st===1?(ph===6?[[-40,-262],[40,-262]]:[[-10,-402],[6,-400]]):(ph>=10?[[14,-600],[-10,-604]]:[[100,-552],[112,-552]]);
+  A=S.map(p=>vNew14(p[0],p[1],st===2&&ph<10?-Math.PI/2:Math.PI)).filter(Boolean)}
+ else if(st===2)A.forEach((v,i)=>vPut14(v,100+i*12,-552,-Math.PI/2));
+ A.forEach((v,i)=>{const r=VR14[st*2+i];if(!r)return;let k=0,bd=1e9;r.forEach((p,j)=>{const d=Math.hypot(p[0]-(v.g.position.x-X14),p[1]-v.g.position.z);if(d<bd){bd=d;k=j}});const path=r.slice(k);if(path.length)vGo14(v,path,'advance')})}
+function vUpd14(dt){if(!AL14.v.length||typeof vehUpd32!=='function')return;try{if(VEH32.origin&&VEH32.X!==X14)VEH32.origin(X14);vehUpd32(dt)}catch(e){if(!AL14.ve){AL14.ve=1;console.warn('vehUpd32',e)}}}
 /* =====================================================================
    ARRANQUE E INTEGRACIÓN
    ===================================================================== */
