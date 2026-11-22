@@ -30,7 +30,7 @@ function scr38(x,z,k){const c=typeof cam!=='undefined'?cam.position:null;if(!c||
 function pmesh38(key,build,mat){let g=A38G[key];if(!g){const q=PB();build(q);g=A38G[key]=pbGeo(q)}const m=new T.Mesh(g,mat||VCM);return m}
 function vcount38(o){let v=0;o.traverse(m=>{if(m.isMesh&&m.geometry&&m.geometry.attributes.position)v+=m.geometry.attributes.position.count});return v}
 /* ---------------- V-19 «Chaika-Saetta» ---------------- */
-const PV38={A:{hp:90,spd:46,turn:1.3,ammo:26,bombs:0,dmg:22,C1:0x6a7560,C2:0x4c5848,ac:0xe0dccc},B:{hp:80,spd:56,turn:1.15,ammo:22,bombs:0,dmg:24,C1:0x56687a,C2:0x3c4a58,ac:0xa82a24},D:{hp:115,spd:42,turn:1,ammo:14,bombs:3,dmg:18,C1:0x6e7656,C2:0x55603e,ac:0xc89a30}};
+const PV38={A:{hp:90,spd:46,turn:1.3,ammo:26,bombs:0,dmg:30,C1:0x6a7560,C2:0x4c5848,ac:0xe0dccc},B:{hp:80,spd:56,turn:1.15,ammo:22,bombs:0,dmg:32,C1:0x56687a,C2:0x3c4a58,ac:0xa82a24},D:{hp:115,spd:42,turn:1,ammo:14,bombs:3,dmg:24,C1:0x6e7656,C2:0x55603e,ac:0xc89a30}};
 function roundel38(q,x,y,z,r,rx,rz){const D=det38();pa(q,gCyl(r,r,.02,D?16:10),0xe6e2d4,x,y,z,rx||0,0,rz||0);pa(q,gCyl(r*.7,r*.7,.03,D?16:10),0x2e6a3a,x,y,z,rx||0,0,rz||0);pa(q,gCyl(r*.36,r*.36,.04,D?12:8),0x1c2a5a,x,y,z,rx||0,0,rz||0);if(D)pa(q,gBox(r*.22,.05,r*.22),0xe6e2d4,x,y,z,rx||0,.785,rz||0)}
 function mkV19_38(v){const K=PV38[v],C1=K.C1,C2=K.C2,UN=0x9aa4a8,MT=0x8a9096,DK=0x1e2022,D=det38(),s=v==='D'?1.08:1,g=new T.Group(),u={var:v,brk:[],bombs:[]};
  const body=pmesh38('v19b'+v+D,q=>{const sd=D?10:8;
@@ -245,8 +245,9 @@ function gThink38(a){if(/down|dead|flee|lapp|flare|ground|takeoff/.test(a.st))re
  if(a.landAt&&a.rider&&!a.landed){a.st='lapp';a.t=0;return}
  if(!a.landed&&a.rider&&AIR38.landSites.length&&a.var!=='scout'&&a.hp>a.mx*.6&&R38()<.04){const s=AIR38.landSites[R38()*AIR38.landSites.length|0];a.landAt=s;a.st='lapp';a.t=0;return}
  /* amenaza: caza en la cola → quiebre bajo */
- if(a.st!=='evade')for(const f of AIR38.list){if(f.type!=='p'||!f.alive||f.st!=='int'||f.tg&&f.tg.o!==a)continue;A38a.copy(a.p).sub(f.p);const d=A38a.length();if(d<170&&A38a.dot(f.v)/(d*f.spd+1e-3)>.88&&R38()<.75){a.st='evade';a.t=0;a.thr=f;return}}
+ if(a.st!=='evade')for(const f of AIR38.list){if(f.type!=='p'||!f.alive||f.st!=='int'||f.tg&&f.tg.o!==a)continue;A38a.copy(a.p).sub(f.p);const d=A38a.length();if(d<120&&A38a.dot(f.v)/(d*f.spd+1e-3)>.9&&R38()<.45){a.st='evade';a.t=0;a.thr=f;return}}
  if(!tok38(a.tg)||(a.st==='zoom'&&a.t>2&&R38()<.5))a.tg=gTgt38(a);
+ if(a.st!=='run'&&a.st!=='chase'&&R38()<.3)for(const f of AIR38.list){if(f.type==='p'&&f.alive&&f.st!=='away'&&f.p.distanceTo(a.p)<110&&f.p.y-fl38(f.p.x,f.p.z)<75){a.tg={k:'air',o:f};a.st='chase';a.t=0;return}}
  if(!a.tg){if(a.st!=='in'){a.st='in';a.t=0}return}
  if(a.st==='in'||a.st==='zoom'&&a.t>2.5||a.st==='evade'&&a.t>1.8){a.st=a.tg.k==='air'?'chase':'set';a.t=0;a.sp=null;a.pst=0;if(a.st==='set'&&R38()<.5)scr38(a.p.x,a.p.z,.7)}}
 function gStep38(a,dt){const p=a.p,K=a.K,X=X0a38(),u=a.g.userData;let sp=K.spd,tr=K.turn*(p.y-fl38(p.x,p.z)<40?1.25:1);a.pcd-=dt;a.wm=0;a.legs=1.1;a.pitch*=.9;
@@ -291,11 +292,11 @@ function pThink38(a){if(/down|away|leave|dive|pull|srun|ext/.test(a.st))return;
 function pStep38(a,dt){const p=a.p,K=a.K,X=X0a38(),u=a.g.userData,f=fl38(p.x,p.z),alt=p.y-f,lowK=alt<35?.7:1;let sp=K.spd,tr=K.turn*lowK;a.cd-=dt;a.brkT=0;
  switch(a.st){
  case'pat':{const c=a.patrol||[AIR38.center[0],AIR38.center[1],220],r=c[2]||220;a.pa=(a.pa||Math.atan2(p.x-X-c[0],p.z-c[1]))+dt*sp/r;steer38(a,X+c[0]+Math.sin(a.pa+.4)*r,f*.3+95,c[1]+Math.cos(a.pa+.4)*r,tr,sp*.85,dt);break}
- case'int':{if(!tok38(a.tg)){a.st='pat';break}const g=a.tg.o,d=p.distanceTo(g.p);A38b.copy(g.p).addScaledVector(g.v,d/380);steer38(a,A38b.x,Math.max(A38b.y,f+(alt<40?45:20)),A38b.z,tr,sp,dt);
+ case'int':{if(!tok38(a.tg)){a.st='pat';break}const g=a.tg.o,d=p.distanceTo(g.p);A38b.copy(g.p).addScaledVector(g.v,d/380);steer38(a,A38b.x,Math.max(A38b.y,f+16),A38b.z,tr,sp,dt);
   A38c.copy(g.p).sub(p).normalize();const dot=A38c.dot(A38a.copy(a.v).normalize());
-  if(a.cd<=0&&d<230&&dot>.965&&a.ammo>0){a.cd=.55+R38()*.35;gunBurst38(a,g.p);const ga=g.p.y-fl38(g.p.x,g.p.z),ph=.66*Math.max(0,1-d/260)*(1-.45*fog38())*(ga<30?.55:1)*(g.st==='evade'?.55:1)*(.8+.2*g.S);
+  if(a.cd<=0&&d<250&&dot>.93&&a.ammo>0){a.cd=.45+R38()*.3;gunBurst38(a,g.p);const ga=g.p.y-fl38(g.p.x,g.p.z),ph=.85*Math.max(0,1-d/300)*(1-.25*fog38())*(ga<20?.6:1)*(g.st==='evade'?.6:1)*(.8+.2*g.S);
    lat38(d/700,()=>{if(g.alive&&R38()<ph){AIR38.dbg.hitsG++;airDmg38(g,K.dmg*(.7+R38()*.6),'mg','a');if(typeof burst==='function')burst(g.p.x,g.p.y,g.p.z,0x8a1a10,4,.3,5)}})}
-  if(d<28||alt<30||(g.st==='chase'&&g.tg&&g.tg.o===a&&d<45)){a.st='ext';a.t=0;a.bp=p.clone().addScaledVector(A38a.copy(a.v).setY(0).normalize(),160).setY(f+90+R38()*40)}break}
+  if(d<26||alt<17||(g.st==='chase'&&g.tg&&g.tg.o===a&&d<45)){a.st='ext';a.t=0;a.bp=p.clone().addScaledVector(A38a.copy(a.v).setY(0).normalize(),160).setY(f+90+R38()*40)}break}
  case'ext':{steer38(a,a.bp.x,a.bp.y,a.bp.z,tr,sp*1.08,dt);if(a.t>3){a.st=tok38(a.tg)&&a.tg.k==='air'?'int':'pat';a.t=0}break}
  case'sset':{if(!tok38(a.tg)){a.st='pat';break}const T_=tpos38(a.tg);if(!a.sp){A38a.set(p.x-T_.x,0,p.z-T_.z).normalize();a.sp=new T.Vector3(T_.x+A38a.x*480,fl38(T_.x,T_.z)+75,T_.z+A38a.z*480)}steer38(a,a.sp.x,a.sp.y,a.sp.z,tr,sp,dt);if(p.distanceTo(a.sp)<60||a.t>14){a.st='srun';a.t=0;a.sp=null}break}
  case'srun':{if(!tok38(a.tg)){a.st='pat';break}const T_=tpos38(a.tg),d=p.distanceTo(T_);steer38(a,T_.x,T_.y+2,T_.z,tr*1.2,sp,dt);A38c.copy(T_).sub(p).normalize();
@@ -338,7 +339,7 @@ function aa38(dt){for(const s of AIR38.aa){if(s.on&&!s.on())continue;s.cd=(s.cd|
   for(const a of AIR38.list){if(a.side!=='veyrn'||!a.alive||a.st==='ground')continue;const d=Math.hypot(a.p.x-sx,a.p.y-sy,a.p.z-sz);if(d<bd){bd=d;b=a}}if(!b)continue;
   const o=new T.Vector3(sx,sy,sz);for(let i=0;i<4;i++)if(typeof trc16==='function')trc16(o,b.p.clone().add(A38a.set((R38()-.5)*6,(R38()-.5)*4,(R38()-.5)*6)),0xffe090);
   if(!(typeof mgS37==='function'&&mgS37('mg15',sx,sz,4,.08,.8,{reach:18,max:300}))&&typeof npcShot==='function')npcShot('mg',sx,sz);
-  const ph=.5*(1-bd/(s.r||240))*(1-.4*fog38());lat38(bd/600,()=>{if(b.alive&&R38()<ph)airDmg38(b,s.dmg||14,'aa','aa')})}}
+  const ph=.6*(1-bd/(s.r||240))*(1-.35*fog38());lat38(bd/600,()=>{if(b.alive&&R38()<ph)airDmg38(b,s.dmg||14,'aa','aa')})}}
 function gfire38(dt){AIR38.gft=(AIR38.gft||0)-dt;if(AIR38.gft>0)return;AIR38.gft=.7;const AL=allies38();if(!AL.length)return;
  for(const a of AIR38.list){if(a.side!=='veyrn'||!a.alive)continue;const alt=a.p.y-fl38(a.p.x,a.p.z);if(alt>60)continue;const n=AL[R38()*AL.length|0];if(!n||!n.g||!n.g.visible||n.down29||n.dead17)continue;const d=n.g.position.distanceTo(a.p);if(d>150)continue;
   if(typeof npcShot==='function')npcShot('rifle',n.g.position.x,n.g.position.z);if(R38()<.22*(1-d/150)*(1-.4*fog38()))airDmg38(a,12,'b','a');break}}
