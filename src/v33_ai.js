@@ -86,7 +86,7 @@ function initE33(e,T0){const role=roleE33(e),wc=wcE33(e),W=AI33.wpn[wc],pr=profE
  const a={s:'ALERT',sT:time,decT:0,know:2,aw:.5,vis:0,visT:-99,acq:-99,lkx:t.p.x+(R()-.5)*14,lkz:t.p.z+(R()-.5)*14,lkT:time-6,think:R()*.3,hearT:time,role,wc,W,pf,
   mag:W.mag,rel:0,sup:0,supT:-99,cov:null,sq:null,T:t,tg:{p:new T.Vector3(),h:t.h,ok:t.ok},bp:new T.Vector3(),look:new T.Vector3(p.x+Math.sin(e.g.rotation.y)*10,p.y,p.z+Math.cos(e.g.rotation.y)*10),
   self:0,mx:0,mz:0,ix:0,iz:0,hf:e.g.rotation.y,gT:time+5+R()*8,gn:role==='grenadier'?3:role==='at'?2:role==='assault'||role==='leader'?1+(R()<.4?1:0):R()<.55?1:0,
-  ord:'',fls:1,rxT:0,svT:-99,ph:'',phT:0,rgx:0,rgz:0,cvRef:null,cvPend:null,invT:0,melT:0,actT:0,evx:0,evz:0,evE:0,evR:0,ffT:-99,nx:0,bs:0,lastShot:-99,cvT:0,cvN:0,lx:p.x,lz:p.z,stT:0,stk:0,cmp:0,shT:0,shx:0,shz:0,d:50,hitT:-99,ret:0,grA:null};
+  ord:'',fls:1,rxT:0,svT:-99,phS:0,ph:'',phT:0,rgx:0,rgz:0,cvRef:null,cvPend:null,invT:0,melT:0,actT:0,evx:0,evz:0,evE:0,evR:0,ffT:-99,nx:0,bs:0,lastShot:-99,cvT:0,cvN:0,lx:p.x,lz:p.z,stT:0,stk:0,cmp:0,shT:0,shx:0,shz:0,d:50,hitT:-99,ret:0,grA:null};
  /* aparecidos por sorpresa tras un sigilo: si vio al jugador, contacto; si no, avisado */
  if(e.sus>=1&&t.p===P.g.position){a.know=3;a.lkx=t.p.x;a.lkz=t.p.z;a.lkT=time;a.aw=1}
  e.a33=a;e.gcd=1e9;e.kb=W.kb;e.kcd=W.kcd;e.kc2=W.kc2;if(!e.k8&&wc==='rifle'){a.W=Object.assign({},W,{mag:8,kb:2,kcd:.45})}
@@ -220,7 +220,7 @@ function frameE33(e,a,dt){const p=e.g.position;
  /* órdenes externas (tácticas de misión, reacciones a heridas): se respetan */
  if(e.st==='cover'&&e.cv&&e.cv!==a.cvRef){a.cvRef=e.cv;if(e.cv!==a.cvPend||!a.cov)a.cov={x:e.cv.x,z:e.cv.z,ox:NaN,oz:NaN,low:1};a.cvT=time;if(!MOVEE33[a.s])setSE33(a,'TAKE_COVER',2)}
  /* llegada a la cobertura */
- if(MOVEE33[a.s]&&(e.st==='hide'||e.st==='peek'||a.cov&&Math.hypot(p.x-a.cov.x,p.z-a.cov.z)<.9)){a.ph='hide';a.phT=time+.25+R()*.4;setSE33(a,'ENGAGE',a.s==='RETREAT'?3:1)}
+ if(MOVEE33[a.s]&&(e.st==='hide'||e.st==='peek'||a.cov&&Math.hypot(p.x-a.cov.x,p.z-a.cov.z)<.9)){a.ph='hide';a.phS=time;a.phT=time+.25+R()*.4;setSE33(a,'ENGAGE',a.s==='RETREAT'?3:1)}
  if(a.s==='ASSAULT'&&e.st!=='fire'&&e.st!=='adv')setSE33(a,'ENGAGE',.5);
  const s=a.s,self=!!SELFE33[s];a.self=self;a.mx=a.mz=0;a.cr=0;
  const vis=a.vis&&time-a.visT<.6;
@@ -232,13 +232,13 @@ function frameE33(e,a,dt){const p=e.g.position;
     if(!a.ph){a.ph='hide';a.phT=time+.4}
     if(s==='HOLD'){a.ph='peek';a.cr=vis?0:1}
     if(sup)a.ph='peek';
-    if(a.ph==='hide'){a.cr=1;if(c&&!e.hold){const dx=c.x-p.x,dz=c.z-p.z,d=Math.hypot(dx,dz);if(d>.45&&d<4){a.mx=dx/d*.5;a.mz=dz/d*.5}}
+    if(a.ph==='hide'){a.cr=1;if(c&&!e.hold&&time-a.phS<1.4){const dx=c.x-p.x,dz=c.z-p.z,d=Math.hypot(dx,dz);if(d>.45&&d<4){a.mx=dx/d*.5;a.mz=dz/d*.5}}
      a.look.set(a.lkx,1,a.lkz);
-     if(time>=a.phT&&a.rel<=0&&a.sup<1.7&&s!=='PANIC'){const want=vis||time-a.lkT<2.5||s==='ALERT'&&R()<.5;if(want){a.ph='peek';a.phT=time+1.2+R()*1.1}else a.phT=time+.6+R()*.8}}
-    else{if(c&&c.cor&&c.px!==undefined&&!e.hold&&s!=='HOLD'){const dx=c.px-p.x,dz=c.pz-p.z,d=Math.hypot(dx,dz);if(d>.4&&d<4){a.mx=dx/d*.55;a.mz=dz/d*.55}}
+     if(time>=a.phT&&a.rel<=0&&a.sup<1.7&&s!=='PANIC'){const want=vis||time-a.lkT<2.5||s==='ALERT'&&R()<.5;if(want){a.ph='peek';a.phS=time;a.phT=time+1.2+R()*1.1}else a.phT=time+.6+R()*.8}}
+    else{if(c&&c.cor&&c.px!==undefined&&!e.hold&&s!=='HOLD'&&time-a.phS<1.2&&!(c.pb=c.pb===undefined?(typeof blockedAt==='function'&&blockedAt(c.px,c.pz,.45)):c.pb)){const dx=c.px-p.x,dz=c.pz-p.z,d=Math.hypot(dx,dz);if(d>.4&&d<4){a.mx=dx/d*.55;a.mz=dz/d*.55}}
      if(vis)a.look.copy(a.T.p);else a.look.set(a.lkx,1,a.lkz);
      if(s!=='ALERT'||vis)fireE33(e,a,p,vis,sup&&time-a.lkT<8);
-     if(!sup&&s!=='HOLD'&&(time>=a.phT||a.rel>0||a.sup>2.2||!vis&&time-a.visT>1.6&&time-a.lkT>2.5)){a.ph='hide';a.phT=time+(.7+R()*1.1)*a.pf.cov+(a.sup>1?.8:0)+(a.rel>0?a.rel:0)}
+     if(!sup&&s!=='HOLD'&&(time>=a.phT||a.rel>0||a.sup>2.2||!vis&&time-a.visT>1.6&&time-a.lkT>2.5)){a.ph='hide';a.phS=time;a.phT=time+(.7+R()*1.1)*a.pf.cov+(a.sup>1?.8:0)+(a.rel>0?a.rel:0)}
      if(s==='HOLD'&&a.rel>0)a.cr=1}
     if(sup&&vis&&time-a.sT>.8)a.decT=0;break}
    case 'EVADE':{const dx=p.x-a.evx,dz=p.z-a.evz,d=Math.hypot(dx,dz)||1;a.mx=dx/d;a.mz=dz/d;a.look.set(p.x+dx/d*6,p.y,p.z+dz/d*6);if(time>a.evE){a.decT=0;a.actT=0;a.s='ALERT';a.cov=null}break}
