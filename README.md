@@ -920,3 +920,41 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - **Soldados de Eisenmark (niveles 11–16):** torso, brazos y antebrazos con la textura de lana como mapa de detalle en escala de grises, que conserva los colores de cada uniforme y no suma llamadas de dibujo.
   - **Equipo con textura real:** mochila, cartucheras, portacargador y pala, en una sola malla por soldado con un atlas de 128×128.
   - **Nivel 17:** pilas de tablones de trinchera junto a los refugios, los nidos de ametralladora y los pozos antitanque de las Tres Cruces (una sola malla).
+
+## v37 · Orden maestra (5 agentes)
+- **Vehículos** (`v32_veh.js`, `v37_veh.js`):
+  - IA por clases: reconocimiento, ligero, medio, camión y piezas.
+  - Aceleración y frenado progresivos, giro con ruedas o con orugas.
+  - Estados: patrulla, avance, reconocimiento, combate, maniobra, cobertura, repliegue, averiado y destruido.
+  - Evitación de obstáculos y vehículos, zonas prohibidas para vehículos (trincheras) y reacción al fuego antitanque.
+  - `vehOrder32`, `VEH32.origin`, `gunCrew32`; servidores animados.
+- **Golfo de Hierro:**
+  - Guarnición independiente de 22 hombres en las Tres Cruces: fusileros, cabos y el teniente Varsk.
+  - Las órdenes del teniente cambian de verdad el comportamiento: fuego, cubrirse, reubicarse, antitanque y retirada.
+  - Animaciones de parapeto, muerte según la dirección del impacto y heridos que se pueden revivir.
+  - Cañones antitanque con dotación.
+  - Dos blindados aliados más en la ofensiva, que avanzan por su cuenta.
+  - Blindado de reconocimiento de Veyrn equilibrado.
+- **El último bastión:**
+  - Se corrigió la caída en el segundo piso desde su origen: hueco y franja sin colisión, losa que bloqueaba la escalera, techo sin hueco sobre la escalera de la torre, escaleras apiladas del edificio de departamentos y salto de 4 m.
+  - Palacio con interiores completos.
+  - Enemigos en puestos reales detrás de las ventanas.
+  - Brecha de combate para el cañón antitanque.
+  - Dos tanques aliados de VEH32.
+  - Recorrido de prueba del segundo piso y del techo: 0 fallas.
+- **Cepelín:**
+  - Las MG de los bots se oyen.
+  - Cazas más lentos y con volumen de exclusión alrededor del cepelín.
+  - Bombarderos en formación con artilleros.
+  - Desgaste en ambos bandos.
+  - Dragones con cuatro ataques anunciados.
+  - Torreta doble sin cúpula, con marcas de anticipación.
+- **Nachtfall:**
+  - Dotaciones antiaéreas animadas que abandonan la pieza y combaten como infantería.
+  - Flak con calentamiento, seguimiento y anticipación.
+  - Más patrullas fuera de la vista.
+- **HUD Android** (`v37_hud.js`):
+  - Diseño para jugar con dos pulgares, botón MIRA, segundo botón de fuego y bloqueo de carrera.
+  - Arrastre de cámara con curva de sensibilidad e indicadores de dirección del daño.
+  - Sección CONTROLES TÁCTILES en Opciones, editor de botones y protección contra toques trabados.
+- **Fiordo:** sin pasos mientras se está a bordo de la torpedera.

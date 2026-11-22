@@ -32,7 +32,7 @@ function bld14(q,x,z,w,d,fl,o){o=o||{};const X=X14+x,H=fl*3.2,C=o.c||[0x8a7a66,0
  if(cut){/* brecha: dintel quebrado, forjado colgando, escombros derramados hacia la calle, hollín */
   const cx0=X14+cut.x0,cx1=X14+cut.x1,y1=Math.min(cut.y1,top-1);for(let i=0;i<7;i++){const t=i/6,hh=.3+R()*.7;pBox(q,1+R()*.8,hh,.9+R()*.8,shade(C,.9),cx0+(cx1-cx0)*(.1+R()*.8),y1-hh/2+.02,cut.z1-.2-R()*.5,R()*.3,R(),0);pBox(q,.9+R()*.6,hh,1+R(),shade(C,.88),cx0+.3+R()*.4,y1-hh/2+.02,cut.z0+(cut.z1-cut.z0)*t,0,R(),R()*.3)}
   pBox(q,(cx1-cx0)*.5,.28,2.2,0x5a5048,cx0+(cx1-cx0)*.3,y1-.6,cut.z1-1.6,.5,.2,.3);for(let i=0;i<3;i++)pBox(q,.12,.12,2+R()*2,0x3a2a1a,cx0+1+R()*(cx1-cx0-2),y1-.4-R()*.4,cut.z1-1-R()*3,(R()-.5)*.6,R()*3,(R()-.5)*.5);
-  pBox(q,cx1-cx0-.2,.05,cut.z1-cut.z0-.2,0x3a342c,(cx0+cx1)/2,.03,(cut.z0+cut.z1)/2);rub14(q,cut.x0-1.5,(cut.z0+cut.z1)/2,22,3.5);rub14(q,(cut.x0+cut.x1)/2,cut.z1+1.5,14,2.5);
+  pBox(q,cx1-cx0-.2,.05,cut.z1-cut.z0-.2,0x3a342c,(cx0+cx1)/2,.03,(cut.z0+cut.z1)/2);rub14(q,cut.x0-1,cut.z0+1,8,1.4);rub14(q,cut.x0-1,cut.z1-1.2,8,1.4);rub14(q,(cut.x0+cut.x1)/2,cut.z1+1.5,14,2.5);
   pBox(q,.04,1.4,cut.z1-cut.z0+1.2,0x1e1a16,cx0-.03,y1+.7,(cut.z0+cut.z1)/2)}}
 function rub14(q,x,z,n,r){for(let i=0;i<n;i++){const a=R()*6.28,d=R()*r;pBox(q,.6+R()*1.6,.3+R()*.8,.5+R()*1.4,[0x6a6052,0x7a6e60,0x5a5248,0x8a7a66][i%4],X14+x+Math.cos(a)*d,.2+R()*.4,z+Math.sin(a)*d,R(),R()*3,R())}}
 function tram14(q,x,z,r,tip){const X=X14+x,qq=PB();pBox(qq,2.4,2.6,10,0x8a2a1e,0,1.5,0);pBox(qq,2.5,.3,10.2,0x2a2a2a,0,.15,0);pBox(qq,2.2,.6,9.6,0xd8c8a0,0,2.6,0);for(let i=0;i<6;i++)for(const s of[-1,1])pBox(qq,.05,1,1.1,0x1a2228,s*1.22,1.9,-4+i*1.6);pBox(qq,1.6,.2,.4,0x3a3a3a,0,3.1,0);const g=new T.Group();pbMesh(qq,g,VCV);g.position.set(X,tip?1.2:0,z);g.rotation.set(0,r,tip?1.4:0);scene.add(g);oB14({x,z,hw:Math.abs(Math.sin(r))*5+1.4,hd:Math.abs(Math.cos(r))*5+1.4,h:2.8})}
@@ -155,7 +155,7 @@ function cath14(q){const X=X14-36,z=-525,C=0x9a9080;pBox(q,22,16,46,C,X,8,z);for
   pBox(q,6.8,.06,6.8,0x5a5048,X14+tx,21.03,tz);for(const t of[-1,1]){pBox(q,.2,2.9,.2,0xb0a690,X14+tx+t*.9,23.25,tz+4.05);pBox(q,.2,2.9,.2,0xb0a690,X14+tx+s*4.05,23.25,tz+t*.9)}pBox(q,2,.2,.3,0xb0a690,X14+tx,21.8,tz+4.1);pBox(q,.3,.2,2,0xb0a690,X14+tx+s*4.1,21.8,tz);
   post14('tw'+s,tx,tz+3.4-.8,21,0);post14('tw'+s,tx+s*2.6,tz,21,s*1.5708)}
  pa(q,gCone(14,10,4),0x5a5a5e,X,21,z,0,.785,0,1,1,2.2);pCyl(q,3.5,3.5,.4,0x3a2a4a,X+11.2,10,z,0,0,1.5708,16);for(let i=0;i<5;i++)pBox(q,.3,8,2.4,0x1a1612,X+11.2,7,z-18+i*9);pBox(q,10,6,28,0x6a6050,X+16,3,z-30,0,0,.3);oB14({x:-36,z,hw:11,hd:23,h:16});for(const s of[-1,1]){oB14({x:-36+s*7,z:z+26,hw:4,hd:4,h:20.55});oB14({x:-36+s*7,z:z+26,hw:4,hd:4,h:30,y0:25})}L14.towers=[[X-7,30,z+26],[X+7,30,z+26]]}
-function palace14(q){const X=X14,z0=-690,W=50,D=30,H=7;const C=0xc8bca0,C2=0xa89c80,CI=0xd8ccb4,MB=0xe0d8c8,PQ=0x6a4a30,WD=0x5a3a22;
+function palace14(q){const X=X14,z0=-690,W=50,D=30,H=7;const C=0xc8bca0,C2=0xa89c80,CI=0xb8ad98,MB=0x948c7e,PQ=0x3e2c1e,WD=0x5a3a22;
  /* jardines destruidos: trincheras, sacos, alambradas, minas, puestos */for(let i=0;i<4;i++){const z=-600-i*12;pBox(q,40,.6,1.4,0x4a3e30,X,.3,z);bag14(q,-18+i*12,z-1.6,5,0)}wire14(q,-30,-596,20,1.57);wire14(q,10,-620,20,1.57);for(let i=0;i<10;i++)pCyl(q,.25,.25,.08,0x3a3a2a,X+(R()-.5)*50,.04,-600-R()*40,0,0,0,8);
  for(let i=0;i<14;i++){pCyl(q,.3,.5,3+R()*2,0x3a2a1a,X+(R()-.5)*80,1.5,-595-R()*45,R()*.6,0,R()*.6,6)}
  L14.barr={x:0,z:-628};{const bg=new T.Group();scene.add(bg);const bq=PB();pBox(bq,14,2.2,2,0x5a4a3a,X,1.1,-628);for(let i=0;i<6;i++)pBox(bq,2,1.4,1.6,0x6a5a3a,X-6+i*2.4,2.6,-628,0,R()*.4,R()*.3);pbMesh(bq,bg,VCV);L14.barrG=bg}L14.barrOb=oB14({x:0,z:-628,hw:7,hd:1.2,h:2.6});for(const s of[-1,1]){pBox(q,112,3.4,1.2,0x8a8272,X+s*64,1.7,-628);oB14({x:s*64,z:-628,hw:56,hd:.6,h:3.4})}
@@ -178,7 +178,7 @@ function palace14(q){const X=X14,z0=-690,W=50,D=30,H=7;const C=0xc8bca0,C2=0xa89
  slab14(q,-XI,-8,ZBI,ZFI,H,CI,PQ);slab14(q,8,XI,ZBI,ZFI,H,CI,PQ);slab14(q,-8,8,-688,ZFI,H,CI,MB);slab14(q,-8,8,ZBI,-701,H,CI,MB);
  for(const [x0,x1,z0_,z1] of[[-16,-8,ZBI,-688],[8,16,ZBI,-688],[-16,16,-688,ZFI]])pBox(q,x1-x0,.065,z1-z0_,MB,X+(x0+x1)/2,H-.02,(z0_+z1)/2);
  /* AZOTEA (cota 14) con el hueco de la escalera de la torre (x -47.7…-36.7, z -704.2…-701) */
- const RC=0x9a9282;slab14(q,-XI,XI,-701,ZFI,2*H,CI,RC);slab14(q,-XI,-47.725,ZBI,-701,2*H,CI,RC);slab14(q,-36.725,XI,ZBI,-701,2*H,CI,RC);
+ const RC=0x6e685c;slab14(q,-XI,XI,-701,ZFI,2*H,CI,RC);slab14(q,-XI,-47.725,ZBI,-701,2*H,CI,RC);slab14(q,-36.725,XI,ZBI,-701,2*H,CI,RC);
  for(const s of[-1,1]){pBox(q,TW,1.1,D,C2,X+s*(W-TW/2),2*H+.55,z0);oB14({x:s*(W-TW/2),z:z0,hw:TW/2,hd:D/2,h:2*H+1.6,y0:2*H})}pBox(q,W*2,1.1,TW,C2,X,2*H+.55,ZB+TW/2);oB14({x:0,z:ZB+TW/2,hw:W,hd:TW/2,h:2*H+1.6,y0:2*H});oB14({x:0,z:ZF-1,hw:W,hd:1,h:2*H+1.6,y0:2*H});
  pa(q,new T.CircleGeometry(7.5,24),0x8a7a4a,X,2*H-.445,z0,1.5708,0,0);pa(q,new T.CircleGeometry(5.5,24),0x3a4a5a,X,2*H-.46,z0,1.5708,0,0);
  /* GRAN SALÓN: muros del salón (x ±16) con arcos al pasillo de cada ala y puertas a los salones */
@@ -207,7 +207,7 @@ function palace14(q){const X=X14,z0=-690,W=50,D=30,H=7;const C=0xc8bca0,C2=0xa89
  const f2=new T.Mesh(new T.PlaneGeometry(3.4,2.2,8,4),new T.MeshLambertMaterial({map:eisFlag14(),side:T.DoubleSide}));f2.position.set(X+1.75,2*H+1.6,z0+12);f2.visible=false;scene.add(f2);L14.flagM=f2;
  for(const s of[-1,1]){for(let k=0;k<3;k++)pBox(q,1.1,.45,.6,0xb0a080,X+s*(8.6+k*.2),2*H+.23+(k%2)*.45,-679.6+k*.9,0,s*.2,0);oB14({x:s*8.8,z:-678.7,hw:.7,hd:1.4,h:2*H+.9,y0:2*H})}
  /* SUELOS: mármol ajedrezado en el salón, parqué en las alas, alfombra roja hasta la escalera */
- pBox(q,W*2-1.6,.05,D-1.6,0xd8d0c0,X,.025,z0);for(let i=0;i<8;i++)for(let j=0;j<7;j++)if((i+j)%2)pBox(q,3.9,.055,4,0x8a7a6a,X-14+i*4,.03,ZBI+2+j*4);
+ pBox(q,W*2-1.6,.05,D-1.6,0x8e877a,X,.025,z0);for(let i=0;i<8;i++)for(let j=0;j<7;j++)if((i+j)%2)pBox(q,3.9,.055,4,0x4e463c,X-14+i*4,.03,ZBI+2+j*4);
  for(const s of[-1,1])pBox(q,33,.055,28.4,PQ,X+s*32.7,.03,z0);pBox(q,5,.07,12.2,0x6a1a1a,X,.05,-681.9);
  /* ---------- MOBILIARIO Y DECORACIÓN MILITAR ---------- */
  const crate=(x,z,y,r)=>{pBox(q,1.1,.8,.8,[0x5a4a30,0x6a5434,0x4a3a26][(x*3+z|0)&1?1:0],X+x,(y||0)+.4,z,0,r||0,0);pBox(q,1.12,.06,.2,0x2a2a2a,X+x,(y||0)+.81,z,0,r||0,0)};
@@ -343,7 +343,7 @@ function go14(ph,jump){const X=X14,g=L14.tank;setPh14(ph);L13.sneak=false;L13.lo
   if(ph>=6){g.position.set(X,0,-304);g.rotation.y=Math.PI;g.rotation.z=-.07;L14.immob=true;L14.bent=true;g.userData.gun.rotation.x=.45;g.userData.gun.rotation.z=.25}
   if(ph>=9&&L14.wallOb){const i=obstB.indexOf(L14.wallOb);if(i>=0)obstB.splice(i,1);L14.wallG.visible=false}
   if(ph>=10){for(const o of[L14.barrOb,L14.gateOb]){const i=obstB.indexOf(o);if(i>=0)obstB.splice(i,1)}L14.barrG.visible=false;L14.gate.visible=false}
-  yaw=Math.PI;pitch=0}
+  yaw=ph<=3?Math.PI:0;pitch=0}
  if(ph>=6&&!L14.tkOb){L14.tkOb=oB14({x:g.position.x-X,z:g.position.z,hw:1.8,hd:3.4,h:2.6});smokePts14.push([g.position.x,2.4,g.position.z])}
  if(ph<=3){L14.sq=L14.troop;for(const n of L14.troop){n.on=true;n.g.visible=true;n.g.position.set(g.position.x+(R()-.5)*6,0,g.position.z+6+R()*6)}}
  if(ph>=6&&!L14.joined6&&ph!==6){L14.joined6=1;sqSet14(L14.sq=[...L14.crew,L14.lt,...L14.troop.slice(0,3)]);L14.sq.forEach((n,i)=>n.g.position.set(P.g.position.x+(i%3-1)*2,0,P.g.position.z+3+(i/3|0)*2))}
@@ -415,7 +415,7 @@ function vStage14(ph,jump){if(!vOK14())return;const st=ph<=3?0:ph<=7?1:2;if(st==
   const S=st===0?(ph<=1?[[-46,50],[46,50]]:ph===2?[[-40,-176],[40,-176]]:[[-40,-214],[40,-214]]):st===1?(ph===6?[[-40,-262],[40,-262]]:[[-10,-402],[6,-400]]):(ph>=10?[[14,-600],[-10,-604]]:[[100,-552],[112,-552]]);
   A=S.map(p=>vNew14(p[0],p[1],st===2&&ph<10?-Math.PI/2:Math.PI)).filter(Boolean)}
  else if(st===2)A.forEach((v,i)=>vPut14(v,100+i*12,-552,-Math.PI/2));
- A.forEach((v,i)=>{const r=VR14[st*2+i];if(!r)return;let k=0,bd=1e9;r.forEach((p,j)=>{const d=Math.hypot(p[0]-(v.g.position.x-X14),p[1]-v.g.position.z);if(d<bd){bd=d;k=j}});const path=r.slice(k);if(path.length)vGo14(v,path,'advance')})}
+ A.forEach((v,i)=>{const r=VR14[st*2+i];if(!r)return;let k=0,bd=1e9;r.forEach((p,j)=>{const d=Math.hypot(p[0]-(v.g.position.x-X14),p[1]-v.g.position.z);if(d<bd){bd=d;k=j}});if(bd<16&&k<r.length-1)k++;const path=r.slice(k);if(path.length)vGo14(v,path,'advance')})}
 function vUpd14(dt){if(!AL14.v.length||typeof vehUpd32!=='function')return;try{if(VEH32.origin&&VEH32.X!==X14)VEH32.origin(X14);vehUpd32(dt)}catch(e){if(!AL14.ve){AL14.ve=1;console.warn('vehUpd32',e)}}}
 /* =====================================================================
    ARRANQUE E INTEGRACIÓN
