@@ -56,7 +56,7 @@ if(typeof vhShot32==='function'){const _v=vhShot32;vhShot32=function(kind,ax,ay,
  for(const a of S35.amb){const tg=(playing&&!(typeof L9!=='undefined'&&L9.cine&&level!==17)?1:.35)*(VOL34[a.n]||.25)*(G.vol==null?.8:G.vol);a.gn.gain.setTargetAtTime(tg,ac.currentTime,.5)}
  if(!playing)return r;const p=P.g.position;
  /* pasos */
- const onFoot=!(P.mg||(typeof L14!=='undefined'&&L14.inTank)||(level===16&&typeof N16!=='undefined'&&!N16.foot)||(typeof L9!=='undefined'&&L9.cine)||(level===12&&typeof L12!=='undefined'&&L12.turret));
+ const onFoot=!((level===15&&typeof L28!=='undefined'&&L28.onBoat)||P.mg||(typeof L14!=='undefined'&&L14.inTank)||(level===16&&typeof N16!=='undefined'&&!N16.foot)||(typeof L9!=='undefined'&&L9.cine)||(level===12&&typeof L12!=='undefined'&&L12.turret));
  const hv=Math.hypot(p.x-S35.px,p.z-S35.pz)/Math.max(dt,.001);const grounded=Math.abs(P.vy||0)<.6;
  if(onFoot&&grounded&&hv>1.2&&hv<14){S35.step+=hv*dt;const L=hv>7.5?2.6:hv<3.5?1.5:2.1;if(S35.step>=L){S35.step=0;const sf=surf35(),n=sf==='wade'?pk35('fs_wade',2):pk35('fs_'+sf,3);samp34(n,hv<3.5?.35:hv>7.5?.75:.55)}}
  if(onFoot&&S35.vy<-7&&grounded){const sf=surf35();samp34(sf==='wade'?'fs_wade1':'ld_'+sf,.9);if(S35.vy<-13)samp34('ld_hurt',.8)}
