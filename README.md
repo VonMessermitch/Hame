@@ -905,3 +905,18 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - sonido de aterrizaje al caer, y golpe si la caída es fuerte.
 - **Ambiente por nivel:** viento (desierto, bosque, costa), grillos (noches de los niveles 13 y 16), fuego (ciudad del 14) y olas (15 y 17). Baja de volumen en las cinemáticas.
 - **Memoria:** decodificación perezosa y precarga por nivel; solo se decodifican las muestras que usa el nivel.
+
+## v36 · Sonido de vehículos y aeronaves + texturas de Eisenmark
+- **Sonidos:** de los 54 archivos (33 MB) del pack de vehículos quedaron 15. Se recortaron, los bucles de motor llevan fundido cruzado para no hacer clic y quedaron en MP3 de unos 370 KB (`v36_data.js`).
+  - **Tanques:** motor en marcha y en reposo, cañonazo seguido de recarga, y arranque al subir al tanque del nivel 14. El cañonazo suena en los tanques y cañones antitanque de los niveles 14 y 17.
+  - **Camiones y blindados:** motor en marcha y en reposo.
+  - **Tren:** locomotora en bucle (VEH32).
+  - **Torpedera** (nivel 15): motor en bucle; el tono sube con la potencia.
+  - **Cepelín** (niveles 12 y 16): motores en bucle.
+  - **Aviones:** el motor del avión más cercano en bucle, una pasada al cruzar cerca y la caída al ser derribado. Bombarderos sobre el Golfo.
+  - **Mezcla:** hasta 4 motores de VEH32 a la vez, con tono según la velocidad y volumen según la distancia. Los motores sintetizados del cepelín y la torpedera se silencian cuando suena la muestra.
+- **Descartados:** repetidos (`tank_01_*`, `truck_idle`, `train_move`, `airfield_stuka_die`, `veh_truck_*` y `plane2`) y los que no tenían un uso claro (puertas, cambios de marcha, revoluciones, torretas, orugas sobre pasto y metal, el remolcador, el C-47, el Condor en reposo, picados, el disparo, el impacto, el choque y la explosión del Stuka, y el apagado del tanque).
+- **Texturas:**
+  - **Soldados de Eisenmark (niveles 11–16):** torso, brazos y antebrazos con la textura de lana como mapa de detalle en escala de grises, que conserva los colores de cada uniforme y no suma llamadas de dibujo.
+  - **Equipo con textura real:** mochila, cartucheras, portacargador y pala, en una sola malla por soldado con un atlas de 128×128.
+  - **Nivel 17:** pilas de tablones de trinchera junto a los refugios, los nidos de ametralladora y los pozos antitanque de las Tres Cruces (una sola malla).

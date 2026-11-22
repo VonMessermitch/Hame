@@ -371,7 +371,7 @@ function vhFireGun32(v,m){const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_
  if(m.tk==='V'){if(R()<vhCL32(.7-d/500,.25,.7)/mov){tv=m.tgt}else{const a=R()*6.28,e=3+R()*4;t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z)}}
  else{const err=(m.kind==='naval'?14:1.4)+d*.02*mov*(m.tk==='P'?vhDIF32():1),a=R()*6.28,e=err*Math.sqrt(R());t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z)}
  trc16(o,t,0xffd090);if(typeof FB12!=='undefined'&&FB12.length)fb12(o.x,o.y,o.z,2.2*cal,.16,0);burst(o.x,o.y,o.z,0xffc060,8,.2,6*cal);smoke(o.x,o.y,o.z,2.4*cal,2.4,0xa8a49c,.8,.55);flashLight(o.x,o.y,o.z,2.5*cal,.15,0xffc070);
- if(cal>=.8)expSnd(o.x,o.z,.5*cal);else npcShot('big',o.x,o.z);if(v.type==='gun')burst(v.g.position.x,.3,v.g.position.z,0x9a8a6a,8,.6,4);
+ if(cal>=.8)(typeof tkf36==='function'&&cal>=.5&&tkf36(o.x,o.z))||expSnd(o.x,o.z,.5*cal);else npcShot('big',o.x,o.z);if(v.type==='gun')burst(v.g.position.x,.3,v.g.position.z,0x9a8a6a,8,.6,4);
  m.rec=1;v.kick=cal;vhShot32(m.kind,o.x,o.y,o.z,t.x,t.y,t.z,Math.max(.08,d/(m.kind==='naval'?380:460)),0,cal,v.ally?'volsk':'veyrn',m.dmg,m.r,tv,v,false,0)}
 function vhFireMortar32(v,m){const o=m.m.getWorldPosition(vh_va32),t=vhTPos32(m,vh_vb32),d=Math.hypot(t.x-o.x,t.z-o.z);const a=R()*6.28,e=m.brk*(.5+R()*.5);m.brk=Math.max(m.tk==='P'?3.5/vhDIF32():2.5,m.brk*.62);t.x+=Math.cos(a)*e;t.z+=Math.sin(a)*e;t.y=vhFlo32(t.x,t.z);
  smoke(o.x,o.y,o.z,1.6,2,0xb8b4ac,1,.5);burst(o.x,o.y,o.z,0xffc060,4,.15,4);const vv=vhCamVol32(o.x,o.z,140);if(vv>.02){tn18('sine',110,45,.25,.12*vv);nz18(.002,.25,'lowpass',900,200,.1*vv)}m.rec=1;
