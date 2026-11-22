@@ -852,3 +852,26 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
   - oleadas con ritmo y aviso;
   - búnkeres de hormigón con puerta (diseño de la misión XII) en las Tres Cruces y en el norte;
   - objetivos marcados en la brújula.
+
+## v34 · Sonidos reales de armas
+- Los 14 WAV del usuario se convirtieron a MP3 mono de 80 kbps y quedaron embebidos en `v34_snd_data.js` (unos 270 KB).
+- `v34_audio.js` es el motor de muestras: varía el tono ±5 % y el volumen en cada disparo, atenúa y filtra según la distancia y limita la cantidad de voces simultáneas. Si una muestra no cargó, suena el sintetizado original.
+- Qué sonido usa cada arma:
+
+| Arma | Sonido |
+|---|---|
+| Fusil | rifle |
+| Subfusil y MG 08 | ametralladora |
+| MG 15 de trípode y ametralladoras de los aliados | mg15 |
+| Gatling y ametralladoras dobles | mgduales |
+| Revolver (niveles 1–12) | revolver |
+| Pistola Lugy (niveles 13+), C96 y oficiales | pistola |
+| Orcos de escopeta | escopeta |
+| Panzerfaust | panzerfaust |
+| 88 mm de las baterías costeras | Flak88Fire1, seguido de flak_reload |
+| Flak de la torpedera, disparo suelto | Flak_single |
+| Flak de la torpedera, ráfaga sostenida | flakpanzer_loop en bucle |
+| Flak de la torpedera, al soltar el gatillo | Flakpanzer_cooldown |
+| Antiaéreas cuádruples de Taikin | flakpanzer_loop_fast |
+
+- Los disparos de enemigos y aliados se oyen según la distancia a la que estén.
