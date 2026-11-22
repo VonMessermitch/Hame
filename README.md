@@ -831,3 +831,24 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
 - **Vehículos de 1922** (`v32_veh.js`): tanques, blindados, camiones, tren, cañones, morteros y barcos, con IA, daño y restos que sirven de cobertura.
 - **Primera persona en todo el juego** (`v32_vm.js`): manos con dedos, armas con detalle, ciclo de cerrojo, recargas, vainas, fogonazo, sprint, bayoneta y lanzamiento de granada.
 - **Opciones → Gráficos** (`v32.js`): presets Baja/Media/Alta/Ultra, resolución, detalle, partículas, distancia de visión, límite de FPS (30/45/60), medidor de FPS y brillo.
+
+## v33 · IA de combate Field/West
+- **IA enemiga** (`v33_ai.js`):
+  - percepción por vista y oído (`noise33`) y memoria de la última posición conocida;
+  - una máquina de estados estable: guardia, investigar, cobertura, combate desde cobertura, supresión, flanqueo, avance, repliegue, granada y cuerpo a cuerpo;
+  - coberturas puntuadas y reservadas;
+  - escuadras con líder y roles, que alternan fuego y maniobra;
+  - perfiles de Recluta a Élite, combinados con Agresivo, Defensivo o Cauteloso;
+  - ráfagas por tipo de arma, cargadores y granadas solo con oportunidad;
+  - ajuste de QA: precisión y daño según la dificultad, y no disparan contra su propio parapeto.
+- **IA aliada** (`v33_ally.js`):
+  - formaciones abiertas (cuña o línea) en lugar de fila india, cada aliado a su puesto cerca de una cobertura;
+  - separación entre aliados y combate desde cobertura con ráfagas y supresión;
+  - avance de a pares y recuperación cuando quedan atascados;
+  - se mantienen las órdenes T/ORD.
+- **Golfo de Hierro:**
+  - equipo de la barraca con brillo, flechas y marcadores;
+  - aliados que llegan a la línea;
+  - oleadas con ritmo y aviso;
+  - búnkeres de hormigón con puerta (diseño de la misión XII) en las Tres Cruces y en el norte;
+  - objetivos marcados en la brújula.

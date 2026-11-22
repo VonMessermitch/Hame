@@ -172,7 +172,7 @@ function assist33(dt){if(level<13||(typeof L9!=='undefined'&&L9.cine))return;for
  if(a.wp&&time<a.until&&Math.hypot(a.wp[0]-p.x,a.wp[1]-p.z)>1){a.sv=n.tgt;n.tgt=a.wp}}}
 {const _nu=npcUpd11;npcUpd11=function(dt){if(A33.on&&playing)assist33(dt);_nu(dt);for(const n of NPC11){const a=n.as33;if(a&&a.sv){if(!n.tgt||n.tgt===a.wp)n.tgt=a.sv;a.sv=null}}if(!A33.on||!playing||(typeof L9!=='undefined'&&L9.cine))return;if(level<13||A33.fr<0||time-A33.fr>.3)return;A33.mode33c=time-A33.tT<6;sep33(A33.L,dt,2.1)}}
 /* disparos enemigos (vista/oído de la escuadra) y contadores de QA */
-{const _s=shootSol;shootSol=function(e,p){if(e)e.shot33=time;return _s(e,p)}}
+{const _s=shootSol;shootSol=function(e,p){const n0=ebul.length,r=_s(e,p);if(e&&ebul.length>n0)e.shot33=time;return r}}/* QA: sólo si de verdad salió una bala (la IA enemiga puede abortar el disparo) */
 {const _f=fire30;fire30=function(n,e,d,dt){const m0=n.mag;_f(n,e,d,dt);if(n.mag<m0){A33.dbg.shots+=Math.max(1,m0-n.mag);if(typeof noise33==='function')noise33(n.g.position.x,n.g.position.z,70,'ally');if(n.tg){const q=n.tg.g.position;know33(n.tg,q.x,q.z,true)}}}}
 {const _h=hurt;hurt=function(e,d,mode,by){if(by&&by.name&&A33.nm.has(by.name)&&!by.g)A33.dbg.hits++;return _h(e,d,mode,by)}}
 {const _k=kill;kill=function(e,...a){try{if(e&&!e.k33&&e.hp<=0&&e.lastBy){const b=e.lastBy;if((b.name&&A33.nm.has(b.name))||(typeof allies!=='undefined'&&allies.indexOf(b)>=0)||(typeof GAR!=='undefined'&&GAR.indexOf(b)>=0)){e.k33=1;A33.dbg.kills++;if(level>=13&&R()<.18){const n=A33.L.find(m=>m.name===b.name);if(n)say33(n,'kill',['¡Lo bajé!','¡Uno menos!','¡Cayó!'],12)}}}}catch(_){}return _k(e,...a)}}

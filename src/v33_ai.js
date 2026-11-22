@@ -40,7 +40,11 @@ const AI33={on:true,v:1,lv:-1,
   lmg:{sp:.036,mag:20,rel:3.6,kb:4,kcd:.13,kc2:.35,rng:70},
   mg:{sp:.036,mag:60,rel:5,kb:6,kcd:.1,kc2:.3,rng:80},
   pistol:{sp:.06,mag:8,rel:2,kb:2,kcd:.45,kc2:.7,rng:30}},
- diff:{easy:1.35,normal:1,hard:.85},
+ diff:{easy:.9,normal:.6,hard:.48},
+ /* QA: ritmo de asomarse por dificultad (asomado ×k, escondido ÷k) */
+ rof:{easy:.95,normal:1.2,hard:1.6},
+ /* QA: daño por bala del arma original (k8: Mosin 15, Mors 9, BAR 7); bala k8 a 42 m/s (con 55 m/s y 30 fps el paso de 1.8 m atraviesa el radio de impacto de .75 m del jugador); sin k8, 8 a 26 m/s como el original */
+ dmg:{mosin:15,stv:9,bar:7,gren:9},
  list:[],log:[],sq:{},sqL:[],N:[],rc:0,tk:0,pShot:-99,stepT:0,vehT:0,sqI:0,bark:-99,gr:[],
  dbg:null,
  reset(){this.t1=0;this.list.length=0;this.sq={};this.sqL.length=0;this.N.length=0;this.gr.length=0;this.dbg=dbg0E33()},
@@ -80,7 +84,12 @@ function profE33(e,role){if(AI33.assign){try{const r=AI33.assign(e,role);if(r)re
  return {sk,tp}}
 function mkProfE33(sk,tp){const b=Object.assign({},AI33.prof[sk]||AI33.prof.REGULAR),t=tp&&AI33.temp[tp];if(t)for(const k in t)b[k]=(b[k]||1)*t[k];b.name=sk+(tp?'/'+tp:'');return b}
 function sqKeyE33(e){const p=e.g.position;return (e.t13||e.t10||'')+'|'+Math.floor(p.x/60)+','+Math.floor(p.z/60)}
-function joinSqE33(e,a){let k=sqKeyE33(e),s=AI33.sq[k],i=0;while(s&&s.m.length>=7){i++;s=AI33.sq[k+'#'+i]}if(!s){k=i?k+'#'+i:k;s=AI33.sq[k]={k,m:[],n0:0,ld:null,lkx:0,lkz:0,lkT:-99,know:0,el:0,elT:time+3,fl:null,flT:0,fside:R()<.5?1:-1,gT:time+4,svT:-99,retT:0,retN:0,mor:1,ldDead:0,tick:0,vis:0};AI33.sqL.push(s)}
+function joinSqE33(e,a){const tg=e.t13||e.t10||'',p=e.g.position;let s=null;
+ /* QA: la escuadra son los compañeros cercanos del mismo grupo (antes una celda fija de 60 m partía escuadras en dos)
+    y se purgan los caídos (una oleada nueva en el mismo sitio no hereda la moral rota de la anterior) */
+ for(let j=AI33.sqL.length-1;j>=0;j--){const q=AI33.sqL[j];for(let u=q.m.length-1;u>=0;u--){const o=q.m[u];if(o.hp<=0||enemies.indexOf(o)<0)q.m.splice(u,1)}if(!q.m.length){AI33.sqL.splice(j,1);delete AI33.sq[q.k];continue}
+  if(s||q.tag!==tg||q.m.length>=7)continue;const l=q.m.indexOf(q.ld)>=0?q.ld:q.m[0];if(Math.hypot(l.g.position.x-p.x,l.g.position.z-p.z)<24)s=q}
+ let k=sqKeyE33(e),i=0;if(!s){while(AI33.sq[i?k+'#'+i:k])i++;k=i?k+'#'+i:k;s=AI33.sq[k]={k,tag:tg,m:[],n0:0,ld:null,lkx:0,lkz:0,lkT:-99,know:0,el:0,elT:time+3,fl:null,flT:0,fside:R()<.5?1:-1,gT:time+4,svT:-99,retT:0,retN:0,mor:1,ldDead:0,tick:0,vis:0};AI33.sqL.push(s)}
  s.m.push(e);s.n0=Math.max(s.n0,s.m.length);a.sq=s;if(a.role==='leader'||!s.ld)s.ld=e}
 function initE33(e,T0){const role=roleE33(e),wc=wcE33(e),W=AI33.wpn[wc],pr=profE33(e,role),pf=mkProfE33(pr.sk,pr.tp),p=e.g.position,t=T0&&T0.p?T0:pTE33();
  const a={s:'ALERT',sT:time,decT:0,know:2,aw:.5,vis:0,visT:-99,acq:-99,lkx:t.p.x+(R()-.5)*14,lkz:t.p.z+(R()-.5)*14,lkT:time-6,think:R()*.3,hearT:time,role,wc,W,pf,
@@ -141,22 +150,27 @@ function seeE33(e,a,dt){const p=e.g.position,q=a.T.p;if(!q)return;const dx=q.x-p
  if(a.aw>=1){a.aw=1;if(!a.vis&&time-a.visT>1.6){a.acq=Math.hypot(q.x-a.lkx,q.z-a.lkz)<3&&time-a.visT<8?time-a.pf.aimT*.5:time;a.rxT=time+a.pf.react*(.2+R()*.35);if(a.know<3){AI33.dbg.detect++;if(!AI33.t1)AI33.t1=time;e.alert=Math.max(e.alert||0,a.pf.react*(.18+R()*.3))}}a.vis=1;a.visT=a.svT=time;a.lkx=q.x;a.lkz=q.z;a.lkT=time;a.know=3}
  else if(a.aw>.35&&a.know<1){a.know=1;a.ix=q.x+(R()-.5)*6;a.iz=q.z+(R()-.5)*6}}
 function hearE33(e,a){const p=e.g.position,N=AI33.N;for(let i=N.length-1;i>=0;i--){const n=N[i];if(n.t<=a.hearT)break;const d=Math.hypot(n.x-p.x,n.z-p.z),r=n.r*a.pf.ear;if(d>r)continue;const k=1-d/r;
+  if(n.src==='death'&&d<16&&n.x!==p.x){a.sup+=.25+.6*k;if(a.know>=2&&!a.vis)a.decT=0}/* QA: un compañero cae cerca → se agacha y replantea */
   if(n.src==='enemy'||n.src==='death'){if(a.know<2&&a.sq&&a.sq.lkT>time-20){a.know=2;a.lkx=a.sq.lkx;a.lkz=a.sq.lkz;a.lkT=a.sq.lkT}else if(a.know<1){a.know=1;a.ix=n.x;a.iz=n.z}continue}
   AI33.dbg.heard++;const err=d*.13+2;
   if((n.src==='player'||n.src==='ally'||n.src==='step'&&k>.55)&&k>.35){if(!a.vis&&time-a.visT>1){a.lkx=n.x+(R()-.5)*err;a.lkz=n.z+(R()-.5)*err;a.lkT=Math.max(a.lkT,time-1.5)}if(a.know<2)a.know=2}
   else if(a.know<1){a.know=1;a.ix=n.x+(R()-.5)*err;a.iz=n.z+(R()-.5)*err}}
  a.hearT=time}
 /* ---------- granadas (Field): sólo con una oportunidad válida ---------- */
-function grenOKE33(e,a,tx,tz,d){if(a.gn<=0||time<a.gT||!a.sq||time<a.sq.gT||d<11||d>27*(a.pf.gren>.9?1.12:1))return false;
+function grenOKE33(e,a,tx,tz,d){if(a.gn<=0||time<a.gT||!a.sq||time<a.sq.gT||d<9||d>27*(a.pf.gren>.9?1.12:1))return false;
  for(const o of enemies){if(o===e||o.hp<=0)continue;if(Math.hypot(o.g.position.x-tx,o.g.position.z-tz)<7.5)return false}
  const p=e.g.position,t=1.15+d*.016,y0=p.y+2.1,vy=(9*t*t-y0)/t,ap=y0+vy*vy/36,mx=(p.x+tx)*.5,mz=(p.z+tz)*.5;if(AI33.rc>AI33.cfg.rayBudget)return false;
- return losE33(p.x,y0,p.z,mx,ap,mz)&&losE33(mx,ap,mz,tx,.8,tz)}
+ return losE33(p.x,y0,p.z,mx,ap,mz)&&losE33(mx,ap,mz,tx,1.7,tz)}/* QA: la granada cae en picada; el parapeto del blanco no la frena */
 function throwE33(e,a,tx,tz,veh){const p=e.g.position,d=Math.hypot(tx-p.x,tz-p.z),er=(1.2+d*.06)*a.pf.acc;tx+=gsE33()*er*.7;tz+=gsE33()*er*.7;const t=1.15+d*.016,y0=p.y+2.1,pos=new T.Vector3(p.x,y0,p.z);
  const m=window.mkStickG?mkStickG():new T.Mesh(typeof egrG!=='undefined'?egrG:new T.SphereGeometry(.22,8,6),typeof egrM!=='undefined'?egrM:new T.MeshLambertMaterial({color:0x3a4a22}));m.position.copy(pos);scene.add(m);
  const g={m,pos,v:new T.Vector3((tx-p.x)/t,(9*t*t-y0)/t,(tz-p.z)/t),fuse:t};egr.push(g);AI33.gr.push({g,veh,by:e,t:time});a.gn--;a.gT=time+14+R()*8;if(a.sq)a.sq.gT=time+AI33.cfg.grenSq;AI33.dbg.gren++;if(veh)AI33.dbg.grenAT++;
  if(time-AI33.bark>4&&R()<.6){AI33.bark=time;feed(veh?'¡Carga contra el blindado!':'¡Granada enemiga!')}snd(300,.1,'square',.04);noise33(p.x,p.z,15,'enemy')}
 function grenUpdE33(){const G=AI33.gr;for(let i=G.length-1;i>=0;i--){const r=G[i];if(egr.indexOf(r.g)>=0)continue;G.splice(i,1);const q=r.g.pos;noise33(q.x,q.z,140,'boom');for(const o of enemies)if(o.hp>0&&Math.hypot(o.g.position.x-q.x,o.g.position.z-q.z)<5)AI33.dbg.selfK++;
   if(r.veh&&r.veh.alive&&typeof VEH32!=='undefined'&&VEH32.dmg){const vp=r.veh.g.position;if(Math.hypot(vp.x-q.x,vp.z-q.z)<4.5)try{VEH32.dmg(r.veh,700,'g',q.x,q.z)}catch(er){}}}}
+/* QA: boca del arma despejada (la vista va a 1.62 m y el cañón a 1.4: sin esto disparan contra su propio parapeto) */
+function muzE33(ox,oy,oz,tx,ty,tz){if(typeof NV==='undefined')return true;const dx=tx-ox,dy=ty-oy,dz=tz-oz,L=Math.hypot(dx,dy,dz)||1,C=NV.cell;
+ for(const s of[.45,1.05,1.75,2.5,3.6]){if(s>L-1)break;const x=ox+dx/L*s,y=oy+dy/L*s,z=oz+dz/L*s,A=NV.m.get(Math.floor(x/C)+','+Math.floor(z/C));if(!A)continue;
+  for(const o of A)if(o.hw!==undefined&&!o.nolos&&Math.abs(x-o.x)<o.hw+.12&&Math.abs(z-o.z)<o.hd+.12&&y<o.h+.06&&y>=(o.y0||0))return false}return true}
 /* el jugador dentro de un blindado: nada de fusilería contra el acero */
 function pVehE33(){return (level===14&&typeof L14!=='undefined'&&L14.inTank)||(P.veh&&P.veh.kind==='tank')}
 /* ---------- vehículos hostiles para los AT ---------- */
@@ -234,11 +248,11 @@ function frameE33(e,a,dt){const p=e.g.position;
     if(sup)a.ph='peek';
     if(a.ph==='hide'){a.cr=1;if(c&&!e.hold&&time-a.phS<1.4){const dx=c.x-p.x,dz=c.z-p.z,d=Math.hypot(dx,dz);if(d>.45&&d<4){a.mx=dx/d*.5;a.mz=dz/d*.5}}
      a.look.set(a.lkx,1,a.lkz);
-     if(time>=a.phT&&a.rel<=0&&a.sup<1.7&&s!=='PANIC'){const want=vis||time-a.lkT<2.5||s==='ALERT'&&R()<.5;if(want){a.ph='peek';a.phS=time;a.phT=time+1.2+R()*1.1}else a.phT=time+.6+R()*.8}}
+     if(time>=a.phT&&a.rel<=0&&a.sup<1.7&&s!=='PANIC'){const want=vis||time-a.lkT<2.5||s==='ALERT'&&R()<.5;if(want){a.ph='peek';a.phS=time;a.phT=time+(1.2+R()*1.1)*(AI33.rof[difficulty]||1)}else a.phT=time+.6+R()*.8}}
     else{if(c&&c.cor&&c.px!==undefined&&!e.hold&&s!=='HOLD'&&time-a.phS<1.2&&!(c.pb=c.pb===undefined?(typeof blockedAt==='function'&&blockedAt(c.px,c.pz,.45)):c.pb)){const dx=c.px-p.x,dz=c.pz-p.z,d=Math.hypot(dx,dz);if(d>.4&&d<4){a.mx=dx/d*.55;a.mz=dz/d*.55}}
      if(vis)a.look.copy(a.T.p);else a.look.set(a.lkx,1,a.lkz);
      if(s!=='ALERT'||vis)fireE33(e,a,p,vis,sup&&time-a.lkT<8);
-     if(!sup&&s!=='HOLD'&&(time>=a.phT||a.rel>0||a.sup>2.2||!vis&&time-a.visT>1.6&&time-a.lkT>2.5)){a.ph='hide';a.phS=time;a.phT=time+(.7+R()*1.1)*a.pf.cov+(a.sup>1?.8:0)+(a.rel>0?a.rel:0)}
+     if(!sup&&s!=='HOLD'&&(time>=a.phT||a.rel>0||a.sup>2.2||!vis&&time-a.visT>1.6&&time-a.lkT>2.5)){a.ph='hide';a.phS=time;a.phT=time+(.7+R()*1.1)*a.pf.cov/(AI33.rof[difficulty]||1)+(a.sup>1?.8:0)+(a.rel>0?a.rel:0)}
      if(s==='HOLD'&&a.rel>0)a.cr=1}
     if(sup&&vis&&time-a.sT>.8)a.decT=0;break}
    case 'EVADE':{const dx=p.x-a.evx,dz=p.z-a.evz,d=Math.hypot(dx,dz)||1;a.mx=dx/d;a.mz=dz/d;a.look.set(p.x+dx/d*6,p.y,p.z+dz/d*6);if(time>a.evE){a.decT=0;a.actT=0;a.s='ALERT';a.cov=null}break}
@@ -286,7 +300,7 @@ function threatsE33(dt){
  /* balas nuevas: ruido + supresión (a lo largo de la trayectoria) */
  let shotP=false;for(const b of bullets){if(b._s33)continue;b._s33=1;const o=b.m.position,v=b.v,vl=Math.hypot(v.x,v.z)||1,ux=v.x/vl,uz=v.z/vl;
   if(!b.by){shotP=true}else if(R()<.35)noise33(o.x,o.z,65,'ally');
-  for(const e of AI33.list){const a=e.a33;if(!a)continue;const qx=e.g.position.x-o.x,qz=e.g.position.z-o.z,t=qx*ux+qz*uz;if(t<2||t>85)continue;const pd=Math.abs(qx*uz-qz*ux);if(pd<2.6){a.sup+=(2.6-pd)/2.6*.45;a.supT=time;if(!b.by&&!a.vis&&a.know>=2&&time-a.visT>1){const er=t*.12;a.lkx=P.g.position.x+(R()-.5)*er;a.lkz=P.g.position.z+(R()-.5)*er;a.lkT=Math.max(a.lkT,time-1.2)}}}}
+  for(const e of AI33.list){const a=e.a33;if(!a)continue;const qx=e.g.position.x-o.x,qz=e.g.position.z-o.z,t=qx*ux+qz*uz;if(t<2||t>85)continue;const pd=Math.abs(qx*uz-qz*ux);if(pd<2.6){/* QA: la bala que se estrella antes contra un muro no suprime ni delata al tirador */if(t>6&&(AI33.rc>=AI33.cfg.rayBudget+6||!losE33(o.x,o.y,o.z,e.g.position.x,1.3,e.g.position.z)))continue;a.sup+=(2.6-pd)/2.6*.45;a.supT=time;if(!b.by&&!a.vis&&a.know>=2&&time-a.visT>1){const er=t*.12;a.lkx=P.g.position.x+(R()-.5)*er;a.lkz=P.g.position.z+(R()-.5)*er;a.lkT=Math.max(a.lkT,time-1.2)}}}}
  if(shotP){AI33.pShot=time;noise33(P.g.position.x,P.g.position.z,P.cur==='revolver'?55:75,'player')}
  /* pasos del jugador */
  AI33.stepT-=dt;if(AI33.stepT<=0){AI33.stepT=.45;const sp=Math.hypot(P.mvx||0,P.mvz||0);if(sp>1.2&&!P.mg)noise33(P.g.position.x,P.g.position.z,P.pr?1.5:P.cr?3:sp>7?14:7,'step')}
@@ -318,9 +332,10 @@ function threatsE33(dt){
  for(const q of enemies){if(q===e||q.hp<=0)continue;const qx=q.g.position.x-o.x,qz=q.g.position.z-o.z,t=(qx*dx+qz*dz)/d;if(t<.8||t>d-1)continue;if(Math.abs(qx*dz-qz*dx)/d<.85){a.ffT=time;AI33.dbg.ff++;return}}
  if(time-a.lastShot>.5)a.bs=0;else a.bs++;a.lastShot=time;
  const ts=tp===P.g.position?Math.hypot(P.mvx||0,P.mvz||0):0,ms=Math.hypot(e.vx||0,e.vz||0);
- let sg=a.W.sp*a.pf.acc*(AI33.diff[difficulty]||1)*(1+Math.max(0,1-(time-a.acq)/a.pf.aimT)*.9)*(ms>1?1.6:1)*(ts>2?1.25:1)*(1+Math.min(2.2,a.sup)*.4)*(1+Math.min(4,a.bs)*.12)*(e.hp<e.max*.35?1.25:1)*(d<8?.7:1)*(1+Math.max(0,d-45)/40)*(sup?3.2:1);
+ let sg=a.W.sp*a.pf.acc*(AI33.diff[difficulty]||1)*(1+Math.max(0,1-(time-a.acq)/a.pf.aimT)*.9)*(ms>1?1.6:1)*(ts>2?1.25:1)*(1+Math.min(2.2,a.sup)*.4)*(1+Math.min(4,a.bs)*.12)*(e.hp<e.max*.35?1.25:1)*(d<8?.7:1)*(1+Math.max(0,d-45)/40)*(sup?3.2:1)*(tp===P.g.position&&!P.cover&&(P.cr||P.pr)?(P.pr?1.45:1.25):1);
  const v=new T.Vector3(tx-o.x,ty-o.y,tz-o.z).normalize();v.x+=gsE33()*sg;v.z+=gsE33()*sg;v.y+=gsE33()*sg*.45;v.normalize();
- eshoot(o,v,8);if(AI33.cfg.log&&AI33.log.length<400)AI33.log.push([+d.toFixed(1),+sg.toFixed(3),vis?1:0,+ms.toFixed(1),+(time-a.acq).toFixed(1),a.bs,+a.sup.toFixed(1),a.wc,+o.y.toFixed(2),+ty.toFixed(2)]);e.aim=.35;a.mag--;AI33.dbg.shots++;if(sup)AI33.dbg.supShots=(AI33.dbg.supShots||0)+1;
+ if(!muzE33(o.x,o.y,o.z,o.x+v.x*30,o.y+v.y*30,o.z+v.z*30)){const ey=p.y+1.62*(e.s||1);if(ey>o.y+.05&&muzE33(o.x,ey,o.z,o.x+v.x*30,ey+v.y*30,o.z+v.z*30))o.y=ey;else{AI33.dbg.muzBlk=(AI33.dbg.muzBlk||0)+1;a.phS=time;a.nx=time+.3;return}}
+ eshoot(o,v,e.k8?(AI33.dmg[e.k8]||9):8,e.k8?42:26);if(AI33.cfg.log&&AI33.log.length<400)AI33.log.push([+d.toFixed(1),+sg.toFixed(3),vis?1:0,+ms.toFixed(1),+(time-a.acq).toFixed(1),a.bs,+a.sup.toFixed(1),a.wc,+o.y.toFixed(2),+ty.toFixed(2)]);e.aim=.35;a.mag--;AI33.dbg.shots++;if(sup)AI33.dbg.supShots=(AI33.dbg.supShots||0)+1;
  burst(o.x+v.x*.6,o.y,o.z+v.z*.6,0xffdd88,2,.08,1);snd(a.wc==='rifle'||a.wc==='sniper'?120:150,.12,'sawtooth',.03);if(R()<.3)noise33(p.x,p.z,60,'enemy')}}
 {const _f=findCover;findCover=function(e,far){const a=e.a33;if(!a||!AI33.on||!okE33(e)||e.unaware)return _f(e,far);const c=pickCoverE33(e,a,far?'far':'near');if(c){a.cov=c;a.cvT=time;return (a.cvPend={x:c.x,z:c.z})}return _f(e,far)}}
 {const _a=animE;animE=function(e,ax,az,dt,crouch){const a=e.a33;if(a&&AI33.on&&!e.unaware&&a.cr&&!(ax||az))crouch=true;return _a(e,ax,az,dt,crouch)}}
