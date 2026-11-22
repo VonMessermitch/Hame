@@ -875,3 +875,33 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
 | Antiaéreas cuádruples de Taikin | flakpanzer_loop_fast |
 
 - Los disparos de enemigos y aliados se oyen según la distancia a la que estén.
+
+## v35 · Ingeniería de sonido (biblioteca Audio 1.2)
+- **Selección:** de los 195 archivos (33 MB) del pack quedaron 78 muestras.
+  - Se recortaron las colas y se aplicó un fundido de salida.
+  - Se codificaron a MP3 de 32–64 kbps según el uso, con frecuencias de 22–44 kHz.
+  - El conjunto pesa unos 650 KB (`v35_snd_data.js`).
+- **Descartado:** pasos sobre alfombra, vidrio, hojas, barro y madera crujiente, raspones y gateo; agua de cloaca, cascadas, sala de misiles, máquinas, zumbido de luz, sótano, ramas y caídas; las explosiones de radio, mina y puente; las explosiones repetidas. `nagant_sniper` y `sniper_rifle` eran el mismo archivo, así que quedó uno solo.
+- **Armas:**
+  - Enfield: fusil del jugador desde el nivel 13.
+  - Nagant: fusiles enemigos.
+  - Francotirador: tiradores de la IA enemiga.
+  - Recarga del fusil en tres partes: inicio, peine y cierre.
+- **Granadas:** sonido de quitar el seguro y de lanzamiento (jugador y enemigos), y rebotes sobre tierra, piedra o madera según el nivel.
+- **Explosiones** (sustituyen a `expSnd`), con retardo por la velocidad del sonido:
+  - pequeñas (granada);
+  - medianas (mortero sobre tierra);
+  - grandes (roca o metal);
+  - lejanas, a más de 140 m;
+  - en el agua (fiordo y Golfo);
+  - de barco (nivel 15).
+- **Proyectiles con silbido:**
+  - Los obuses navales y los morteros de VEH32 tienen un silbido real que termina justo en el impacto.
+  - Se oye el lanzamiento del mortero.
+- **Balas que pasan cerca:** sonido de zumbido cuando una bala enemiga pasa a menos de 3,2 m de la cabeza.
+- **Pasos:**
+  - según la superficie: arena o tierra (Nilo, Golfo), pasto (bosque), piedra (ciudad, Taikin), nieve, metal y vadeo (fiordo), metal (cepelín, puente de Orlov), madera (barraca);
+  - el ritmo cambia al caminar, correr o agacharse;
+  - sonido de aterrizaje al caer, y golpe si la caída es fuerte.
+- **Ambiente por nivel:** viento (desierto, bosque, costa), grillos (noches de los niveles 13 y 16), fuego (ciudad del 14) y olas (15 y 17). Baja de volumen en las cinemáticas.
+- **Memoria:** decodificación perezosa y precarga por nivel; solo se decodifican las muestras que usa el nivel.

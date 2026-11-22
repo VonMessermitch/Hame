@@ -14,7 +14,7 @@ function out34(){try{return typeof AB==='function'?AB():ac.destination}catch(e){
 /* name, volumen, tono, x/z mundo (opcional: posicional), o:{delay,off,dur,loop} */
 function samp34(n,vol,rate,x,z,o){if(typeof ac==='undefined'||!ac){return false}load34();const b=SND34.buf[n];if(!b)return false;
  try{if(typeof sfxOK==='function'&&!sfxOK())return true;o=o||{};let g=(vol==null?1:vol)*(VOL34[n]||.8)*(G.vol==null?.8:G.vol)*(.88+Math.random()*.24),lp=0;
-  if(x!=null&&typeof cam!=='undefined'){const d=Math.hypot(cam.position.x-x,cam.position.z-z);if(d>220)return true;g*=1/(1+d/16);if(d>25)lp=Math.max(900,16000-d*95)}
+  if(x!=null&&typeof cam!=='undefined'){const d=Math.hypot(cam.position.x-x,cam.position.z-z);if(d>(o.max||220))return true;g*=1/(1+d/(o.reach||16));if(d>25)lp=Math.max(900,16000-d*(o.reach?40:95))}
   if(g<.004)return true;const t=ac.currentTime+(o.delay||0),s=ac.createBufferSource();s.buffer=b;s.playbackRate.value=(rate||1)*(.95+Math.random()*.1);
   const gn=ac.createGain();gn.gain.value=g;let h=s;if(lp){const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=lp;s.connect(f);h=f}h.connect(gn);gn.connect(out34());
   if(o.loop){s.loop=true;s.loopStart=.03;s.loopEnd=Math.max(.1,b.duration-.05)}
