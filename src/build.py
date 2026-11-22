@@ -16,10 +16,9 @@ def rep(old, new, count=1):
 # --- cabecera / CDN con respaldo ---
 # v20: los botones táctiles llamaban a las funciones originales capturadas (los añadidos posteriores —caja del Panzerfaust, cargas, trabajos— no llegaban en Android)
 rep("tb('br',reload);tb('bro',roll);tb('bj',jump);tb('bm',melee);tb('bg',throwG);tb('bw',swap);tb('bi',interact);","tb('br',()=>reload());tb('bro',()=>roll());tb('bj',()=>jump());tb('bm',()=>melee());tb('bg',()=>throwG());tb('bw',()=>swap());tb('bi',()=>interact());")
-rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v38 · Martillo de Nieve)</title>')
+rep('<title>Sombras sobre el Nilo — 1909 (v15 · 1.0)</title>', '<title>Sombras sobre el Nilo — 1909 (v39 · Motor embebido)</title>')
 rep('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>',
-    '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\n'
-    '<script>window.THREE||document.write(\'<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\\/script>\')</script>')
+    '<script>/* Three.js r128 embebido (licencia MIT) — el juego funciona sin internet */\n' + (root/'vendor'/'three.r128.min.js').read_text(encoding='utf-8').replace('</script','<\\/script') + '\n</script>')
 # --- globales de enlace para el módulo v16 (objetivo enemigo, audio) ---
 rep("var G={q:'alta'", "var TGP=null,TGH=null,SFXV=1,sndOK=()=>true,sfxOK=()=>true,AB=()=>ac.destination,e8T=null,e8Hit=()=>false,e8Blast=()=>{},unstk=null,pSpread=()=>0;\nvar G={q:'alta'")
 # --- audio: bus maestro + limitador de voces ---
@@ -94,6 +93,6 @@ rep("startSw(2);P.swHit=true;P.plunge=true;", "startSw(SW.length-1);P.swHit=true
 rep("slash(SW[2]);shake=Math.max(shake,1.5);", "slash(SW[SW.length-1]);shake=Math.max(shake,1.5);")
 # --- inyección del módulo ---
 rep("\n</script></body></html>", "\n" + mod + "\n</script></body></html>")
-_o = pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else root/'Sombras_sobre_el_Nilo_1909_v38.html'
+_o = pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else root/'Sombras_sobre_el_Nilo_1909_v39.html'
 _o.write_text(out, encoding='utf-8')
 print('OK', len(out), 'bytes')

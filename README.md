@@ -965,3 +965,15 @@ Misión naval completa de la Marina Real de Eisenmark (1922). Protagonista: Matt
 - **Aviación** (`v38_air.js`): cazas V-19 A/B/D, grifos blindados con jinete y Rauth sobre Eisenkrall.
 - **Misión** (`v38_mission.js`): nivel 18 con 7 actos escritos. Se detuvo antes de las pruebas completas; solo se verificó que el Acto I arranca.
 - **Pendiente:** recorrido automático de los 7 actos, puntos de control 1–6, limpieza del menú viejo y del código sin uso.
+
+## v39 · Motor embebido y gráficos avanzados
+- **Three.js r128 embebido en el HTML** (`vendor/three.r128.min.js`, licencia MIT): el juego abre sin internet.
+- **Presets nuevos:** «Ultra baja» (35 % de resolución, 30 FPS, texturas píxel, color de 16 bits, curvas bajas) y «Extrema» (supersampling ×1.5, anisotrópico ×8, curvas muy altas).
+- **Ajustes sueltos nuevos:**
+  - suavizado por supersampling ×1 a ×2;
+  - sombras de contacto;
+  - filtro de texturas: píxel, bilineal, trilineal o anisotrópico ×4/×8/×16;
+  - calidad de texturas;
+  - profundidad de color: 8, 16 o 24 bits;
+  - detalle de curvas (cilindros, conos y esferas);
+  - efectos de pantalla.
