@@ -5,6 +5,19 @@
    que ya llama el bucle de enemigos: e8T (objetivo), unstk (dirección),
    shootSol (disparo), findCover (cobertura), animE (pose), hurt/kill.
    API compartida: noise33(x,z,loud,src) y el objeto AI33 (config + depuración).
+   · noise33(x,z,loud,src): loud ≈ radio en m (disparo ~70, explosión ~140,
+     pasos 1.5–14); src 'player'|'ally'|'enemy'|'boom'|'step'|'veh'|'death'.
+     Ya se emiten solos: balas nuevas del jugador/aliados, explosiones
+     (boom/expSnd/granadas), pasos del jugador, blindados propios, muertes.
+   · AI33.on (interruptor), AI33.cfg (presupuestos: think, thinkPerFrame,
+     rayBudget, vis, cone…), AI33.prof / AI33.temp (perfiles RECLUTA, REGULAR,
+     VETERANO, ÉLITE × AGRESIVO, DEFENSIVO, CAUTELOSO), AI33.wpn (armas),
+     AI33.assign=(e,role)=>({sk,tp}) para forzar perfiles, AI33.stats() (QA).
+   · Por enemigo: e.a33 = {s (estado), know, vis, lkx/lkz/lkT (última posición
+     conocida), role, wc, pf, mag, rel, sup, cov, sq}. Los aliados pueden marcar
+     supresión con e.sup33=time.
+   Sólo gestiona soldados con armas de fuego (type 'sol'); los que están en
+   sigilo (e.unaware) siguen con stealth13 hasta que se alertan.
    ===================================================================== */
 const AI33={on:true,v:1,lv:-1,
  cfg:{think:.3,thinkFar:.75,thinkPerFrame:8,rayBudget:12,vis:95,cone:1.15,coneAlert:1.75,rumor:14,grenSq:8,supDecay:.55,barkCD:9,maxNoise:24},
@@ -21,17 +34,17 @@ const AI33={on:true,v:1,lv:-1,
   CAUTELOSO:{adv:.6,cov:1.35,react:1.1,brave:.8,ear:1.15,gren:1.1}},
  /* armas: dispersión base (rad), cargador, recarga, ráfaga, cadencias */
  wpn:{
-  rifle:{sp:.014,mag:5,rel:2.6,kb:1,kcd:1.25,kc2:1.25,rng:75},
+  rifle:{sp:.018,mag:5,rel:2.6,kb:1,kcd:1.25,kc2:1.25,rng:75},
   sniper:{sp:.009,mag:5,rel:3,kb:1,kcd:2.1,kc2:2,rng:110},
-  smg:{sp:.03,mag:32,rel:2.7,kb:3,kcd:.11,kc2:.45,rng:45},
-  lmg:{sp:.028,mag:20,rel:3.6,kb:4,kcd:.13,kc2:.35,rng:70},
-  mg:{sp:.032,mag:60,rel:5,kb:6,kcd:.1,kc2:.3,rng:80},
+  smg:{sp:.034,mag:32,rel:2.7,kb:3,kcd:.11,kc2:.45,rng:45},
+  lmg:{sp:.036,mag:20,rel:3.6,kb:4,kcd:.13,kc2:.35,rng:70},
+  mg:{sp:.036,mag:60,rel:5,kb:6,kcd:.1,kc2:.3,rng:80},
   pistol:{sp:.06,mag:8,rel:2,kb:2,kcd:.45,kc2:.7,rng:30}},
- diff:{easy:1.3,normal:1,hard:.85},
+ diff:{easy:1.35,normal:1,hard:.85},
  list:[],log:[],sq:{},sqL:[],N:[],rc:0,tk:0,pShot:-99,stepT:0,vehT:0,sqI:0,bark:-99,gr:[],
  dbg:null,
- reset(){this.list.length=0;this.sq={};this.sqL.length=0;this.N.length=0;this.gr.length=0;this.dbg=dbg0E33()},
- stats(){const d=Object.assign({},this.dbg);d.st=Object.assign({},this.dbg.st);d.sf={};for(const k in this.dbg.sf)d.sf[k]=+this.dbg.sf[k].toFixed(1);d.ms=+this.dbg.ms.toFixed(3);d.msAvg=+((this.dbg.msSum||0)/Math.max(1,this.dbg.frames)).toFixed(3);d.msMax=+this.dbg.msMax.toFixed(2);d.squads=this.sqL.length;d.managed=this.list.length;return d},
+ reset(){this.t1=0;this.list.length=0;this.sq={};this.sqL.length=0;this.N.length=0;this.gr.length=0;this.dbg=dbg0E33()},
+ stats(){const d=Object.assign({},this.dbg);d.st=Object.assign({},this.dbg.st);d.sf={};for(const k in this.dbg.sf)d.sf[k]=+this.dbg.sf[k].toFixed(1);d.ms=+this.dbg.ms.toFixed(3);d.msAvg=+((this.dbg.msSum||0)/Math.max(1,this.dbg.frames)).toFixed(3);d.msMax=+this.dbg.msMax.toFixed(2);d.squads=this.sqL.length;d.tDetect=this.t1||-1;d.managed=this.list.length;return d},
  /* asignación de perfil: sobreescribible */
  assign:null};
 AI33.prof['ÉLITE']=AI33.prof.ELITE;
@@ -83,10 +96,10 @@ let CSE33=0;
 function covPtsE33(e,a,tx,tz,R_,out){const p=e.g.position;out.length=0;CSE33++;
  if(typeof covers!=='undefined')for(const c of covers){const dx=c.x-p.x,dz=c.z-p.z;if(dx*dx+dz*dz>R_*R_)continue;const vx=c.x-tx,vz=c.z-tz,l=Math.hypot(vx,vz)||1,k=c.r+.85;out.push({x:c.x+vx/l*k,z:c.z+vz/l*k,low:1,ox:c.x,oz:c.z,b:c})}
  if(typeof NV!=='undefined'){const C=NV.cell,i0=Math.floor((p.x-R_)/C),i1=Math.floor((p.x+R_)/C),j0=Math.floor((p.z-R_)/C),j1=Math.floor((p.z+R_)/C);
-  for(let i=i0;i<=i1;i++)for(let j=j0;j<=j1;j++){const A=NV.m.get(i+','+j);if(!A)continue;for(const o of A){if(o._c33===CSE33)continue;o._c33=CSE33;if(o.hw===undefined)continue;if(o.h<.9||o.hw>16||o.hd>16||o.veh32&&o.veh32.alive)continue;
+  for(let i=i0;i<=i1;i++)for(let j=j0;j<=j1;j++){const A=NV.m.get(i+','+j);if(!A)continue;for(const o of A){if(o._c33===CSE33)continue;o._c33=CSE33;if(o.hw===undefined)continue;if(o.h<.9||o.hw>45||o.hd>45||o.veh32&&o.veh32.alive)continue;
    const vx=o.x-tx,vz=o.z-tz,tall=o.h>1.32?1:0;let fx,fz,lat,nx=0,nz=0;
-   if(Math.abs(vx)/(o.hw+.01)>Math.abs(vz)/(o.hd+.01)){nx=Math.sign(vx);fx=o.x+nx*(o.hw+.7);lat=o.hd;for(const s of tall?[-1,1]:[0,1]){const z=s===0?clamp(p.z,o.z-o.hd+.5,o.z+o.hd-.5):o.z+s*Math.max(0,o.hd-.55);out.push({x:fx,z,low:!tall,ox:o.x,oz:o.z,b:o,px:fx-nx*.2,pz:z+s*1.3,cor:s!==0})}}
-   else{nz=Math.sign(vz);fz=o.z+nz*(o.hd+.7);for(const s of tall?[-1,1]:[0,1]){const x=s===0?clamp(p.x,o.x-o.hw+.5,o.x+o.hw-.5):o.x+s*Math.max(0,o.hw-.55);out.push({x,z:fz,low:!tall,ox:o.x,oz:o.z,b:o,px:x+s*1.3,pz:fz-nz*.2,cor:s!==0})}}}}}
+   if(Math.abs(vx)/(o.hw+.01)>Math.abs(vz)/(o.hd+.01)){nx=Math.sign(vx);fx=o.x+nx*(o.hw+.7);lat=o.hd;for(const s of tall?[-1,1,0]:[0,1]){const z=s===0?clamp(p.z,o.z-o.hd+.5,o.z+o.hd-.5):o.z+s*Math.max(0,o.hd-.55);out.push({x:fx,z,low:!tall,ox:o.x,oz:o.z,b:o,px:fx-nx*.2,pz:z+s*1.3,cor:s!==0})}}
+   else{nz=Math.sign(vz);fz=o.z+nz*(o.hd+.7);for(const s of tall?[-1,1,0]:[0,1]){const x=s===0?clamp(p.x,o.x-o.hw+.5,o.x+o.hw-.5):o.x+s*Math.max(0,o.hw-.55);out.push({x,z:fz,low:!tall,ox:o.x,oz:o.z,b:o,px:x+s*1.3,pz:fz-nz*.2,cor:s!==0})}}}}}
  if(level===17&&typeof K17!=='undefined'&&K17&&Array.isArray(K17.cover)){const X=typeof XL17!=='undefined'?XL17:0;for(const c of K17.cover){const cx=X+(c.x!==undefined?c.x:c[0]),cz=c.z!==undefined?c.z:c[1];const dx=cx-p.x,dz=cz-p.z;if(dx*dx+dz*dz>R_*R_)continue;out.push({x:cx,z:cz,low:1,ox:cx-(cx-tx)*.05,oz:cz-(cz-tz)*.05,b:null})}}
  return out}
 const CPE33=[],TOPE33=[];
@@ -109,10 +122,10 @@ function pickCoverE33(e,a,mode,cx,cz){const p=e.g.position,tx=a.lkx,tz=a.lkz,dCu
  if(!top.length)return null;
  /* protección (agachado) y tiro (de pie / desde la esquina): rayos reales, presupuestados */
  let best=null,prot=null,nr=0;
- for(const c of top){if(nr>=7)break;const pr=!losE33(tx,1.45,tz,c.x,.95,c.z);nr++;if(!pr)continue;if(!prot)prot=c;if(mode==='far'){best=c;break}
+ for(const c of top){if(nr>=6||AI33.rc>=AI33.cfg.rayBudget+8)break;const pr=!losE33(tx,1.45,tz,c.x,.95,c.z);nr++;if(!pr)continue;if(!prot)prot=c;if(mode==='far'){best=c;break}
   const sx=c.cor&&c.px!==undefined?c.px:c.x,sz=c.cor&&c.pz!==undefined?c.pz:c.z;nr++;if(losE33(sx,1.62,sz,tx,1.3,tz)){best=c;break}}
- best=best||prot||top[0];AI33.rc=Math.max(0,AI33.rc-nr+1);
- if(!best)return null;return {x:best.x,z:best.z,low:best.low,px:best.px,pz:best.pz,cor:best.cor,ox:best.ox,oz:best.oz,h:best.b&&best.b.h||1,tree:best.tree,t:time}}
+ best=best||prot||top[0];
+ if(!best)return null;return {x:best.x,z:best.z,low:best.low,px:best.px,pz:best.pz,cor:best.cor,ox:best.ox,oz:best.oz,h:best.b&&best.b.h||1,t:time}}
 function setCovE33(e,a,c,why){if(!c)return false;a.cov=c;e.cv={x:c.x,z:c.z};a.cvRef=a.cvPend=e.cv;e.st='cover';e.alert=0;a.cvT=time;a.cvN++;AI33.dbg.cvMove++;return true}
 /* cobertura comprometida: la amenaza quedó del mismo lado */
 function covBadE33(a){const c=a.cov;if(!c)return true;const bx=c.ox-c.x,bz=c.oz-c.z,ux=a.lkx-c.x,uz=a.lkz-c.z,l=Math.hypot(ux,uz)||1;return (bx*ux+bz*uz)/(Math.hypot(bx,bz)*l+.01)<.15}
@@ -144,6 +157,8 @@ function throwE33(e,a,tx,tz,veh){const p=e.g.position,d=Math.hypot(tx-p.x,tz-p.z
  if(time-AI33.bark>4&&R()<.6){AI33.bark=time;feed(veh?'¡Carga contra el blindado!':'¡Granada enemiga!')}snd(300,.1,'square',.04);noise33(p.x,p.z,15,'enemy')}
 function grenUpdE33(){const G=AI33.gr;for(let i=G.length-1;i>=0;i--){const r=G[i];if(egr.indexOf(r.g)>=0)continue;G.splice(i,1);const q=r.g.pos;noise33(q.x,q.z,140,'boom');for(const o of enemies)if(o.hp>0&&Math.hypot(o.g.position.x-q.x,o.g.position.z-q.z)<5)AI33.dbg.selfK++;
   if(r.veh&&r.veh.alive&&typeof VEH32!=='undefined'&&VEH32.dmg){const vp=r.veh.g.position;if(Math.hypot(vp.x-q.x,vp.z-q.z)<4.5)try{VEH32.dmg(r.veh,700,'g',q.x,q.z)}catch(er){}}}}
+/* el jugador dentro de un blindado: nada de fusilería contra el acero */
+function pVehE33(){return (level===14&&typeof L14!=='undefined'&&L14.inTank)||(P.veh&&P.veh.kind==='tank')}
 /* ---------- vehículos hostiles para los AT ---------- */
 function hostVehE33(p,r){if(typeof VEH32==='undefined'||!VEH32||!VEH32.list)return null;let b=null,bd=r;for(const v of VEH32.list){if(!v.alive||!v.on||!v.ally||v.type==='ship')continue;const d=Math.hypot(v.g.position.x-p.x,v.g.position.z-p.z);if(d<bd){bd=d;b=v}}return b}
 /* ---------- decisión (Field + órdenes de Glave) ---------- */
@@ -163,16 +178,17 @@ function thinkE33(e,a,dt){AI33.dbg.think++;const p=e.g.position;seeE33(e,a,dt);h
  if(a.know<=0){setSE33(a,'GUARD',2);return}
  if(a.know===1){if(s!=='INVESTIGATE'){a.ix=a.ix||tx;a.iz=a.iz||tz;a.invT=time}setSE33(a,'INVESTIGATE',2.5);if(time-a.invT>14){a.know=0;a.ix=0}return}
  /* retirada y reagrupamiento de escuadra */
- if(sq&&sq.retT>time&&!e.hold&&!e.keep17){if(s!=='RETREAT'){if(!moveE33(e,a,'far','RETREAT',3)){e.cv={x:p.x+(p.x-tx)/(dl||1)*25,z:p.z+(p.z-tz)/(dl||1)*25};a.cvRef=e.cv;e.st='cover';setSE33(a,'RETREAT',3)}AI33.dbg.retreat++}return}
- if(s==='RETREAT'&&sq){const c=centroidE33(sq);a.rgx=c[0];a.rgz=c[1];if(!moveE33(e,a,'regroup','REGROUP',3))setSE33(a,'ALERT',2);return}
+ if(sq&&sq.retT>time&&!e.hold&&!e.keep17){if(s!=='RETREAT'&&!a.ret){a.ret=1;if(!moveE33(e,a,'far','RETREAT',3)){e.cv={x:p.x+(p.x-tx)/(dl||1)*25,z:p.z+(p.z-tz)/(dl||1)*25};a.cvRef=e.cv;e.st='cover';setSE33(a,'RETREAT',3)}AI33.dbg.retreat++}return}
+ if(a.ret&&sq&&sq.retT<=time){a.ret=0;const c=centroidE33(sq);a.rgx=c[0];a.rgz=c[1];if(!moveE33(e,a,'regroup','REGROUP',3))setSE33(a,'ALERT',2);return}
  /* pánico bajo fuego intenso */
  if(a.sup>2.4&&pf.brave<.85&&R()<.45&&a.cov&&s!=='PANIC'){setSE33(a,'PANIC',2+R()*1.5);a.ph='hide';return}
  /* blindado cerca: AT / granaderos lo atacan; el resto se cubre */
  const veh=hostVehE33(p,30);
  if(veh&&(a.role==='at'||a.role==='grenadier')&&a.gn>0&&time>a.gT){const vp=veh.g.position,dv=Math.hypot(vp.x-p.x,vp.z-p.z);if(dv>8){a.grA={x:vp.x,z:vp.z,v:veh};setSE33(a,'GRENADE',.8);a.actT=time+.75;return}}
  /* granada: objetivo a cubierto, agrupado o quieto en posición conocida */
- if(age<5&&a.gn>0&&time>a.gT&&R()<pf.gren*.5){const cl=clusE33(tx,tz);if((!a.vis||cl>=2||P.cover&&a.T.p===P.g.position)&&grenOKE33(e,a,tx,tz,dl)){a.grA={x:tx,z:tz,v:null};setSE33(a,'GRENADE',.8);a.actT=time+.75;return}}
+ if(age<8&&time-Math.max(a.svT,sq?sq.svT:-99)<14&&a.gn>0&&time>a.gT&&R()<pf.gren*.5){const cl=clusE33(tx,tz),isP=a.T.p===P.g.position;if((!a.vis||cl>=2||isP&&(P.cover||P.cr&&a.sup<.5&&time-a.visT>.6))&&grenOKE33(e,a,tx,tz,dl)){a.grA={x:tx,z:tz,v:null};setSE33(a,'GRENADE',.8);a.actT=time+.75;return}}
  const inCov=a.cov&&Math.hypot(p.x-a.cov.x,p.z-a.cov.z)<2.2;
+ if(a.T.p===P.g.position&&pVehE33()&&!e.hold){if((a.role==='at'||a.role==='grenadier')&&a.gn>0&&time>a.gT&&dl>9&&dl<28){a.grA={x:tx,z:tz,v:null};setSE33(a,'GRENADE',.8);a.actT=time+.75;return}if(!inCov&&moveE33(e,a,'near','TAKE_COVER',2))return;a.ph='hide';setSE33(a,'ALERT',2);return}
  /* cobertura comprometida (flanqueado / castigado dentro de ella) */
  if(inCov&&(SELFE33[s])&&!e.hold&&(covBadE33(a)||a.cmp>1)){a.cmp=0;if(moveE33(e,a,'near','TAKE_COVER',1.5))return}
  if(MOVEE33[s]&&e.st==='cover'&&time-a.cvT<9)return;/* sigue moviéndose a su punto */
@@ -204,7 +220,7 @@ function frameE33(e,a,dt){const p=e.g.position;
  /* órdenes externas (tácticas de misión, reacciones a heridas): se respetan */
  if(e.st==='cover'&&e.cv&&e.cv!==a.cvRef){a.cvRef=e.cv;if(e.cv!==a.cvPend||!a.cov)a.cov={x:e.cv.x,z:e.cv.z,ox:NaN,oz:NaN,low:1};a.cvT=time;if(!MOVEE33[a.s])setSE33(a,'TAKE_COVER',2)}
  /* llegada a la cobertura */
- if(MOVEE33[a.s]&&(e.st==='hide'||e.st==='peek'||a.cov&&Math.hypot(p.x-a.cov.x,p.z-a.cov.z)<.9)){a.ph='hide';a.phT=time+.25+R()*.4;setSE33(a,a.s==='RETREAT'?'RETREAT':'ENGAGE',a.s==='RETREAT'?2:1);if(a.s==='RETREAT')a.s='ENGAGE'}
+ if(MOVEE33[a.s]&&(e.st==='hide'||e.st==='peek'||a.cov&&Math.hypot(p.x-a.cov.x,p.z-a.cov.z)<.9)){a.ph='hide';a.phT=time+.25+R()*.4;setSE33(a,'ENGAGE',a.s==='RETREAT'?3:1)}
  if(a.s==='ASSAULT'&&e.st!=='fire'&&e.st!=='adv')setSE33(a,'ENGAGE',.5);
  const s=a.s,self=!!SELFE33[s];a.self=self;a.mx=a.mz=0;a.cr=0;
  const vis=a.vis&&time-a.visT<.6;
@@ -290,6 +306,7 @@ function threatsE33(dt){
   if(a.sq&&(ax||az)){const p=e.g.position;for(const o of a.sq.m){if(o===e)continue;const dx=p.x-o.g.position.x,dz=p.z-o.g.position.z,q=dx*dx+dz*dz;if(q<6.25&&q>.01){const d=Math.sqrt(q);ax+=dx/d*(2.5-d)*.25;az+=dz/d*(2.5-d)*.25}}}}
  return _u?_u(e,ax,az,dt):[ax,az]}}
 {const _s=shootSol;shootSol=function(e,p){const a=e.a33;if(!a||!AI33.on||e.type!=='sol')return _s(e,p);
+ if(a.T.p===P.g.position&&pVehE33()){AI33.dbg.armor=(AI33.dbg.armor||0)+1;return}
  if(a.rel>0)return;if(a.mag<=0){a.rel=a.W.rel*(a.pf.react>1.2?1.15:a.pf.react<.75?.9:1);AI33.dbg.reload++;if(time-AI33.bark>AI33.cfg.barkCD&&R()<.25&&a.d<30){AI33.bark=time;feed('«¡Recargando!»')}return}
  const vis=a.vis&&time-a.visT<.5;let tx,ty,tz,sup=false,tp=null;
  if(vis){tp=a.T.p;const isP=tp===P.g.position;tx=tp.x;tz=tp.z;ty=tp.y+(isP?(P.pr?.3:P.cr?.85:1.2):1.15);
