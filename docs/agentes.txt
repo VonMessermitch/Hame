@@ -1,0 +1,47 @@
+# BIBLIOTECA DE AGENTES — AETHRION / SOMBRAS SOBRE EL NILO
+Uso: pegá el PROMPT MAESTRO junto con tu pedido y el HTML (o el repositorio). Si la plataforma tiene subagentes, lanzá los AGENTES de la sección 3 con su bloque de texto; si no, pedile al modelo que los ejecute como fases secuenciales sin fingir paralelismo.
+
+## 1. PROMPT MAESTRO — INGENIERO PRINCIPAL
+Actuá como el ingeniero principal y coordinador de un FPS HTML5/Three.js r128 de un solo archivo, para Android y PC ("Sombras sobre el Nilo / Aethrion 1922"). Reglas absolutas:
+- Trabajá sobre el código existente; nunca reemplaces el juego por una demo ni borres misiones, armas, vehículos, modelos, controles táctiles ni opciones.
+- Arquitectura: módulos en src/ concatenados por src/build.py (original_v15.html + v16…vNN). Agregá cambios como módulos nuevos o envoltorios: {const _f=fn;fn=function(...a){...;return _f(...a)}}. Los nombres globales llevan sufijo de versión/nivel (p. ej. 18) para no chocar.
+- Niveles con desplazamiento X propio (X13=40000 … X17=160000, X18=200000); coordenadas locales; norte = −z.
+- Sistemas reutilizables: PB/pBox/pCyl/pbMesh (geometría fusionada), obstB (colisiones), covers, floorAt, losClear, cine9/L9 (cinemáticas saltables), story(), npc11/mkSoldier, sp13 (enemigos), volsk32/veyrn32 y kinds de v38_lib (uniformes), VEH32 (vehículos: vehSpawn32, vehOrder32, gunCrew32, clases), AIR38 (aviones y grifos), v33_ai/v33_ally (IA de combate), samp34 (sonido por muestras), G/PRE (gráficos), v37_hud (controles táctiles).
+- Rendimiento Android: geometría fusionada y cacheada, IA escalonada, límites de NPC activos, respetar G.detail; sin enemigos que aparezcan a la vista; todo lo que se agrega tiene colisión y no flota.
+- Pruebas honestas con Playwright (Chromium ya instalado): construir a una ruta propia, correr el bucle real, capturas, métricas, regresión de arranque de todos los niveles y recorridos completos; no afirmar nada no ejecutado.
+- Entregas: HTML completo, resumen en español rioplatense, commit con mensaje claro y push a la rama de trabajo.
+- Ahorro de uso: lecturas puntuales (grep), pruebas focalizadas, agentes con archivos propios y sin análisis duplicados; cuando el límite apremia, entregar lo que funciona y listar lo pendiente.
+
+## 2. CÓMO REPARTIR TRABAJO
+- Máximo 5 agentes en paralelo, cada uno con archivos propios (propiedad exclusiva) y una SPEC compartida con coordenadas, interfaces (nombres exactos de funciones) y reglas.
+- Orden: primero assets independientes (mapa, personajes, vehículos, aviación) → luego misión/integración → al final QA y limpieza.
+- El coordinador integra, corre la regresión y hace commit; los agentes no hacen commit.
+
+## 3. AGENTES
+### A. ARQUITECTO / INTEGRADOR
+Analiza dependencias, integra módulos, resuelve choques de nombres, corrige errores de JS, mantiene el arranque de todos los niveles. Entrega: build limpio + regresión.
+### B. ENTORNOS Y MAPAS (estilo Brad Allen / Jeff Heath)
+Construye mapas por sectores fusionados con edificios con puertas, ventanas, techos e interiores caminables (wall/slab/stair con colisión igual a lo visual), K-landmarks, rutas alternativas, coberturas, clima (sky/weather), floor para alturas. Mide vértices y llamadas de dibujo por nivel de detalle.
+### C. PERSONAJES Y ARMAS (estilo Steve Karnes)
+Uniformes por facción y rol con silueta propia, equipo pegado a las articulaciones, variación anti-clones, cascos y gorras, banderas en canvas con ondulación por shader. Costo de vértices por soldado.
+### D. VEHÍCULOS Y BLINDADOS
+Modelos cacheados por clase, IA vehicular por clases (velocidad, aceleración, giro, blindaje, detección), estados (avance, combate, maniobra, repliegue, averiado), evitación de obstáculos, servidores de piezas animados que abandonan el arma y combaten.
+### E. AVIACIÓN Y CRIATURAS
+Aviones con superficies animadas y daño; criaturas voladoras con alas articuladas, jinete, pasadas de ataque anunciadas, aterrizaje/desmonte, equilibrio aire-tierra, golpes de bala por zonas.
+### F. IA DE COMBATE (Field / Glave / Hammon)
+Percepción por vista y oído (noise33), memoria, estados estables, coberturas puntuadas y reservadas, escuadras con fuego y maniobra, perfiles, granadas con criterio; aliados en formación abierta, independientes del jugador.
+### G. DISEÑO DE MISIÓN
+Fases con checkpoints, objetivos con marcador en brújula, secundarios con consecuencias, oleadas con ritmo y aviso, cinemáticas cortas que no quitan el control, final con estadísticas; integración al menú (v26), LX (v16) y arma en primera persona (v25).
+### H. PRIMERA PERSONA
+Manos con dedos, armas con detalle, cerrojo, recargas, retroceso con resorte, vainas, fogonazo; funciona en todos los niveles.
+### I. SONIDO
+Selección y compresión de muestras (MP3 mono, bucles con fundido cruzado), samp34 con variación, distancia y límite de voces, motores posicionales, pasos por superficie, ambiente por nivel; descartar duplicados.
+### J. HUD Y CONTROLES ANDROID
+Diseño de doble pulgar, mira, cámara por arrastre con curva, multitáctil robusto, ajustes guardados, editor de botones.
+### K. QA Y LIMPIEZA
+Busca congelados, flotantes, atascos, disparos a través de paredes, errores; regresiones completas; elimina código muerto solo con verificación (grep de referencias + build + pruebas).
+
+## 4. PENDIENTES CONOCIDOS (v39)
+- Capítulo II «Martillo de Nieve»: 7 actos escritos pero sin recorrido completo; los vehículos FRUST del Acto III (tractor, cañón autopropulsado, camión, observación) existen como modelos pero la misión todavía no los coloca; solo hay 3 obuses en el Acto I.
+- Limpieza del menú viejo y del código sin uso: sin hacer (el menú nuevo reutiliza selects del viejo: lvsel, go, difficulty).
+- Mapa de Varnholt pesado en calidad Media (~1 M vértices): reducir árboles/ventanas si hace falta.
