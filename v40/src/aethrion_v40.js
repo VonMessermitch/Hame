@@ -25,8 +25,8 @@
   const U = AETH.util;
   const V = (AETH.v40 = {});
 
-  V.version = '1.0.0';
-  V.build = 'v40/v1';
+  V.version = '1.1.0';
+  V.build = 'v40/v1.1';
   V.title = 'Sombras sobre el Nilo — Edición Aethrion v40';
 
   /* =======================================================================
@@ -104,7 +104,12 @@
       const desc = i < CAST.length ? CAST[i] : generatedDescription(world.rng, i);
       let b;
       try {
-        b = world.spawn({ description: desc });
+        // id estable: misma semilla → misma personalidad en cada partida.
+        b = world.spawn({
+          description: desc,
+          id: 'teatro_' + (opts.seed || 77192) + '_' + i,
+          seed: U.hashString('teatro|' + (opts.seed || 77192) + '|' + i)
+        });
       } catch (e) {
         b = world.spawn({ name: 'Habitante ' + (i + 1), age: 20 + Math.floor(world.rng.next() * 40), profession: 'campesino' });
       }
@@ -520,6 +525,7 @@
       savedAt: new Date().toISOString(),
       world: this.world.save(),
       battle: this.battle.save(),
+      soldiers: V.soldiers && V.soldiers.snapshot ? V.soldiers.snapshot() : null,
       created: this.created
     });
   };
@@ -535,6 +541,7 @@
       b.motion = { active: false };
     }
     if (data.battle) this.battle.load(data.battle);
+    if (data.soldiers && V.soldiers && V.soldiers.restore) V.soldiers.restore(data.soldiers);
     this.created = data.created || [];
     return this;
   };
@@ -623,6 +630,7 @@
         <button data-tab="resumen" class="on" type="button">Resumen</button>
         <button data-tab="crear" type="button">Crear NPC</button>
         <button data-tab="hab" type="button">Habitantes</button>
+        <button data-tab="soldados" type="button">Soldados</button>
         <button data-tab="batalla" type="button">Batalla</button>
         <button data-tab="datos" type="button">Datos</button>
         <button data-tab="ayuda" type="button">Ayuda</button>
@@ -641,12 +649,14 @@
           <div id="a40-created" style="margin-top:10px"></div>
         </div>
         <div class="a40-tab" data-tab="hab" id="a40-t-hab"></div>
+        <div class="a40-tab" data-tab="soldados" id="a40-t-soldados"></div>
         <div class="a40-tab" data-tab="batalla" id="a40-t-batalla"></div>
         <div class="a40-tab" data-tab="datos" id="a40-t-datos"></div>
         <div class="a40-tab" data-tab="ayuda">
           <div class="a40-card">
             <h4>Qué añade la edición Aethrion (v40)</h4>
             <p>El juego de la v39 se conserva intacto: menú, capítulos I–VI, armas, vehículos, jefes y opciones gráficas funcionan igual. Encima se añade un <b>teatro de operaciones cognitivo</b> con población autónoma, creación de NPC por descripción, inspector, batalla por sectores y guardado JSON.</p>
+            <p style="margin-top:8px"><b>Soldados con cerebro:</b> la infantería de los capítulos (enemigos, tu escuadra y las guarniciones) nace con un cerebro Aethrion. Ábrelo en la pestaña <b>Soldados</b>: verás su miedo, su moral y las dudas que el miedo provoca en combate.</p>
             <h4 style="margin-top:12px">Controles</h4>
             <div class="a40-kv"><span>Pulsar ⬢ AETHRION (arriba izquierda)</span><span>abrir / cerrar el panel</span></div>
             <div class="a40-kv"><span>K</span><span>abrir / cerrar el panel</span></div>
@@ -719,6 +729,14 @@
       if (a === 'tick10') {
         for (let i = 0; i < 10; i++) session.step(0.25);
         return refreshAll();
+      }
+      if (a === 'soldiers-toggle' && V.soldiers) {
+        V.soldiers.setEnabled(!V.soldiers.enabled);
+        return refreshSoldados();
+      }
+      if (a === 'soldiers-pulse' && V.soldiers) {
+        V.soldiers.pulse(V.soldiers.PULSE_SECONDS);
+        return refreshSoldados();
       }
     }
 
@@ -918,9 +936,58 @@
         '</div>';
     }
 
+    function pct(v) {
+      return Math.round(U.clamp(v, 0, 1) * 100);
+    }
+
+    function refreshSoldados() {
+      const host = el('a40-t-soldados');
+      if (!host) return;
+      if (!V.soldiers) {
+        host.innerHTML = '<p class="a40-note">La capa de soldados no está cargada en esta build.</p>';
+        return;
+      }
+      const S = V.soldiers;
+      const sum = S.summary();
+      const levels = S.byLevel();
+      const rows = Object.keys(levels).sort((a, b) => Number(a) - Number(b)).map((k) => {
+        const o = levels[k];
+        const label = 'Nivel ' + (k === '0' ? '—' : k);
+        return '<div class="a40-kv"><span>' + esc(label) + '</span><span>' + o.alive + '/' + o.total + ' vivos · miedo ' + pct(o.fear) + '% · moral ' + pct(o.morale) + '%</span></div>' + bar(o.fear, o.fear > 0.6);
+      }).join('') || '<p class="a40-note">Aún no hay soldados enganchados. Entra en un capítulo: cada infante recibe su cerebro al nacer.</p>';
+      const list = S.list({ limit: 14 }).map((u) =>
+        '<div class="a40-row"><span>' + esc(u.name) + ' <small>· ' + esc(u.side === 'ally' ? 'aliado' : 'enemigo') + ' · nivel ' + u.level + (u.wounded ? ' · herido' : '') + '</small></span><small>miedo ' + pct(u.fear) + '% · moral ' + pct(u.morale) + '%' + (u.hesitations ? ' · ' + u.hesitations + ' dudas' : '') + '</small></div>' +
+        (u.hesitations ? '' : '')
+      ).join('') || '<p class="a40-note">Sin soldados vivos registrados.</p>';
+      const detail = S.list({ limit: 1 })[0];
+      const dossier = detail
+        ? '<div class="a40-card"><h4>' + esc(detail.name) + ' <span class="a40-pill">' + esc(detail.profession) + '</span></h4>' +
+          '<div class="a40-kv"><span>Edad / origen</span><span>' + detail.age + ' · ' + esc(detail.origin) + '</span></div>' +
+          '<div class="a40-kv"><span>Bando / nivel</span><span>' + esc(detail.side === 'ally' ? 'aliado' : 'enemigo') + ' · ' + detail.level + '</span></div>' +
+          '<div class="a40-kv"><span>Miedo</span><span>' + pct(detail.fear) + '%</span></div>' + bar(detail.fear, true) +
+          '<div class="a40-kv"><span>Moral</span><span>' + pct(detail.morale) + '%</span></div>' + bar(detail.morale, false) +
+          '<div class="a40-kv"><span>Disciplina / agresión</span><span>' + pct(detail.discipline) + '% / ' + pct(detail.aggression) + '%</span></div>' +
+          '<div class="a40-kv"><span>Dudas en combate</span><span>' + detail.hesitations + '</span></div></div>'
+        : '';
+      host.innerHTML =
+        '<div class="a40-card"><h4>Cerebro de infantería · ' + sum.alive + ' soldados vivos</h4>' +
+        '<p class="a40-note">Cada soldado que aparece en los capítulos (enemigos, escuadra y guarniciones) recibe un cerebro Aethrion completo: genética, personalidad, emoción, memoria y necesidades. El cerebro no reescribe la IA de la v39; la modula: el miedo produce dudas y hesitaciones, la disciplina las frena, y las bajas cercanas suben el miedo de los compañeros.</p>' +
+        '<div class="a40-grid" style="margin-top:8px">' +
+        card('Registro', [['Enganchados', sum.bound], ['Vivos', sum.alive], ['Pulsos', sum.pulses], ['Bajas', sum.deaths]]) +
+        card('Conducta', [['Hesitaciones', sum.hesitations], ['Shocks colectivos', sum.shocks], ['Error de pulso', sum.errors], ['Coste del pulso', sum.lastPulseMs + ' ms']]) +
+        '</div>' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' +
+        '<button class="pri" data-act="soldiers-toggle" type="button">' + (sum.enabled ? 'Desactivar IA de soldados' : 'Activar IA de soldados') + '</button>' +
+        '<button data-act="soldiers-pulse" type="button">Forzar pulso</button>' +
+        '<span class="a40-note">Módulos enganchados: ' + esc(sum.installed.join(', ') || 'ninguno') + '</span></div></div>' +
+        '<div class="a40-grid" style="margin-top:10px"><div class="a40-card"><h4>Por capítulo</h4>' + rows + '</div>' + dossier + '</div>' +
+        '<div class="a40-card" style="margin-top:10px"><h4>Los más afectados</h4><div class="a40-list">' + list + '</div></div>';
+    }
+
     function refreshAll() {
       refreshResumen();
       refreshHab();
+      refreshSoldados();
       refreshBatalla();
       refreshDatos();
     }
@@ -931,6 +998,7 @@
         session.step(0.25);
         if (panel.classList.contains('on')) {
           if (tab === 'resumen') refreshResumen();
+          else if (tab === 'soldados') refreshSoldados();
           else if (tab === 'batalla') refreshBatalla();
         }
       } catch (e) {
@@ -970,6 +1038,9 @@
       },
       get battle() {
         return session.battle;
+      },
+      get soldiers() {
+        return V.soldiers || null;
       },
       create: (desc, where) => session.create(desc, where),
       spawn: (spec) => session.world.spawn(spec),

@@ -132,9 +132,18 @@
     }
 
     spawn(spec, opts) {
+      const base = Object.assign({ rng: this.rng, lod: 1 }, opts || {});
+      // Un id explícito hace determinista la semilla del cerebro (y por tanto
+      // su personalidad) aunque el individuo se cree desde una descripción.
+      if (spec && (spec.id || spec.seed !== undefined)) {
+        const ov = {};
+        if (spec.id) ov.id = spec.id;
+        if (spec.seed !== undefined) ov.seed = spec.seed;
+        base.overrides = Object.assign(ov, base.overrides || {});
+      }
       const brain = spec && spec.description
-        ? AETH.NPCFactory.createFromDescription(spec.description, Object.assign({ rng: this.rng, lod: 1 }, opts || {}))
-        : AETH.NPCFactory.create(spec, Object.assign({ rng: this.rng, lod: 1 }, opts || {}));
+        ? AETH.NPCFactory.createFromDescription(spec.description, base)
+        : AETH.NPCFactory.create(spec, base);
       const loc = brain.spec.spawnLocation ? this.locationById(brain.spec.spawnLocation) : this.locations[Math.floor(this.rng.next() * this.locations.length)];
       if (loc) {
         const a = this.rng.range(0, Math.PI * 2);

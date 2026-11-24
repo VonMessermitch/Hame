@@ -215,7 +215,11 @@
   /* --------------------------- completar campos --------------------------- */
   F.complete = function (spec) {
     spec = U.clone(spec || {});
-    const rng = new U.RNG(U.hashString(JSON.stringify({ n: spec.name || '', b: spec.background || '', s: spec.seed || 0, t: Date.now() % 100000 })));
+    // Con semilla explícita el individuo es reproducible; sin ella se mezcla el
+    // reloj para que dos NPC genéricos nunca salgan idénticos.
+    const rng = new U.RNG(
+      U.hashString(JSON.stringify({ n: spec.name || '', b: spec.background || '', s: spec.seed === undefined ? 0 : spec.seed, t: spec.seed === undefined ? Date.now() % 100000 : 0 }))
+    );
     const profession = C.professionOf(spec.profession || spec.role || 'campesino');
     spec.profession = profession.id;
 

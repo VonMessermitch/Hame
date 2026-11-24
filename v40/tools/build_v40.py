@@ -21,6 +21,7 @@ OUT_DIR = os.path.join(ROOT, "v40")
 OUT = os.path.join(OUT_DIR, "Sombras_sobre_el_Nilo_1909_v40.html")
 OUT_COPY = os.path.join(ROOT, "Sombras_sobre_el_Nilo_1909_v40.html")
 BRIDGE = os.path.join(OUT_DIR, "src", "aethrion_v40.js")
+SOLDIERS = os.path.join(OUT_DIR, "src", "aethrion_soldiers.js")
 
 # Orden de dependencias del motor (el mismo que iron-v1-demo/index.html,
 # sin src/demo.js —que es el render propio de Iron— y sin el inspector DOM,
@@ -52,6 +53,7 @@ BOOTSTRAP = """
 (function(){
   try {
     if (window.AETH && AETH.v40 && AETH.v40.bootstrap) AETH.v40.bootstrap({ population: 28 });
+    if (window.AETH && AETH.v40 && AETH.v40.soldiers && console) console.log('[Aethrion v40] soldados enganchados:', AETH.v40.soldiers.summary().installed.join(', '));
   } catch (e) {
     if (window.console) console.warn('[Aethrion v40] no se pudo arrancar la capa cognitiva:', e);
   }
@@ -85,8 +87,12 @@ def main():
     if "</script" in bridge.lower():
         sys.exit("la capa v40 contiene </script y rompería el HTML")
     chunks.append("<script>/* v40/src/aethrion_v40.js */\n%s\n</script>" % bridge)
+    soldiers = read(SOLDIERS)
+    if "</script" in soldiers.lower():
+        sys.exit("la capa de soldados contiene </script y rompería el HTML")
+    chunks.append("<script>/* v40/src/aethrion_soldiers.js */\n%s\n</script>" % soldiers)
     chunks.append("<script>%s</script>" % BOOTSTRAP)
-    total_scripts += 2
+    total_scripts += 3
 
     payload = "\n".join(chunks)
     out = base.replace("</body>", "\n<!-- ===== Aethrion v40: cerebro universal + capa de fusión ===== -->\n" + payload + "\n</body>", 1)
@@ -107,7 +113,7 @@ def main():
     print("  salida           : %s" % OUT)
     print("  copia raíz       : %s" % OUT_COPY)
     # Comprobaciones estructurales mínimas.
-    for marker in ("window.AETH", "AETH.v40", "aethrion_v40", "v40 · Edición Aethrion"):
+    for marker in ("window.AETH", "AETH.v40", "aethrion_v40", "aethrion_soldiers", "v40 · Edición Aethrion"):
         if marker not in out:
             sys.exit("falta el marcador esperado: " + marker)
     if out.count("<script") < total_scripts:

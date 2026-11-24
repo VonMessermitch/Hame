@@ -31,6 +31,8 @@ Las versiones v15–v39 **no se han modificado**.
 | GOAP (36 acciones), necesidades, objetivos y aprendizaje | Funcionando |
 | Acontecimientos (bombardeo, feria, rumor, tren) con reacción emocional | Funcionando |
 | Inspector de habitantes (necesidades, emociones, memoria, heridas, objetivo) | Funcionando |
+| **Cerebro Aethrion en cada soldado de infantería de los capítulos** | Funcionando (enemigos, escuadra, oficial y guarniciones) |
+| Influencia cognitiva en el combate (miedo → dudas, disciplina, shock por bajas) | Funcionando |
 | Guardado / importación JSON y guardado en el navegador | Funcionando |
 | Batalla por sectores con escuadras, moral, supresión y refuerzos | Funcionando (simulación táctica) |
 | LOD cognitivo 1/2/3 con presupuesto de CPU | Funcionando |
@@ -39,7 +41,7 @@ Las versiones v15–v39 **no se han modificado**.
 ## Controles de la capa Aethrion
 
 * Botón **⬢ AETHRION** (arriba a la izquierda) o tecla **K**: abrir / cerrar el panel.
-* Pestañas: **Resumen**, **Crear NPC**, **Habitantes**, **Batalla**, **Datos**, **Ayuda**.
+* Pestañas: **Resumen**, **Crear NPC**, **Habitantes**, **Soldados**, **Batalla**, **Datos**, **Ayuda**.
 * El juego de la v39 responde a sus controles habituales (WASD, ratón, táctil) sin cambios.
 
 ### Crear un NPC
@@ -63,9 +65,26 @@ de la personalidad y las emociones de sus integrantes. Las bajas matan cerebros 
 verdad: los supervivientes registran el duelo, cambian de opinión y modifican sus
 decisiones posteriores.
 
+### Soldados con cerebro
+
+Cada infante que aparece en un capítulo recibe un cerebro propio al nacer: los
+enemigos de `spawnE()` (fusileros, custodios, granaderos, orcos escopeteros y
+hacheros, trasgos), la escuadra del jugador, el oficial y las guarniciones (`GAR`).
+Las plagas, magos, mechas y jefes **no** son infantería y quedan fuera.
+
+El cerebro no reescribe la IA de la misión: la modula. Su personalidad fija la
+cadencia y el paso iniciales; su miedo crece con la amenaza cercana; si el miedo
+supera el umbral, el soldado duda antes de disparar (su `cd` sube) y la disciplina
+reduce esa probabilidad. Las bajas cercanas contagian miedo a los compañeros y
+quedan en su memoria. La pestaña **Soldados** muestra el registro por capítulo, el
+miedo y la moral medios, las dudas acumuladas y la ficha del soldado más afectado.
+
 ## Consola
 
 ```js
+AETHRION.soldiers              // capa de infantería (bind, pulse, list, byLevel…)
+AETHRION.soldiers.summary()    // enganchados, vivos, dudas, shocks, coste del pulso
+AETHRION.soldiers.list()       // soldados ordenados por miedo
 AETHRION.world                  // mundo cognitivo (cerebros, lugares, eventos)
 AETHRION.battle                 // batalla por sectores
 AETHRION.create('descripción')  // nuevo NPC por descripción
@@ -78,7 +97,7 @@ AETHRION.AETH                   // motor completo (factory, GOAP, memoria…)
 
 ```bash
 python3 v40/tools/build_v40.py     # v39 + motor Aethrion + capa v40 → HTML
-node v40/tests/v40_tests.js        # 11 pruebas del núcleo (sin navegador)
+node v40/tests/v40_tests.js        # 20 pruebas del núcleo (sin navegador)
 node iron-v1-demo/tests/engine_tests.js   # 20 pruebas del motor
 ```
 
@@ -88,14 +107,29 @@ estén todos los marcadores y bloques.
 
 ## Resultados de las pruebas (última ejecución)
 
-* `v40/tests/v40_tests.js` → **11/11** correctas (teatro, población, descripción,
+* `v40/tests/v40_tests.js` → **20/20** correctas (teatro, población, descripción,
   simulación sin NaN, bombardeo, guardado/carga, batalla con capturas y bajas,
-  duelo en los cerebros, determinismo desde un guardado, rendimiento, modo headless).
+  duelo en los cerebros, determinismo desde un guardado, rendimiento, modo headless,
+  cerebro por soldado, amenaza cercana, shock entre compañeros, enganches reales,
+  guardado del registro, rendimiento de 126 cerebros, modulación de la cadencia
+  `cd`/`ft` y fábricas aliadas de los capítulos IX–XVIII).
 * `iron-v1-demo/tests/engine_tests.js` → **20/20** correctas.
-* Comprobación en navegador: la página carga con título v40, `AETH` y `AETHRION`
-  presentes, 28 cerebros, canvas activo; el panel abre, crea un NPC, la batalla
-  avanza y no hay errores de JavaScript (sólo avisos de WebGL del entorno de prueba).
+* Capítulos posteriores (IX–XVIII): las fábricas propias de aliados reciben cerebro
+  (`mkGar` y con ella `gar9`/`gar10`, `gMk17`, `ally17`, `ally18`, `surv13`, `inf14`
+  y los marineros armados de XV). Las escuadras XVII/XVIII usan `ft` como cadencia;
+  el miedo también las hace dudar. Los jinetes de caballería (CAV) quedan fuera por
+  ser una entidad montada distinta, no infantería.
+* Navegador (Chromium del entorno), capítulos I–VI: los seis cargan su escena, HUD y
+  sin errores de JavaScript. En II–VI se verificó que la infantería nacida por
+  `spawnE()` recibe cerebro, que el miedo sube con el enemigo a 7–10 m, que las bajas
+  se propagan (3 muertes y 2 shocks en 90 fotogramas simulados del capítulo VI) y que
+  la pestaña **Soldados** se renderiza. El capítulo IV registró 6 guarniciones, 3
+  aliados y el oficial con cerebro (11 vivos).
+  Limitación del entorno: al no haber foco de ventana, el navegador rechaza el
+  *pointer lock* y el bucle de render se pausa; los fotogramas del capítulo VI se
+  simularon llamando a `update(1/60)`, no con el reloj real.
 * Rendimiento del núcleo: 60 NPC + batalla, 400 pasos en ~106 ms (**0,27 ms/paso**).
+  Pulso cognitivo de 126 soldados: **<1 ms por pulso** (medido en las pruebas).
 
 ## Estructura
 
@@ -103,6 +137,7 @@ estén todos los marcadores y bloques.
 v40/
   Sombras_sobre_el_Nilo_1909_v40.html   juego fusionado (copia)
   src/aethrion_v40.js                   capa de fusión (teatro, población, batalla, panel)
+  src/aethrion_soldiers.js              cerebro por soldado de infantería y sus enganches
   tools/build_v40.py                    generador reproducible
   tests/v40_tests.js                    pruebas del núcleo
   docs/INFORME_V40.md                   auditoría, alcance y trabajo pendiente
@@ -112,9 +147,13 @@ assets_graphics/                        catálogo de recursos (procedurales)
 
 ## Límites conocidos
 
-* La capa cognitiva corre **en paralelo** al combate FPS; no sustituye a la IA de las
-  misiones de la v39. Integrar los cerebros en cada nivel es trabajo pendiente y está
-  documentado en `docs/INFORME_V40.md`.
+* La capa cognitiva del **teatro** (28 habitantes) corre en paralelo al combate FPS.
+  La **infantería de los niveles** sí tiene cerebro, pero éste modula la IA original
+  (cadencia, dudas, moral); no la sustituye. Reemplazar la patrulla de la v39 por el
+  planificador GOAP completo sigue pendiente y está documentado en el informe.
+* El registro de soldados vivos no se reconstruye al importar un JSON: se restaura el
+  histórico (nombres, miedo, dudas) y el juego vuelve a crear a sus soldados. No se
+  inventa una escena que el motor gráfico no puede serializar.
 * La batalla por sectores es una **simulación táctica** mostrada en el panel, no un
   campo de batalla 3D con cientos de soldados visibles.
 * No hay recursos gráficos externos: todo el arte de la v39/v40 es geometría y
