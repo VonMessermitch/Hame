@@ -19,6 +19,7 @@
     [/ferroviari|maquinista|guardagujas/i, 'ferroviario'],
     [/m[eé]dic|doctor|sanitar|curandera|enfermer/i, 'medico'],
     [/oficial|teniente|capit[aá]n|comandante/i, 'oficial'],
+    [/francotirador|tirador|sniper|explorador|batidor/i, 'soldado'],
     [/soldado|sargento|cabo|soldad|infante|veterano/i, 'soldado'],
     [/comerciant|mercader|tendero|vendedor/i, 'comerciante'],
     [/cazador|trampero|rastreador/i, 'cazador'],
