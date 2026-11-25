@@ -79,14 +79,15 @@ _rmbg = None
 def soporta_duracion_dinamica() -> bool:
     """¿La versión de `spaces` instalada acepta una función en `duration=`?
 
-    Si no, se declara una reserva fija conservadora (60 s) en vez de arriesgar
-    un error de programación en la primera llamada.
+    En vez de leer el código fuente del paquete (frágil: un refactor, un
+    decorador o un módulo compilado lo rompen), se construye una sonda real:
+    se instancia `spaces.GPU(duration=duracion_gpu)` y se comprueba que la
+    reserva quedó guardada como algo *invocable*. Si la versión no admite
+    callables, lanza y se usa la reserva fija de 60 s.
     """
     try:
-        import inspect
-
-        fuente = inspect.getsource(spaces.GPU)
-        return "DynamicDuration" in fuente or "Callable" in fuente
+        sonda = spaces.GPU(duration=duracion_gpu)
+        return callable(getattr(sonda, "duration", None))
     except Exception:
         return False
 

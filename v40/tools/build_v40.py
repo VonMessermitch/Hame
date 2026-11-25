@@ -9,23 +9,37 @@ Toma la v39 SIN MODIFICARLA y le añade, antes de </body>:
 Salida: v40/Sombras_sobre_el_Nilo_1909_v40.html y una copia en la raíz con el
 nombre correlativo de la serie (v16…v39). No modifica la v39 original.
 
-Uso: python3 v40/tools/build_v40.py
+Uso:
+  python3 v40/tools/build_v40.py                 # reproduce la v40
+  python3 v40/tools/build_v40.py --version 41    # v41: + detalle de modelos
 """
 import os
-import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 V39 = os.path.join(ROOT, "Sombras_sobre_el_Nilo_1909_v39.html")
-OUT_DIR = os.path.join(ROOT, "v40")
-OUT = os.path.join(OUT_DIR, "Sombras_sobre_el_Nilo_1909_v40.html")
-OUT_COPY = os.path.join(ROOT, "Sombras_sobre_el_Nilo_1909_v40.html")
-BRIDGE = os.path.join(OUT_DIR, "src", "aethrion_v40.js")
-SOLDIERS = os.path.join(OUT_DIR, "src", "aethrion_soldiers.js")
+
+
+def _version():
+    for i, arg in enumerate(sys.argv[1:]):
+        if arg == "--version":
+            return sys.argv[i + 2]
+        if arg.startswith("--version="):
+            return arg.split("=", 1)[1]
+    return "40"
+
+
+VERSION = _version()
+OUT_DIR = os.path.join(ROOT, "v" + VERSION)
+OUT = os.path.join(OUT_DIR, "Sombras_sobre_el_Nilo_1909_v%s.html" % VERSION)
+OUT_COPY = os.path.join(ROOT, "Sombras_sobre_el_Nilo_1909_v%s.html" % VERSION)
+BRIDGE = os.path.join(ROOT, "v40", "src", "aethrion_v40.js")
+SOLDIERS = os.path.join(ROOT, "v40", "src", "aethrion_soldiers.js")
 GLTF_LOADER = os.path.join(ROOT, "vendor", "GLTFLoader.r128.js")
-ASSETS_GLB = os.path.join(OUT_DIR, "src", "assets_glb.js")
-ASSETS_CATALOGO = os.path.join(OUT_DIR, "data", "assets_catalogo.js")
-VOICES = os.path.join(OUT_DIR, "data", "voces_v40.js")
+ASSETS_GLB = os.path.join(ROOT, "v40", "src", "assets_glb.js")
+ASSETS_CATALOGO = os.path.join(ROOT, "v40", "data", "assets_catalogo.js")
+MODELOS = os.path.join(ROOT, "v40", "src", "modelos_v40.js")
+VOICES = os.path.join(ROOT, "v40", "data", "voces_v40.js")
 VOICE_PLAYER = os.path.join(ROOT, "tools", "voz", "voz40.js")
 
 # Orden de dependencias del motor (el mismo que iron-v1-demo/index.html,
@@ -124,6 +138,14 @@ def main():
         sys.exit("la capa de assets contiene </script y rompería el HTML")
     chunks.append("<script>/* v40/src/assets_glb.js */\n%s\n</script>" % assets)
     total_scripts += 1
+    # Detalle aditivo de los modelos (v41 en adelante). Es opcional: si el
+    # archivo no existe, el build sigue produciendo la v40 de siempre.
+    if VERSION != "40" and os.path.exists(MODELOS):
+        modelos = read(MODELOS)
+        if "</script" in modelos.lower():
+            sys.exit("la capa de modelos contiene </script y rompería el HTML")
+        chunks.append("<script>/* v40/src/modelos_v40.js */\n%s\n</script>" % modelos)
+        total_scripts += 1
     voces = read(VOICES)
     if "</script" in voces.lower():
         sys.exit("el módulo de voces contiene </script y rompería el HTML")
@@ -137,9 +159,10 @@ def main():
 
     payload = "\n".join(chunks)
     out = base.replace("</body>", "\n<!-- ===== Aethrion v40: cerebro universal + capa de fusión ===== -->\n" + payload + "\n</body>", 1)
+    edicion = "Edición Aethrion" if VERSION == "40" else "Edición Aethrion · modelos mejorados"
     out = out.replace(
         "<title>Sombras sobre el Nilo — 1909 (v39 · Motor embebido)</title>",
-        "<title>Sombras sobre el Nilo — 1909 (v40 · Edición Aethrion)</title>",
+        "<title>Sombras sobre el Nilo — 1909 (v%s · %s)</title>" % (VERSION, edicion),
         1,
     )
 
@@ -148,13 +171,20 @@ def main():
         with open(dest, "w", encoding="utf-8") as fh:
             fh.write(out)
 
-    print("v40 generada")
+    print("v%s generada" % VERSION)
     print("  scripts añadidos : %d" % total_scripts)
     print("  tamaño           : %.1f KB" % (len(out.encode("utf-8")) / 1024.0))
     print("  salida           : %s" % OUT)
     print("  copia raíz       : %s" % OUT_COPY)
     # Comprobaciones estructurales mínimas.
-    for marker in ("window.AETH", "AETH.v40", "aethrion_v40", "aethrion_soldiers", "v40 · Edición Aethrion", "VOZ40.engancharTalk", "THREE.GLTFLoader = GLTFLoader", "V.assets = {"):
+    marcadores = [
+        "window.AETH", "AETH.v40", "aethrion_v40", "aethrion_soldiers",
+        "v%s · %s" % (VERSION, edicion), "VOZ40.engancharTalk",
+        "THREE.GLTFLoader = GLTFLoader", "V.assets = {",
+    ]
+    if VERSION != "40":
+        marcadores.append("V.modelos = {")
+    for marker in marcadores:
         if marker not in out:
             sys.exit("falta el marcador esperado: " + marker)
     if out.count("<script") < total_scripts:
