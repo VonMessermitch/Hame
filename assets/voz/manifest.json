@@ -1,0 +1,66 @@
+{
+  "koller_01": {
+    "archivo": "koller_01.mp3",
+    "texto": "¡Vamos, recluta! ¡Detrás de mí! ¡Y no te pierdas, que el campamento no tiene carteles para idiotas!",
+    "voz": "em_alex",
+    "idioma": "es",
+    "segundos": 5.483,
+    "kb": 32.5
+  },
+  "koller_02": {
+    "archivo": "koller_02.mp3",
+    "texto": "Esto es un fusil. No es un bastón, no es una pala y no es un argumento para discutir con tu novia.",
+    "voz": "em_alex",
+    "idioma": "es",
+    "segundos": 5.525,
+    "kb": 32.8
+  },
+  "koller_03": {
+    "archivo": "koller_03.mp3",
+    "texto": "¡Dispará en ráfagas! ¡No estamos tratando de derretir el cañón!",
+    "voz": "em_alex",
+    "idioma": "es",
+    "segundos": 3.456,
+    "kb": 20.5
+  },
+  "brenner_01": {
+    "archivo": "brenner_01.mp3",
+    "texto": "Hace tres días tenía calles, ventanas y ciudadanos. Hoy tiene agujeros, fuego y gente que quiere matarnos.",
+    "voz": "em_santa",
+    "idioma": "es",
+    "segundos": 6.549,
+    "kb": 38.7
+  },
+  "falk_01": {
+    "archivo": "falk_01.mp3",
+    "texto": "Kern, deje de mirar el paisaje. Las cajas no se cargan solas.",
+    "voz": "em_santa",
+    "idioma": "es",
+    "segundos": 3.819,
+    "kb": 22.8
+  },
+  "falk_02": {
+    "archivo": "falk_02.mp3",
+    "texto": "Pienso hacerle un agujero tan grande que tenga que reconsiderar su visita.",
+    "voz": "em_santa",
+    "idioma": "es",
+    "segundos": 4.48,
+    "kb": 26.6
+  },
+  "varsk_01": {
+    "archivo": "varsk_01.mp3",
+    "texto": "¡Soldado! Teniente Varsk, guarnición de las Tres Cruces.",
+    "voz": "em_alex",
+    "idioma": "es",
+    "segundos": 3.072,
+    "kb": 18.3
+  },
+  "civil_01": {
+    "archivo": "civil_01.mp3",
+    "texto": "El viento no lleva nombres. Nosotros sí.",
+    "voz": "ef_dora",
+    "idioma": "es",
+    "segundos": 2.283,
+    "kb": 13.8
+  }
+}

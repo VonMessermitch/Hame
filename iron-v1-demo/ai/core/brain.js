@@ -790,7 +790,8 @@
         return 'charla';
       }
 
-      let line = this.rng.pick(templates[pool] || templates.charla);
+      // Primero la memoria: si no hay nada que su cultura sostenga, plantilla.
+      let line = this.groundedLine(pool) || this.rng.pick(templates[pool] || templates.charla);
       // Marca de educación y oficio: un mecánico habla de máquinas, un médico de heridas.
       if (ctx.context === 'conversar' && this.rng.chance(0.35)) {
         const flavour = {
@@ -818,6 +819,80 @@
       this.dialogueLog.push(out);
       if (this.dialogueLog.length > 25) this.dialogueLog.shift();
       return out;
+    }
+
+    /* Discurso anclado en la memoria con filtro epistémico. Sólo dice lo que
+       su dominio, su alfabetización y su confianza sostendrían; si nada pasa
+       el filtro devuelve null y el habla cae en las plantillas de siempre. */
+    groundedLine(pool) {
+      if (['charla', 'saludo', 'trabajo', 'mercado', 'fe'].indexOf(pool) < 0) return null;
+      const mem = this.memory;
+      if (!mem || !mem.semantic) return null;
+      const domains = (this.culture && this.culture.knowledge && this.culture.knowledge.domains) || {};
+      const literacy = !!(this.culture && this.culture.literacy);
+      const edu = (this.culture && this.culture.education) || 0;
+      const candidates = [];
+      for (const key of Object.keys(mem.semantic)) {
+        const f = mem.semantic[key];
+        if (!f || !f.content) continue;
+        const content = String(f.content).replace(/\s+/g, ' ').trim();
+        if (content.length < 12 || content.length > 180) continue;
+        const field = f.domain || this.domainForFact(key);
+        const level = domains[field] === undefined ? 0.05 : domains[field];
+        // Confianza de la creencia × competencia real en ese dominio.
+        let gate = U.clamp(f.confidence, 0, 1) * (0.5 + 0.5 * level);
+        // Lo que no se aprendió trabajando exige lectura: quien no lee lo retiene a medias.
+        const practical = level >= 0.6;
+        if (!literacy && !practical) gate *= 0.5;
+        if (String(f.source || '').indexOf('rumor') >= 0) gate *= 0.7;
+        if (gate < 0.34) continue;
+        candidates.push({ content: content, gate: gate, source: String(f.source || ''), field: field });
+      }
+      // Eco de un recuerdo fuerte: el miedo y el duelo también hablan.
+      const echoes = (mem.episodic || []).filter(
+        (e) => e.importance > 0.5 && e.confidence > 0.4 && e.summary && String(e.summary).length < 90
+      );
+      for (const e of echoes.slice(-3)) candidates.push({ content: String(e.summary), gate: 0.36, source: 'recuerdo', field: null });
+      if (!candidates.length) return null;
+      let total = 0;
+      for (const c of candidates) total += c.gate;
+      let remaining = total;
+      let chosen = candidates[candidates.length - 1];
+      for (const c of candidates) {
+        if (this.rng.chance(c.gate / remaining)) {
+          chosen = c;
+          break;
+        }
+        remaining -= c.gate;
+      }
+      const raw = chosen.content;
+      const lower = /^(El|La|Los|Las|Un|Una|En|Si|Todo|Toda|Ningún|Sin|Cuando|Hay|Cada|Con)\b/.test(raw)
+        ? raw.charAt(0).toLowerCase() + raw.slice(1)
+        : raw;
+      let line;
+      if (chosen.source === 'recuerdo') {
+        line = 'No me quito de la cabeza que ' + lower;
+      } else if (literacy && edu >= 0.55) {
+        line = this.rng.pick(['Me enseñaron que ' + lower, 'Leí que ' + lower, 'Un manual decía que ' + lower]);
+      } else {
+        line = this.rng.pick(['Dicen que ' + lower, 'Mi padre decía que ' + lower, 'Oí en el cuartel que ' + lower]);
+      }
+      this.stats.groundedLines = (this.stats.groundedLines || 0) + 1;
+      return line;
+    }
+
+    /* Los hechos sembrados a mano no traen dominio: se deduce del tema. */
+    domainForFact(key) {
+      const map = {
+        'fe del hacedor': 'religioso',
+        'san_corvus': 'religioso',
+        'ayuno': 'religioso'
+      };
+      if (map[key]) return map[key];
+      for (const t of ['mecanico', 'ferroviario', 'militar', 'medico', 'comercial', 'agricola', 'naturalista', 'cientifico', 'geografico', 'politico', 'artesanal', 'artistico']) {
+        if (key.indexOf(t) >= 0) return t;
+      }
+      return 'general';
     }
 
     /* ============================ ESTADO / PERSISTENCIA ============================ */
@@ -883,6 +958,7 @@
           language: this.culture.languages,
           religion: this.culture.faith,
           knowledge: { domains: this.culture.knowledge.domains, facts: Object.keys(this.memory.semantic).length },
+          competences: AETH.competence ? AETH.competence.describe(this) : null,
           customs: this.culture.customs
         },
         social: this.social,

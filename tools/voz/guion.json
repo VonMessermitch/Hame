@@ -1,0 +1,61 @@
+{
+  "_nota": "Guion de ejemplo para probar el pipeline. Cada línea se sintetiza a assets/voz/<id>.mp3. El campo 'texto' debe coincidir EXACTAMENTE con el subtítulo del juego para que el enganche automático la encuentre.",
+  "lineas": [
+    {
+      "id": "koller_01",
+      "texto": "¡Vamos, recluta! ¡Detrás de mí! ¡Y no te pierdas, que el campamento no tiene carteles para idiotas!",
+      "voz": "em_alex",
+      "idioma": "es",
+      "velocidad": 1.0
+    },
+    {
+      "id": "koller_02",
+      "texto": "Esto es un fusil. No es un bastón, no es una pala y no es un argumento para discutir con tu novia.",
+      "voz": "em_alex",
+      "idioma": "es",
+      "velocidad": 1.0
+    },
+    {
+      "id": "koller_03",
+      "texto": "¡Dispará en ráfagas! ¡No estamos tratando de derretir el cañón!",
+      "voz": "em_alex",
+      "idioma": "es",
+      "velocidad": 1.05
+    },
+    {
+      "id": "brenner_01",
+      "texto": "Hace tres días tenía calles, ventanas y ciudadanos. Hoy tiene agujeros, fuego y gente que quiere matarnos.",
+      "voz": "em_santa",
+      "idioma": "es",
+      "velocidad": 0.95
+    },
+    {
+      "id": "falk_01",
+      "texto": "Kern, deje de mirar el paisaje. Las cajas no se cargan solas.",
+      "voz": "em_santa",
+      "idioma": "es",
+      "velocidad": 1.0
+    },
+    {
+      "id": "falk_02",
+      "texto": "Pienso hacerle un agujero tan grande que tenga que reconsiderar su visita.",
+      "voz": "em_santa",
+      "idioma": "es",
+      "velocidad": 1.0
+    },
+    {
+      "id": "varsk_01",
+      "texto": "¡Soldado! Teniente Varsk, guarnición de las Tres Cruces.",
+      "voz": "em_alex",
+      "idioma": "es",
+      "velocidad": 1.0
+    },
+    {
+      "id": "civil_01",
+      "texto": "El viento no lleva nombres. Nosotros sí.",
+      "voz": "ef_dora",
+      "idioma": "es",
+      "velocidad": 0.95
+    }
+  ]
+}

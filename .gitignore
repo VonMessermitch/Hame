@@ -1,0 +1,5 @@
+
+# Voces y modelo (regenerables, no se versionan)
+assets/voz/*.wav
+tools/voz/modelo/
+tools/voz/.venv/

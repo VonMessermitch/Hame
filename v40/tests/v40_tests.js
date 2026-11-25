@@ -21,6 +21,7 @@ const ORDER = [
   'ai/cognition/perception.js',
   'ai/personality/personality.js',
   'ai/culture/culture.js',
+  'ai/cognition/competence.js',
   'ai/environment/astronomy.js',
   'ai/environment/climate.js',
   'ai/planning/needs_goals.js',
@@ -408,6 +409,116 @@ ok('20. El miedo también modula la cadencia `ft` de las escuadras XVIII', () =>
   assert(b.hesitations > 0, 'el miedo no produjo ninguna duda');
   assert(u.ft > 0.9, 'la cadencia ft no cambió (' + u.ft + ')');
   return 'miedo ' + b.fear.toFixed(2) + ' · ft 0,20 → ' + u.ft.toFixed(2) + ' · ' + b.hesitations + ' dudas';
+});
+
+ok('21. Competencias: aritmética y geografía con error acotado y deterministas', () => {
+  const CMP = AETH.competence;
+  assert(CMP, 'no se cargó el módulo de competencias');
+  const mercader = session.create('Comerciante de grano, 40 años, culto, de la ribera de Borgñon');
+  const campesino = session.create('Campesino analfabeto, 50 años, de la cordillera');
+  const nM = CMP.numeracy(mercader);
+  const nC = CMP.numeracy(campesino);
+  assert(nM > nC, 'el mercader no calcula mejor: ' + nM.toFixed(2) + ' ≤ ' + nC.toFixed(2));
+  const d1 = CMP.estimateDistance(campesino, 1000, 'prueba');
+  const d2 = CMP.estimateDistance(campesino, 1000, 'prueba');
+  assert(d1.meters === d2.meters, 'la estimación no es determinista');
+  assert(d1.error <= 0.56, 'error fuera de cota: ' + d1.error);
+  // El error de una estimación suelta depende de la semilla; lo comparable
+  // es el error medio y la cota, que salen de la competencia geográfica.
+  const meanError = (b) => {
+    let s = 0;
+    let max = 0;
+    for (let i = 0; i < 60; i++) {
+      const e = CMP.estimateDistance(b, 1000, 'k' + i).error;
+      s += e;
+      if (e > max) max = e;
+    }
+    return { mean: s / 60, max: max };
+  };
+  const eC = meanError(campesino);
+  const eM = meanError(mercader);
+  assert(eM.mean < eC.mean, 'el que sabe geografía no estima mejor en media: ' + eM.mean.toFixed(3) + ' ≥ ' + eC.mean.toFixed(3));
+  assert(eC.max <= 0.56 && eM.max <= 0.56, 'error fuera de cota');
+  const errM = eM.mean;
+  const errC = eC.mean;
+  const viaje = CMP.travelMinutes(campesino, { id: 'viaje', place: ['mercado'] });
+  assert(isFinite(viaje) && viaje > 0 && viaje <= 240, 'coste de viaje inválido: ' + viaje);
+  const st = CMP.estimateStrength(campesino, 40, 0.9);
+  assert(st.lo <= st.mid && st.mid <= st.hi, 'intervalo de fuerza inválido');
+  const rac = CMP.rationDays(campesino, 30, 8);
+  assert(isFinite(rac.days) && rac.days > 0, 'raciones inválidas');
+  return 'numeracidad ' + nM.toFixed(2) + ' vs ' + nC.toFixed(2) + ' · error medio geográfico ' + errM.toFixed(3) + ' vs ' + errC.toFixed(3) + ' · viaje ' + viaje + ' min · ' + rac.days + ' días de ración';
+});
+
+ok('22. Las competencias entran en la planificación: hechos, requisitos y coste', () => {
+  const GO = AETH.goap;
+  const lector = session.create('Profesor de escuela, 45 años, muy culto, de Volskaya');
+  const ciego = session.create('Campesino analfabeto, 52 años, de la cordillera');
+  lector.culture.literacy = true;
+  lector.culture.education = 0.9;
+  lector.culture.knowledge.domains.geografico = 0.9;
+  ciego.culture.literacy = false;
+  ciego.culture.education = 0;
+  ciego.culture.knowledge.domains.geografico = 0.02;
+  ciego.memory.places = {};
+  delete lector._compTravel;
+  delete ciego._compTravel;
+  const fL = GO.factsFor(lector);
+  assert(fL.has('sabe_leer'), 'el alfabetizado no expone sabe_leer');
+  assert(fL.has('sabe_orientarse'), 'el que sabe geografía no expone sabe_orientarse');
+  GO.factsFor(ciego);
+  const viaje = { id: 'viaje_largo', label: 'viaje largo', place: ['mercado'], durationMin: 20, needs: {}, add: [], pre: [], del: [], risk: 0 };
+  const costL = GO.costOf(viaje, lector);
+  const costC = GO.costOf(viaje, ciego);
+  assert(isFinite(costL) && isFinite(costC), 'coste no finito');
+  assert(costC > costL, 'el que no conoce el terreno no paga más: ' + costC + ' ≤ ' + costL);
+  const exigente = { id: 'calculo', label: 'calcular raciones', place: [], needs: {}, add: [], pre: [], del: [], risk: 0, durationMin: 5, requires: { numeracy: 0.9 } };
+  const rC = GO.applicable(exigente, ciego);
+  assert(!rC.ok, 'el analfabeto pasó un requisito de aritmética alta');
+  assert(/calcular/i.test(rC.reason), 'motivo poco claro: ' + rC.reason);
+  return 'coste de viaje ' + costL + ' vs ' + costC + ' min · requisito rechazado: «' + rC.reason + '»';
+});
+
+ok('23. El habla lee la memoria con filtro epistémico', () => {
+  const culto = session.create('Profesor de escuela, 47 años, muy culto, de Volskaya');
+  culto.culture.literacy = true;
+  culto.culture.education = 0.9;
+  culto.memory.addFact('motor de vapor', 'La presión se regula con la válvula de admisión; un silbido agudo indica fuga.', 0.95, 'educación');
+  const lineas = new Set();
+  let ancladas = 0;
+  for (let i = 0; i < 40; i++) {
+    const out = culto.speak({ context: 'conversar' });
+    assert(out && out.text && out.text.length > 3, 'línea vacía');
+    lineas.add(out.text);
+    if (/^(Me enseñaron|Leí|Un manual|Dicen|Mi padre|Oí en el cuartel|No me quito)/.test(out.text)) ancladas++;
+  }
+  assert(ancladas > 0, 'nunca habló desde la memoria');
+  assert(lineas.size >= 4, 'poca variedad: ' + lineas.size);
+  assert(culto.stats.groundedLines > 0, 'no se contabilizaron las líneas ancladas');
+  const cerrado = session.create('Campesino, 30 años, de la cordillera');
+  cerrado.memory.semantic = {};
+  cerrado.memory.episodic = [];
+  const t = cerrado.speak({ context: 'conversar' }).text;
+  assert(!/^(Me enseñaron|Leí|Un manual|No me quito)/.test(t), 'habló de memoria sin tener ninguna: ' + t);
+  return 'culto: ' + ancladas + '/40 ancladas · ' + lineas.size + ' distintas · sin memoria: «' + t + '»';
+});
+
+ok('24. Presupuesto del pulso con 260 cerebros (banco de rendimiento)', () => {
+  globalThis.level = 18;
+  globalThis.playing = true;
+  for (let i = S.units.length; i < 260; i++) {
+    const u = { hp: 100, ft: 0.2, g: { position: { x: (i % 20) * 3, z: Math.floor(i / 20) * 5 } } };
+    S.bind(u, { side: i % 2 ? 'ally' : 'enemy', level: 18, type: 'soldado', late: true });
+  }
+  const n = S.units.length;
+  S.pulse(1);
+  S.pulse(1);
+  const runs = 30;
+  const t = Date.now();
+  for (let i = 0; i < runs; i++) S.pulse(1);
+  const total = Date.now() - t;
+  assert(S.stats.lastPulseMs < 60, 'pulso individual lento: ' + S.stats.lastPulseMs + ' ms');
+  return n + ' cerebros · ' + runs + ' pulsos · media ' + (total / runs).toFixed(2) + ' ms · último ' + S.stats.lastPulseMs + ' ms';
 });
 
 log('\nAethrion v40 — pruebas del núcleo');

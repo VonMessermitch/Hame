@@ -407,6 +407,18 @@
     if (brain.social && brain.social.family && brain.social.family.length) f.add('familia_cerca');
     if (brain.worldWoundedNear) f.add('otro_herido');
     if (brain.location && brain.location.type === 'casa') f.add('en_refugio');
+    // Competencias operativas: no son adorno, son hechos que el planificador usa.
+    if (AETH.competence && brain.culture) {
+      const CMP = AETH.competence;
+      // Se calcula una vez por decisión: el coste de viaje de cada acción lo reutiliza.
+      // Se reutiliza el objeto para no generar basura en cada decisión.
+      const comp = brain._comp || (brain._comp = { numeracy: 0, geography: 0 });
+      const numeracy = (comp.numeracy = CMP.numeracy(brain));
+      const geography = (comp.geography = CMP.geography(brain));
+      if (geography >= 0.45) f.add('sabe_orientarse');
+      if (numeracy >= 0.55) f.add('cuenta_bien');
+      if (brain.culture.literacy) f.add('sabe_leer');
+    }
     if (brain.achievedFacts) {
       const now = brain.clockTime || 0;
       for (const k of Object.keys(brain.achievedFacts)) {
@@ -440,6 +452,18 @@
       const dom = brain.culture.knowledge.domains[req.knowledge.domain] || 0;
       if (dom < req.knowledge.level) return { ok: false, reason: 'no tiene conocimientos de ' + req.knowledge.domain };
     }
+    if (AETH.competence) {
+      const comp = AETH.competence;
+      if (req.numeracy && comp.numeracy(brain) < req.numeracy) {
+        return { ok: false, reason: 'no sabe calcular lo que exige ' + (action.label || action.id) };
+      }
+      if (req.geography) {
+        const g = comp.geography(brain);
+        if (g < req.geography) return { ok: false, reason: 'no conoce el terreno para ' + (action.label || action.id) };
+        const reach = comp.canReach(brain, (action.place || [])[0], null);
+        if (!reach.ok) return { ok: false, reason: reach.reason };
+      }
+    }
     if (req.tool) {
       const has = (brain.inventory || []).some((i) => i.tags && i.tags.indexOf(req.tool) >= 0);
       if (!has) return { ok: false, reason: 'le falta ' + req.tool };
@@ -468,7 +492,9 @@
 
   GO.costOf = function (action, brain) {
     let cost = action.durationMin;
-    if (action.place && action.place.length && (!brain.location || action.place.indexOf(brain.location.type) < 0)) cost += 12;
+    if (action.place && action.place.length && (!brain.location || action.place.indexOf(brain.location.type) < 0)) {
+      cost += AETH.competence ? AETH.competence.travelMinutes(brain, action, brain._comp && brain._comp.geography) : 12;
+    }
     const mods = brain._physMods || (brain.physiology ? brain.physiology.cognitiveModifiers() : null);
     const riskAversion = mods ? mods.riskAversion : 0.3;
     cost += action.risk * 120 * (1 + riskAversion);
