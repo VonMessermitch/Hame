@@ -22,6 +22,9 @@ OUT = os.path.join(OUT_DIR, "Sombras_sobre_el_Nilo_1909_v40.html")
 OUT_COPY = os.path.join(ROOT, "Sombras_sobre_el_Nilo_1909_v40.html")
 BRIDGE = os.path.join(OUT_DIR, "src", "aethrion_v40.js")
 SOLDIERS = os.path.join(OUT_DIR, "src", "aethrion_soldiers.js")
+GLTF_LOADER = os.path.join(ROOT, "vendor", "GLTFLoader.r128.js")
+ASSETS_GLB = os.path.join(OUT_DIR, "src", "assets_glb.js")
+ASSETS_CATALOGO = os.path.join(OUT_DIR, "data", "assets_catalogo.js")
 VOICES = os.path.join(OUT_DIR, "data", "voces_v40.js")
 VOICE_PLAYER = os.path.join(ROOT, "tools", "voz", "voz40.js")
 
@@ -85,6 +88,15 @@ def main():
 
     chunks = []
     total_scripts = 0
+
+    # Cargador glTF (Three r128) para los GLB de TRELLIS.2. Se inyecta antes de
+    # la capa Aethrion; el juego arranca igual si los GLB no existen.
+    gltf = read(GLTF_LOADER)
+    if "</script" in gltf.lower():
+        sys.exit("el GLTFLoader contiene </script y rompería el HTML")
+    chunks.append("<script>/* vendor/GLTFLoader.r128.js — Three.js r128, MIT */\n%s\n</script>" % gltf)
+    total_scripts += 1
+
     for rel in AI_MODULES:
         path = os.path.join(ROOT, "iron-v1-demo", rel)
         src = read(path)
@@ -101,6 +113,17 @@ def main():
     if "</script" in soldiers.lower():
         sys.exit("la capa de soldados contiene </script y rompería el HTML")
     chunks.append("<script>/* v40/src/aethrion_soldiers.js */\n%s\n</script>" % soldiers)
+    if os.path.exists(ASSETS_CATALOGO):
+        catalogo = read(ASSETS_CATALOGO)
+        if "</script" in catalogo.lower():
+            sys.exit("el catálogo de assets contiene </script y rompería el HTML")
+        chunks.append("<script>/* v40/data/assets_catalogo.js */\n%s\n</script>" % catalogo)
+        total_scripts += 1
+    assets = read(ASSETS_GLB)
+    if "</script" in assets.lower():
+        sys.exit("la capa de assets contiene </script y rompería el HTML")
+    chunks.append("<script>/* v40/src/assets_glb.js */\n%s\n</script>" % assets)
+    total_scripts += 1
     voces = read(VOICES)
     if "</script" in voces.lower():
         sys.exit("el módulo de voces contiene </script y rompería el HTML")
@@ -131,7 +154,7 @@ def main():
     print("  salida           : %s" % OUT)
     print("  copia raíz       : %s" % OUT_COPY)
     # Comprobaciones estructurales mínimas.
-    for marker in ("window.AETH", "AETH.v40", "aethrion_v40", "aethrion_soldiers", "v40 · Edición Aethrion", "VOZ40.engancharTalk"):
+    for marker in ("window.AETH", "AETH.v40", "aethrion_v40", "aethrion_soldiers", "v40 · Edición Aethrion", "VOZ40.engancharTalk", "THREE.GLTFLoader = GLTFLoader", "V.assets = {"):
         if marker not in out:
             sys.exit("falta el marcador esperado: " + marker)
     if out.count("<script") < total_scripts:

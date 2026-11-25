@@ -1,0 +1,77 @@
+{
+  "generado_por": "tools/assets/render_assets.js",
+  "fuente": "Sombras_sobre_el_Nilo_1909_v39.html",
+  "nota": "Los renders salen de los generadores procedurales del juego; el GLB lo produce el Space de TRELLIS.2.",
+  "assets": [
+    {
+      "id": "rifle_1909",
+      "nombre": "Fusil de cerrojo 1909",
+      "tipo": "arma",
+      "funcion_procedural": "mkRifle",
+      "render": "assets_graphics/renderes/rifle_1909.png",
+      "glb": "assets_graphics/weapons/rifle_1909.glb",
+      "preset_trellis": "Arma o prop (ligero)",
+      "escala_juego": 2.3,
+      "medidas_procedurales": {
+        "ancho": 0.235,
+        "alto": 2.77,
+        "fondo": 0.32
+      },
+      "triangulos_render": 516,
+      "disponible": false
+    },
+    {
+      "id": "smg_sturm",
+      "nombre": "Subfusil de asalto",
+      "tipo": "arma",
+      "funcion_procedural": "mkSMG",
+      "render": "assets_graphics/renderes/smg_sturm.png",
+      "glb": "assets_graphics/weapons/smg_sturm.glb",
+      "preset_trellis": "Arma o prop (ligero)",
+      "escala_juego": 1.9,
+      "medidas_procedurales": {
+        "ancho": 0.187,
+        "alto": 2.22,
+        "fondo": 0.71
+      },
+      "triangulos_render": 640,
+      "disponible": false
+    },
+    {
+      "id": "mg08_maxim",
+      "nombre": "Ametralladora MG 08",
+      "tipo": "arma",
+      "funcion_procedural": "mkMG08",
+      "render": "assets_graphics/renderes/mg08_maxim.png",
+      "glb": "assets_graphics/weapons/mg08_maxim.glb",
+      "preset_trellis": "Arma o prop (ligero)",
+      "escala_juego": 1.8,
+      "medidas_procedurales": {
+        "ancho": 1.468,
+        "alto": 1.725,
+        "fondo": 2.775
+      },
+      "triangulos_render": 764,
+      "disponible": false
+    },
+    {
+      "id": "muralla_modulo",
+      "nombre": "Módulo de muralla con adarve",
+      "tipo": "arquitectura",
+      "funcion_procedural": "crearModuloMuralla",
+      "render": "assets_graphics/renderes/muralla_modulo.png",
+      "glb": "assets_graphics/buildings/muralla_modulo.glb",
+      "preset_trellis": "Edificio o arquitectura",
+      "escala_juego": 8,
+      "medidas_procedurales": {
+        "ancho": 8.02,
+        "alto": 9.9,
+        "fondo": 5.312
+      },
+      "triangulos_render": 968,
+      "disponible": false
+    }
+  ],
+  "ultima_generacion": "2026-11-25T18:30:10+00:00",
+  "space": "prithivMLmods/TRELLIS.2-Text-to-3D"
+}
