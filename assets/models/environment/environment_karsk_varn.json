@@ -1,0 +1,19 @@
+{
+  "id": "environment_karsk_varn",
+  "name": "Terrenos Karsk y Distrito Varnholt",
+  "category": "environment",
+  "constructor": "buildKarsk17 / buildVarn18",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/environment/environment_karsk_varn.json",
+  "version": "V.GAI.1.0"
+}

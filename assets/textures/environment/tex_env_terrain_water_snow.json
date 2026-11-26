@@ -1,0 +1,20 @@
+{
+  "id": "tex_env_terrain_water_snow",
+  "category": "environment",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#c8d0da",
+    "#465c64",
+    "#8a7e64"
+  ],
+  "pattern": "tex17('r','w') + tex18('f')",
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/environment/tex_env_terrain_water_snow.json",
+  "version": "V.GAI.1.0"
+}

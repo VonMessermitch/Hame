@@ -1,0 +1,25 @@
+{
+  "id": "soldier_veyrn_inf",
+  "name": "Granadero Veyrn Sturmtrupp",
+  "category": "soldiers",
+  "constructor": "veyrn32",
+  "faction": "Veyrn",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "collider": {
+    "hw": 0.45,
+    "hd": 0.45,
+    "h": 1.8
+  },
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/soldiers/soldier_veyrn_inf.json",
+  "version": "V.GAI.1.0"
+}

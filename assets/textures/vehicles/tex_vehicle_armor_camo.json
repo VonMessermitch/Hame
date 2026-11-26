@@ -1,0 +1,21 @@
+{
+  "id": "tex_vehicle_armor_camo",
+  "category": "vehicles",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#4a5042",
+    "#2e322a",
+    "#a89878"
+  ],
+  "pattern": "riveted_armor_plate",
+  "levels": [
+    15,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/vehicles/tex_vehicle_armor_camo.json",
+  "version": "V.GAI.1.0"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "tex_door_steel_wood_glass",
+  "category": "doors",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#3e4440",
+    "#5e432c",
+    "#9ec6d8"
+  ],
+  "pattern": "riveted_steel_and_oak",
+  "levels": [
+    11,
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/doors/tex_door_steel_wood_glass.json",
+  "version": "V.GAI.1.0"
+}

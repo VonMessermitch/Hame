@@ -1,0 +1,30 @@
+{
+  "id": "weapon_mg08_maxim",
+  "name": "Ametralladora pesada MG 08",
+  "category": "weapons",
+  "constructor": "mkMG08",
+  "previewRender": "assets_graphics/renderes/mg08_maxim.png",
+  "glbPlanned": "assets_graphics/weapons/mg08_maxim.glb",
+  "scale": [
+    1.8,
+    1.8,
+    1.8
+  ],
+  "bounds": {
+    "w": 1.468,
+    "h": 1.725,
+    "d": 2.775
+  },
+  "levels": [
+    4,
+    7,
+    11,
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/weapons/weapon_mg08_maxim.json",
+  "version": "V.GAI.1.0"
+}

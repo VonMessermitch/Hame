@@ -1,0 +1,22 @@
+{
+  "id": "building_house_interior",
+  "name": "Edificio residencial transitable (interior activo)",
+  "category": "buildings",
+  "constructor": "house17 / house18",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "hasInterior": true,
+  "levels": [
+    11,
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/buildings/building_house_interior.json",
+  "version": "V.GAI.1.0"
+}

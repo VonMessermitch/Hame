@@ -1,0 +1,21 @@
+{
+  "id": "tex_uniform_wool",
+  "category": "uniforms",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#58625a",
+    "#3e463e",
+    "#c9a45a"
+  ],
+  "pattern": "wool_twill",
+  "levels": [
+    1,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/uniforms/tex_uniform_wool.json",
+  "version": "V.GAI.1.0"
+}

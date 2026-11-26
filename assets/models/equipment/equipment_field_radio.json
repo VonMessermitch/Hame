@@ -1,0 +1,20 @@
+{
+  "id": "equipment_field_radio",
+  "name": "Equipo de radio de campaña y telégrafo",
+  "category": "equipment",
+  "constructor": "radio32 / pole18",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "levels": [
+    5,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/equipment/equipment_field_radio.json",
+  "version": "V.GAI.1.0"
+}

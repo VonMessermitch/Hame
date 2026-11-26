@@ -1,0 +1,25 @@
+{
+  "id": "soldier_volskaya_inf",
+  "name": "Fusilero Volskaya",
+  "category": "soldiers",
+  "constructor": "volsk32",
+  "faction": "Volskaya",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "collider": {
+    "hw": 0.45,
+    "hd": 0.45,
+    "h": 1.8
+  },
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/soldiers/soldier_volskaya_inf.json",
+  "version": "V.GAI.1.0"
+}

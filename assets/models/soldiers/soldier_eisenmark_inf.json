@@ -1,0 +1,37 @@
+{
+  "id": "soldier_eisenmark_inf",
+  "name": "Soldado Eisenmark Hechtgrau",
+  "category": "soldiers",
+  "constructor": "npc11('sol')",
+  "faction": "Eisenmark",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "collider": {
+    "hw": 0.45,
+    "hd": 0.45,
+    "h": 1.8
+  },
+  "levels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "path": "assets/models/soldiers/soldier_eisenmark_inf.json",
+  "version": "V.GAI.1.0"
+}

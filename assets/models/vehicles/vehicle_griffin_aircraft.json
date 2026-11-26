@@ -1,0 +1,22 @@
+{
+  "id": "vehicle_griffin_aircraft",
+  "name": "Biplano / Hidroavión Griffin",
+  "category": "vehicles",
+  "constructor": "AIR38 / air15",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "audioFlyby": "aircraft_flyby",
+  "audioEngine": "aircraft_engine",
+  "levels": [
+    15,
+    16,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/vehicles/vehicle_griffin_aircraft.json",
+  "version": "V.GAI.1.0"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "tex_building_concrete_brick",
+  "category": "buildings",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#8a8780",
+    "#8e4632",
+    "#b9ae96"
+  ],
+  "pattern": "tex17/tex18('b')",
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/buildings/tex_building_concrete_brick.json",
+  "version": "V.GAI.1.0"
+}

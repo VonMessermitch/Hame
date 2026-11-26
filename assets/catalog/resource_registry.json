@@ -1,0 +1,209 @@
+{
+  "version": "V.GAI.1.0",
+  "summary": {
+    "levels": 20,
+    "models": 21,
+    "textures": 10,
+    "audioClips": 53,
+    "doorFamilies": 3
+  },
+  "levels": [
+    {
+      "level": 1,
+      "code": "I",
+      "title": "La Grieta de Tebas",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 2,
+      "code": "II",
+      "title": "La Trinchera + Jefe",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 3,
+      "code": "III",
+      "title": "Mazmorra de Stalingrado",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 4,
+      "code": "IV",
+      "title": "Puerto Oriental (MG 08)",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 5,
+      "code": "V",
+      "title": "La Casa Pávlov",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 6,
+      "code": "VI",
+      "title": "La Encrucijada",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 7,
+      "code": "VII",
+      "title": "Las Dos Orillas",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 8,
+      "code": "VIII",
+      "title": "Estación Ferroviaria",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 9,
+      "code": "IX",
+      "title": "El Puente",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 10,
+      "code": "X",
+      "title": "La Ruptura del Norte",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 11,
+      "code": "XI",
+      "title": "Corazón de la Ciudad",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 12,
+      "code": "XII",
+      "title": "El Bastión Central",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 13,
+      "code": "XIII",
+      "title": "Muralla Norte / Tren Blindado",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 14,
+      "code": "XIV",
+      "title": "Ciudadela / Ofensiva Final",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 15,
+      "code": "XV",
+      "title": "Fiordo Kaltfjord",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 16,
+      "code": "XVI",
+      "title": "Aeródromo Taikin",
+      "faction": "Eisenmark"
+    },
+    {
+      "level": 17,
+      "code": "XVII",
+      "title": "Golfo de Hierro (Karsk)",
+      "faction": "Volskaya"
+    },
+    {
+      "level": 18,
+      "code": "XVIII",
+      "title": "Martillo de Nieve (Varnholt)",
+      "faction": "Volskaya"
+    },
+    {
+      "level": 19,
+      "code": "XIX",
+      "title": "Operación Rompeolas (Golfo de Hierro)",
+      "faction": "Veyrn"
+    },
+    {
+      "level": 20,
+      "code": "XX",
+      "title": "Bastión de Hierro (Martillo de Nieve)",
+      "faction": "Veyrn"
+    }
+  ],
+  "modelsByCategory": {
+    "soldiers": [
+      "soldier_eisenmark_inf",
+      "soldier_volskaya_inf",
+      "soldier_veyrn_inf"
+    ],
+    "weapons": [
+      "weapon_rifle_1909",
+      "weapon_smg_sturm",
+      "weapon_mg08_maxim"
+    ],
+    "helmets": [
+      "helmet_stahlhelm_veyrn",
+      "helmet_adrian_volskaya"
+    ],
+    "uniforms": [
+      "uniform_hechtgrau_1909",
+      "uniform_veyrn_winter"
+    ],
+    "buildings": [
+      "building_muralla_modulo",
+      "building_casemate_karsk",
+      "building_house_interior"
+    ],
+    "doors": [
+      "door_steel_bunker",
+      "door_wood_panel",
+      "door_wood_glass"
+    ],
+    "vehicles": [
+      "vehicle_tank_aethrion",
+      "vehicle_griffin_aircraft"
+    ],
+    "props": [
+      "prop_interior_pack"
+    ],
+    "equipment": [
+      "equipment_field_radio"
+    ],
+    "environment": [
+      "environment_karsk_varn"
+    ]
+  },
+  "texturesByCategory": {
+    "soldiers": [
+      "tex_soldier_skin_cloth"
+    ],
+    "weapons": [
+      "tex_weapon_blued_steel"
+    ],
+    "helmets": [
+      "tex_helmet_feldgrau"
+    ],
+    "uniforms": [
+      "tex_uniform_wool"
+    ],
+    "buildings": [
+      "tex_building_concrete_brick"
+    ],
+    "doors": [
+      "tex_door_steel_wood_glass"
+    ],
+    "vehicles": [
+      "tex_vehicle_armor_camo"
+    ],
+    "props": [
+      "tex_prop_crate_grain"
+    ],
+    "equipment": [
+      "tex_equipment_brass_bakelite"
+    ],
+    "environment": [
+      "tex_env_terrain_water_snow"
+    ]
+  },
+  "audioManifest": "assets/audio/manifest.json",
+  "modelCatalog": "assets/catalog/model_catalog.json"
+}

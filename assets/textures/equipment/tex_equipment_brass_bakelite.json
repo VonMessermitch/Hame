@@ -1,0 +1,21 @@
+{
+  "id": "tex_equipment_brass_bakelite",
+  "category": "equipment",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#c9a45a",
+    "#26201a",
+    "#786238"
+  ],
+  "pattern": "knurled_brass",
+  "levels": [
+    5,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/equipment/tex_equipment_brass_bakelite.json",
+  "version": "V.GAI.1.0"
+}

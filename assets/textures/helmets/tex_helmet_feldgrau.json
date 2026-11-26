@@ -1,0 +1,20 @@
+{
+  "id": "tex_helmet_feldgrau",
+  "category": "helmets",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#4a5244",
+    "#32382e",
+    "#d8e0e8"
+  ],
+  "pattern": "matte_enamel",
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/helmets/tex_helmet_feldgrau.json",
+  "version": "V.GAI.1.0"
+}

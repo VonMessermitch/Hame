@@ -1,0 +1,22 @@
+{
+  "id": "tex_prop_crate_grain",
+  "category": "props",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#6a5236",
+    "#4a3824",
+    "#8a704a"
+  ],
+  "pattern": "wood_planks",
+  "levels": [
+    11,
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/props/tex_prop_crate_grain.json",
+  "version": "V.GAI.1.0"
+}

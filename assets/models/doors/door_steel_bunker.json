@@ -1,0 +1,23 @@
+{
+  "id": "door_steel_bunker",
+  "name": "Puerta Blindada de Acero Remachado",
+  "category": "doors",
+  "constructor": "DOORS_VGAI.create('steel')",
+  "materialType": "steel",
+  "audioOpen": "door_steel_open",
+  "audioClose": "door_steel_close",
+  "bounds": {
+    "w": 1.38,
+    "h": 2.15,
+    "d": 0.14
+  },
+  "levels": [
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/doors/door_steel_bunker.json",
+  "version": "V.GAI.1.0"
+}

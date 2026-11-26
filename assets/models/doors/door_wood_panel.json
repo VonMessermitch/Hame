@@ -1,0 +1,24 @@
+{
+  "id": "door_wood_panel",
+  "name": "Puerta de Madera Reforzada con Tablas y Herrajes",
+  "category": "doors",
+  "constructor": "DOORS_VGAI.create('wood')",
+  "materialType": "wood",
+  "audioOpen": "door_wood_open",
+  "audioClose": "door_wood_close",
+  "bounds": {
+    "w": 1.28,
+    "h": 2.18,
+    "d": 0.1
+  },
+  "levels": [
+    11,
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/doors/door_wood_panel.json",
+  "version": "V.GAI.1.0"
+}

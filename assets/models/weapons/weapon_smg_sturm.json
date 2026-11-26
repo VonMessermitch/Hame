@@ -1,0 +1,42 @@
+{
+  "id": "weapon_smg_sturm",
+  "name": "Subfusil Sturm V22 / MP38",
+  "category": "weapons",
+  "constructor": "mkSMG",
+  "previewRender": "assets_graphics/renderes/smg_sturm.png",
+  "glbPlanned": "assets_graphics/weapons/smg_sturm.glb",
+  "scale": [
+    1.9,
+    1.9,
+    1.9
+  ],
+  "bounds": {
+    "w": 0.187,
+    "h": 2.22,
+    "d": 0.71
+  },
+  "levels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/weapons/weapon_smg_sturm.json",
+  "version": "V.GAI.1.0"
+}

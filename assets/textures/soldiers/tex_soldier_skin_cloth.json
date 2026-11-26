@@ -1,0 +1,21 @@
+{
+  "id": "tex_soldier_skin_cloth",
+  "category": "soldiers",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#4a5248",
+    "#3a4038",
+    "#d8b496"
+  ],
+  "pattern": "woven_cloth",
+  "levels": [
+    1,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/soldiers/tex_soldier_skin_cloth.json",
+  "version": "V.GAI.1.0"
+}

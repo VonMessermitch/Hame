@@ -1,0 +1,26 @@
+{
+  "id": "vehicle_tank_aethrion",
+  "name": "Tanque de Asalto Blindado",
+  "category": "vehicles",
+  "constructor": "tank32 / veh18",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "collider": {
+    "hw": 2.1,
+    "hd": 3.4,
+    "h": 2.4
+  },
+  "audioMove": "tank_engine_move",
+  "audioFire": "tank_cannon_fire",
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/vehicles/vehicle_tank_aethrion.json",
+  "version": "V.GAI.1.0"
+}

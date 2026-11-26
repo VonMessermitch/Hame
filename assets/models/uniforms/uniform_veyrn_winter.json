@@ -1,0 +1,20 @@
+{
+  "id": "uniform_veyrn_winter",
+  "name": "Capote invernal Feldgrau Veyrn",
+  "category": "uniforms",
+  "constructor": "veyrn32.coat",
+  "faction": "Veyrn",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/uniforms/uniform_veyrn_winter.json",
+  "version": "V.GAI.1.0"
+}

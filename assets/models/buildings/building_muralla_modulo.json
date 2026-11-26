@@ -1,0 +1,26 @@
+{
+  "id": "building_muralla_modulo",
+  "name": "Módulo de muralla con adarve",
+  "category": "buildings",
+  "constructor": "crearModuloMuralla",
+  "previewRender": "assets_graphics/renderes/muralla_modulo.png",
+  "glbPlanned": "assets_graphics/buildings/muralla_modulo.glb",
+  "scale": [
+    8,
+    8,
+    8
+  ],
+  "bounds": {
+    "w": 8.02,
+    "h": 9.9,
+    "d": 5.312
+  },
+  "levels": [
+    11,
+    13,
+    18,
+    20
+  ],
+  "path": "assets/models/buildings/building_muralla_modulo.json",
+  "version": "V.GAI.1.0"
+}

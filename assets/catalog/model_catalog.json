@@ -1,0 +1,772 @@
+{
+  "version": "V.GAI.1.0",
+  "categories": [
+    "soldiers",
+    "weapons",
+    "helmets",
+    "uniforms",
+    "buildings",
+    "doors",
+    "vehicles",
+    "props",
+    "equipment",
+    "environment"
+  ],
+  "models": [
+    {
+      "id": "soldier_eisenmark_inf",
+      "name": "Soldado Eisenmark Hechtgrau",
+      "category": "soldiers",
+      "constructor": "npc11('sol')",
+      "faction": "Eisenmark",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "collider": {
+        "hw": 0.45,
+        "hd": 0.45,
+        "h": 1.8
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "path": "assets/models/soldiers/soldier_eisenmark_inf.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "soldier_volskaya_inf",
+      "name": "Fusilero Volskaya",
+      "category": "soldiers",
+      "constructor": "volsk32",
+      "faction": "Volskaya",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "collider": {
+        "hw": 0.45,
+        "hd": 0.45,
+        "h": 1.8
+      },
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/soldiers/soldier_volskaya_inf.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "soldier_veyrn_inf",
+      "name": "Granadero Veyrn Sturmtrupp",
+      "category": "soldiers",
+      "constructor": "veyrn32",
+      "faction": "Veyrn",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "collider": {
+        "hw": 0.45,
+        "hd": 0.45,
+        "h": 1.8
+      },
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/soldiers/soldier_veyrn_inf.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "weapon_rifle_1909",
+      "name": "Fusil de cerrojo Mannlicher / V98 1909",
+      "category": "weapons",
+      "constructor": "mkRifle",
+      "previewRender": "assets_graphics/renderes/rifle_1909.png",
+      "glbPlanned": "assets_graphics/weapons/rifle_1909.glb",
+      "scale": [
+        2.3,
+        2.3,
+        2.3
+      ],
+      "bounds": {
+        "w": 0.235,
+        "h": 2.77,
+        "d": 0.32
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/weapons/weapon_rifle_1909.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "weapon_smg_sturm",
+      "name": "Subfusil Sturm V22 / MP38",
+      "category": "weapons",
+      "constructor": "mkSMG",
+      "previewRender": "assets_graphics/renderes/smg_sturm.png",
+      "glbPlanned": "assets_graphics/weapons/smg_sturm.glb",
+      "scale": [
+        1.9,
+        1.9,
+        1.9
+      ],
+      "bounds": {
+        "w": 0.187,
+        "h": 2.22,
+        "d": 0.71
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/weapons/weapon_smg_sturm.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "weapon_mg08_maxim",
+      "name": "Ametralladora pesada MG 08",
+      "category": "weapons",
+      "constructor": "mkMG08",
+      "previewRender": "assets_graphics/renderes/mg08_maxim.png",
+      "glbPlanned": "assets_graphics/weapons/mg08_maxim.glb",
+      "scale": [
+        1.8,
+        1.8,
+        1.8
+      ],
+      "bounds": {
+        "w": 1.468,
+        "h": 1.725,
+        "d": 2.775
+      },
+      "levels": [
+        4,
+        7,
+        11,
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/weapons/weapon_mg08_maxim.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "helmet_stahlhelm_veyrn",
+      "name": "Casco acero Veyrn M1916",
+      "category": "helmets",
+      "constructor": "veyrn32.helm",
+      "faction": "Veyrn",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/helmets/helmet_stahlhelm_veyrn.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "helmet_adrian_volskaya",
+      "name": "Casco campaña Volskaya",
+      "category": "helmets",
+      "constructor": "volsk32.helm",
+      "faction": "Volskaya",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/helmets/helmet_adrian_volskaya.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "uniform_hechtgrau_1909",
+      "name": "Guerrera Hechtgrau 1909",
+      "category": "uniforms",
+      "constructor": "npc11.torso",
+      "faction": "Eisenmark",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "path": "assets/models/uniforms/uniform_hechtgrau_1909.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "uniform_veyrn_winter",
+      "name": "Capote invernal Feldgrau Veyrn",
+      "category": "uniforms",
+      "constructor": "veyrn32.coat",
+      "faction": "Veyrn",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/uniforms/uniform_veyrn_winter.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "building_muralla_modulo",
+      "name": "Módulo de muralla con adarve",
+      "category": "buildings",
+      "constructor": "crearModuloMuralla",
+      "previewRender": "assets_graphics/renderes/muralla_modulo.png",
+      "glbPlanned": "assets_graphics/buildings/muralla_modulo.glb",
+      "scale": [
+        8,
+        8,
+        8
+      ],
+      "bounds": {
+        "w": 8.02,
+        "h": 9.9,
+        "d": 5.312
+      },
+      "levels": [
+        11,
+        13,
+        18,
+        20
+      ],
+      "path": "assets/models/buildings/building_muralla_modulo.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "building_casemate_karsk",
+      "name": "Casamata costera de hormigón",
+      "category": "buildings",
+      "constructor": "casemate17 / casemate18",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "collider": {
+        "hw": 5.3,
+        "hd": 3.5,
+        "h": 3.2
+      },
+      "levels": [
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/buildings/building_casemate_karsk.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "building_house_interior",
+      "name": "Edificio residencial transitable (interior activo)",
+      "category": "buildings",
+      "constructor": "house17 / house18",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "hasInterior": true,
+      "levels": [
+        11,
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/buildings/building_house_interior.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "door_steel_bunker",
+      "name": "Puerta Blindada de Acero Remachado",
+      "category": "doors",
+      "constructor": "DOORS_VGAI.create('steel')",
+      "materialType": "steel",
+      "audioOpen": "door_steel_open",
+      "audioClose": "door_steel_close",
+      "bounds": {
+        "w": 1.38,
+        "h": 2.15,
+        "d": 0.14
+      },
+      "levels": [
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/doors/door_steel_bunker.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "door_wood_panel",
+      "name": "Puerta de Madera Reforzada con Tablas y Herrajes",
+      "category": "doors",
+      "constructor": "DOORS_VGAI.create('wood')",
+      "materialType": "wood",
+      "audioOpen": "door_wood_open",
+      "audioClose": "door_wood_close",
+      "bounds": {
+        "w": 1.28,
+        "h": 2.18,
+        "d": 0.1
+      },
+      "levels": [
+        11,
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/doors/door_wood_panel.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "door_wood_glass",
+      "name": "Puerta de Madera con Ventanales Translúcidos",
+      "category": "doors",
+      "constructor": "DOORS_VGAI.create('wood_glass')",
+      "materialType": "wood_glass",
+      "audioOpen": "door_glass_open",
+      "audioClose": "door_glass_close",
+      "bounds": {
+        "w": 1.32,
+        "h": 2.22,
+        "d": 0.1
+      },
+      "levels": [
+        11,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/doors/door_wood_glass.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "vehicle_tank_aethrion",
+      "name": "Tanque de Asalto Blindado",
+      "category": "vehicles",
+      "constructor": "tank32 / veh18",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "collider": {
+        "hw": 2.1,
+        "hd": 3.4,
+        "h": 2.4
+      },
+      "audioMove": "tank_engine_move",
+      "audioFire": "tank_cannon_fire",
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/vehicles/vehicle_tank_aethrion.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "vehicle_griffin_aircraft",
+      "name": "Biplano / Hidroavión Griffin",
+      "category": "vehicles",
+      "constructor": "AIR38 / air15",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "audioFlyby": "aircraft_flyby",
+      "audioEngine": "aircraft_engine",
+      "levels": [
+        15,
+        16,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/vehicles/vehicle_griffin_aircraft.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "prop_interior_pack",
+      "name": "Mobiliario interior (cajas, mesas, lámparas, literas)",
+      "category": "props",
+      "constructor": "DOORS_VGAI.populateInterior",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        11,
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/props/prop_interior_pack.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "equipment_field_radio",
+      "name": "Equipo de radio de campaña y telégrafo",
+      "category": "equipment",
+      "constructor": "radio32 / pole18",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        5,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/equipment/equipment_field_radio.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "environment_karsk_varn",
+      "name": "Terrenos Karsk y Distrito Varnholt",
+      "category": "environment",
+      "constructor": "buildKarsk17 / buildVarn18",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/models/environment/environment_karsk_varn.json",
+      "version": "V.GAI.1.0"
+    }
+  ],
+  "textures": [
+    {
+      "id": "tex_soldier_skin_cloth",
+      "category": "soldiers",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#4a5248",
+        "#3a4038",
+        "#d8b496"
+      ],
+      "pattern": "woven_cloth",
+      "levels": [
+        1,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/soldiers/tex_soldier_skin_cloth.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_weapon_blued_steel",
+      "category": "weapons",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#2a2e32",
+        "#4e545c",
+        "#6a4424"
+      ],
+      "pattern": "brushed_gunmetal",
+      "levels": [
+        1,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/weapons/tex_weapon_blued_steel.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_helmet_feldgrau",
+      "category": "helmets",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#4a5244",
+        "#32382e",
+        "#d8e0e8"
+      ],
+      "pattern": "matte_enamel",
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/helmets/tex_helmet_feldgrau.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_uniform_wool",
+      "category": "uniforms",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#58625a",
+        "#3e463e",
+        "#c9a45a"
+      ],
+      "pattern": "wool_twill",
+      "levels": [
+        1,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/uniforms/tex_uniform_wool.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_building_concrete_brick",
+      "category": "buildings",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#8a8780",
+        "#8e4632",
+        "#b9ae96"
+      ],
+      "pattern": "tex17/tex18('b')",
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/buildings/tex_building_concrete_brick.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_door_steel_wood_glass",
+      "category": "doors",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#3e4440",
+        "#5e432c",
+        "#9ec6d8"
+      ],
+      "pattern": "riveted_steel_and_oak",
+      "levels": [
+        11,
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/doors/tex_door_steel_wood_glass.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_vehicle_armor_camo",
+      "category": "vehicles",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#4a5042",
+        "#2e322a",
+        "#a89878"
+      ],
+      "pattern": "riveted_armor_plate",
+      "levels": [
+        15,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/vehicles/tex_vehicle_armor_camo.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_prop_crate_grain",
+      "category": "props",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#6a5236",
+        "#4a3824",
+        "#8a704a"
+      ],
+      "pattern": "wood_planks",
+      "levels": [
+        11,
+        13,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/props/tex_prop_crate_grain.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_equipment_brass_bakelite",
+      "category": "equipment",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#c9a45a",
+        "#26201a",
+        "#786238"
+      ],
+      "pattern": "knurled_brass",
+      "levels": [
+        5,
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/equipment/tex_equipment_brass_bakelite.json",
+      "version": "V.GAI.1.0"
+    },
+    {
+      "id": "tex_env_terrain_water_snow",
+      "category": "environment",
+      "width": 128,
+      "height": 128,
+      "palette": [
+        "#c8d0da",
+        "#465c64",
+        "#8a7e64"
+      ],
+      "pattern": "tex17('r','w') + tex18('f')",
+      "levels": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "path": "assets/textures/environment/tex_env_terrain_water_snow.json",
+      "version": "V.GAI.1.0"
+    }
+  ]
+}

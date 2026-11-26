@@ -1,0 +1,20 @@
+{
+  "id": "helmet_stahlhelm_veyrn",
+  "name": "Casco acero Veyrn M1916",
+  "category": "helmets",
+  "constructor": "veyrn32.helm",
+  "faction": "Veyrn",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/helmets/helmet_stahlhelm_veyrn.json",
+  "version": "V.GAI.1.0"
+}

@@ -1,0 +1,1122 @@
+MISIÓN: AUDITORÍA, REPARACIÓN Y MEJORA INTEGRAL DEL FPS
+
+Actúa como un equipo senior multidisciplinario de desarrollo de videojuegos FPS, con agentes especializados trabajando en paralelo y un agente principal coordinando, integrando y verificando todas las modificaciones.
+
+Trabaja directamente sobre el proyecto existente. No reconstruyas el juego desde cero, no elimines contenido funcional, no reemplaces sistemas completos sin necesidad y no inventes soluciones que contradigan la arquitectura actual.
+
+Tu misión es inspeccionar el código, los modelos, las texturas, los sonidos, las misiones, los mapas, las mecánicas y los recursos del repositorio para implementar las siguientes mejoras.
+
+---
+
+1. ORGANIZACIÓN DE AGENTES
+
+Divide el trabajo entre los siguientes especialistas:
+
+AGENTE 1 — INGENIERO PRINCIPAL
+
+- Analizar la arquitectura del juego.
+- Identificar el motor, los sistemas, los archivos, las dependencias y las mecánicas existentes.
+- Coordinar a los demás agentes.
+- Evitar conflictos entre modificaciones.
+- Integrar los cambios en el proyecto principal.
+- Resolver errores de compatibilidad.
+- No permitir que ningún agente sobrescriba sistemas funcionales sin justificación.
+
+AGENTE 2 — IA Y CEREBRO DE NPC
+
+Mejorar el cerebro de los NPC, su percepción, toma de decisiones, combate, comportamiento de escuadra, navegación y supervivencia.
+
+AGENTE 3 — ARQUITECTO Y DISEÑADOR DE NIVELES
+
+Revisar y mejorar los niveles:
+
+- Martillo de Hierro.
+- Las Tres Cruces.
+- Taijin.
+- Nivel del Zepelín.
+
+AGENTE 4 — INGENIERO DE ARMAMENTO Y ANIMACIONES
+
+Trabajar en:
+
+- Fusil antitanque.
+- MG08.
+- Cañón antitanque.
+- Animaciones de recarga, disparo, manipulación y uso en primera persona.
+- Modelos, escala, posición y visibilidad de armas.
+
+AGENTE 5 — INGENIERO DE FÍSICA, COLISIONES Y VEHÍCULOS
+
+- Colisiones entre soldados.
+- Colisiones con puertas, edificios, obstáculos y vehículos.
+- Escala de tanques.
+- Ajustes de física.
+- Evitar atravesamientos, bloqueos y comportamientos anormales.
+
+AGENTE 6 — INGENIERO DE AUDIO
+
+- Inspeccionar todos los recursos sonoros del repositorio.
+- Integrar los nuevos sonidos.
+- Crear un sistema de recursos sonoros reutilizables.
+- Mejorar audio de armas, vehículos, ambiente, impactos, recargas y combate.
+
+AGENTE 7 — ANALISTA DE IRON MOD
+
+Estudiar la versión o proyecto Iron Mod disponible en el repositorio y evaluar qué sistemas, recursos, mecánicas, modelos, animaciones, sonidos, configuraciones o mejoras pueden aprovecharse en este juego.
+
+No copiar indiscriminadamente. Analizar compatibilidad, utilidad, rendimiento y coherencia con el juego actual.
+
+AGENTE 8 — QA Y TESTING
+
+- Revisar todas las misiones.
+- Comprobar errores de scripts.
+- Detectar problemas de navegación.
+- Verificar colisiones.
+- Revisar armas y animaciones.
+- Verificar audio.
+- Comprobar rendimiento.
+- Detectar recursos faltantes.
+- Realizar pruebas de regresión antes y después de las modificaciones.
+
+---
+
+2. REPARACIÓN DE UBICACIÓN Y FUNCIONAMIENTO DE PUERTAS
+
+Inspecciona todas las puertas del juego.
+
+Corrige:
+
+- Puertas mal ubicadas.
+- Puertas flotantes.
+- Puertas que atraviesan paredes.
+- Puertas desalineadas con los marcos.
+- Puertas que no se pueden abrir.
+- Puertas que no se pueden cerrar.
+- Puertas con colisiones incorrectas.
+- Puertas que bloquean el paso cuando deberían estar abiertas.
+- Puertas con animaciones incorrectas.
+- Puertas que se abren hacia el lado equivocado.
+- Puertas que provocan bloqueos de NPC o jugadores.
+- Puertas con pivotes incorrectos.
+
+Verifica que cada puerta tenga:
+
+- Posición correcta.
+- Escala adecuada.
+- Pivote correcto.
+- Colisión funcional.
+- Interacción apropiada.
+- Animación coherente.
+- Apertura y cierre sin atravesamientos.
+- Funcionamiento correcto tanto para el jugador como para los NPC cuando corresponda.
+
+No te limites a moverlas visualmente. Corrige sus transformaciones, pivotes, geometría y colisiones si es necesario.
+
+---
+
+3. MEJORA DEL CEREBRO Y LA INTELIGENCIA DE LOS NPC
+
+Realiza una mejora profunda del sistema de IA existente.
+
+No quiero NPC que solamente corran hacia el enemigo o disparen automáticamente. Quiero soldados que se comporten como combatientes de un FPS bélico.
+
+Percepción
+
+Mejorar:
+
+- Visión frontal y periférica.
+- Detección por distancia.
+- Línea de visión real.
+- Detección de enemigos detrás de obstáculos.
+- Audición de disparos.
+- Reacción a explosiones.
+- Detección de compañeros caídos.
+- Identificación de amenazas.
+- Reacción a disparos cercanos.
+- Memoria de la última posición conocida del enemigo.
+
+Los NPC no deben conocer la posición exacta del enemigo si no lo han detectado.
+
+Comportamiento de combate
+
+Implementar o mejorar:
+
+- Buscar cobertura.
+- Cambiar de cobertura.
+- Disparar desde cobertura.
+- Asomarse de manera prudente.
+- Retroceder cuando estén bajo fuego.
+- Avanzar cuando sea tácticamente razonable.
+- Flanquear.
+- Reagruparse.
+- Suprimir enemigos.
+- Reaccionar a aliados muertos.
+- Evitar avanzar solos hacia fuego concentrado.
+- Buscar posiciones de tiro.
+- Defender posiciones.
+- Proteger al jugador cuando corresponda.
+- Cambiar de arma según la situación.
+- Gestionar munición.
+- Recargar cuando sea seguro.
+- Evitar disparar contra obstáculos.
+- Evitar fuego amigo cuando el sistema lo permita.
+
+Comportamiento de escuadra
+
+Los soldados deben reconocer a sus compañeros y reaccionar a la situación del grupo.
+
+Implementar:
+
+- Separación de unidades.
+- Formación dinámica.
+- Evitar amontonamientos.
+- Seguir al líder.
+- Mantener distancias razonables.
+- Buscar cobertura individual.
+- Coordinar avances.
+- Coordinar fuego.
+- Defender objetivos.
+- Reagruparse después del combate.
+- Evitar que todos usen exactamente la misma cobertura.
+- Evitar que todos disparen o recarguen simultáneamente.
+
+Personalidad y variación
+
+Crear variaciones controladas en:
+
+- Tiempo de reacción.
+- Precisión.
+- Valentía.
+- Agresividad.
+- Distancia de combate.
+- Preferencia por cobertura.
+- Velocidad de avance.
+- Capacidad de coordinación.
+
+No crear ventajas artificiales. Las diferencias deben sentirse naturales y equilibradas.
+
+Navegación
+
+Corregir:
+
+- NPC que se quedan trabados.
+- NPC que caminan contra paredes.
+- NPC que intentan atravesar puertas cerradas.
+- NPC que se amontonan.
+- NPC que se quedan mirando obstáculos.
+- NPC que no saben llegar a sus objetivos.
+- NPC que atraviesan compañeros.
+- NPC que saltan o se desplazan de forma absurda.
+
+Usar navegación, búsqueda de rutas, steering, detección de obstáculos y mecanismos de recuperación según las capacidades del motor.
+
+---
+
+4. RECONSTRUCCIÓN ARQUITECTÓNICA DEL NIVEL MARTILLO DE HIERRO
+
+Realiza un análisis arquitectónico y táctico completo del nivel Martillo de Hierro.
+
+No quiero simplemente agregar edificios aleatorios. Quiero que mejores el diseño del escenario para que parezca una ciudad o zona de combate construida por seres humanos y posteriormente adaptada a la guerra.
+
+Analiza:
+
+- Distribución de calles.
+- Edificios.
+- Alturas.
+- Entradas y salidas.
+- Puertas.
+- Pasillos.
+- Interiores.
+- Patios.
+- Ruinas.
+- Espacios abiertos.
+- Líneas de visión.
+- Zonas de combate.
+- Rutas principales.
+- Rutas alternativas.
+- Posiciones defensivas.
+- Puntos de emboscada.
+- Posiciones de francotiradores.
+- Lugares de reunión de tropas.
+- Cobertura para infantería.
+- Ubicación de vehículos.
+- Densidad de obstáculos.
+- Distribución de cajas y suministros.
+
+Mejoras arquitectónicas
+
+- Corregir edificios mal colocados.
+- Mejorar fachadas y proporciones.
+- Mejorar calles y callejones.
+- Mejorar interiores.
+- Agregar puertas funcionales donde correspondan.
+- Corregir ventanas y aperturas.
+- Evitar edificios sin propósito jugable.
+- Crear rutas de combate más naturales.
+- Agregar rutas alternativas cuando sean necesarias.
+- Crear zonas de combate con diferentes distancias de enfrentamiento.
+- Evitar espacios excesivamente vacíos.
+- Evitar zonas excesivamente congestionadas.
+- Agregar elementos de ambientación urbana militar.
+
+Cobertura
+
+En sectores vacíos donde sea prudente, agregar:
+
+- Sacos terreros.
+- Cajas de munición.
+- Barriles.
+- Muebles.
+- Escombros.
+- Carretas.
+- Madera.
+- Barricadas.
+- Muros destruidos.
+- Obstáculos.
+- Elementos de defensa improvisados.
+
+Cada objeto debe tener sentido arquitectónico, histórico y táctico.
+
+No llenar el mapa de objetos indiscriminadamente. Mantener una distribución orgánica y optimizada.
+
+---
+
+5. MEJORA DE LA LÍNEA DEFENSIVA DE LAS TRES CRUCES
+
+Inspecciona todo el nivel Las Tres Cruces y mejora su línea defensiva.
+
+Quiero una posición militar defensiva más creíble, organizada y jugable.
+
+Analiza:
+
+- Trincheras.
+- Posiciones de tiradores.
+- Puestos de ametralladora.
+- Bunkers.
+- Sacos terreros.
+- Obstáculos.
+- Alambre de púas, si existe en los recursos.
+- Caminos de acceso.
+- Líneas de tiro.
+- Puntos muertos.
+- Flancos.
+- Posiciones de reserva.
+- Rutas de suministro.
+- Posiciones de mando.
+- Cobertura para tropas.
+- Espacios para retroceder.
+- Posiciones de artillería.
+- Posiciones antitanque.
+- Terreno circundante.
+
+Mejora el diseño de las defensas para que parezcan una línea construida por soldados que prepararon una posición durante un conflicto prolongado.
+
+Agregar prudentemente:
+
+- Sacos terreros.
+- Cajas.
+- Barricadas.
+- Madera.
+- Refugios.
+- Bunkers.
+- Trincheras conectadas.
+- Puestos de observación.
+- Posiciones de ametralladoras.
+- Elementos de señalización.
+- Municiones.
+- Elementos de desgaste y destrucción.
+
+No colocar objetos que bloqueen injustificadamente el paso del jugador, las rutas de IA o los objetivos de la misión.
+
+Mejorar el combate para que el jugador pueda:
+
+- Avanzar utilizando cobertura.
+- Identificar posiciones defensivas.
+- Flanquear.
+- Combatir a distintas distancias.
+- Encontrar rutas alternativas.
+- Entender visualmente la línea defensiva.
+
+---
+
+6. AGREGAR CONTENEDOR Y FUSIL ANTITANQUE
+
+Agregar al nivel correspondiente un contenedor o caja militar de transporte que tenga sentido dentro del escenario.
+
+El contenedor debe:
+
+- Tener apariencia militar.
+- Tener dimensiones coherentes.
+- Integrarse arquitectónicamente.
+- Tener una ubicación lógica.
+- No bloquear rutas.
+- Tener colisiones funcionales.
+- Contener o permitir encontrar el nuevo fusil antitanque.
+
+Fusil antitanque
+
+Crear o integrar un fusil antitanque funcional.
+
+Si el repositorio contiene modelos compatibles, inspeccionarlos y reutilizarlos. Si no, crear o adaptar un modelo 3D apropiado utilizando las herramientas disponibles.
+
+El arma debe contar con:
+
+- Modelo tridimensional.
+- Texturas apropiadas.
+- Materiales metálicos y de madera cuando correspondan.
+- Proporciones realistas.
+- Silueta reconocible.
+- Animación de equipamiento.
+- Animación de disparo.
+- Animación de recarga.
+- Animación de manipulación.
+- Sonido de disparo.
+- Sonido de recarga.
+- Efectos visuales.
+- Retroceso.
+- Impactos.
+- Sistema de munición.
+- HUD correspondiente.
+- Compatibilidad con el sistema de armas actual.
+
+Primera persona
+
+El fusil debe estar correctamente modelado y presentado en primera persona.
+
+Revisar:
+
+- Posición de las manos.
+- Posición del arma.
+- Altura.
+- Distancia a la cámara.
+- Ángulo.
+- Escala.
+- Animaciones.
+- Visibilidad del cañón.
+- Retroceso.
+- Movimiento al caminar.
+- Movimiento al correr.
+- Apuntado.
+- Recarga.
+
+No permitir que el arma ocupe una parte exagerada de la pantalla, atraviese la cámara, desaparezca o tenga una posición incorrecta.
+
+Debe sentirse como un arma pesada.
+
+---
+
+7. REDIMENSIONAR LOS TANQUES +18 %
+
+Aumentar el tamaño de los tanques existentes un 18 %.
+
+Aplicar el incremento de escala de manera controlada y comprobar la escala de los vehículos en relación con:
+
+- Soldados.
+- Puertas.
+- Edificios.
+- Calles.
+- Trincheras.
+- Otros vehículos.
+- Armas montadas.
+- Escotillas.
+- Ruedas.
+- Orugas.
+- Torres.
+- Colisiones.
+- Puntos de entrada.
+- Puntos de salida.
+- Cámara.
+
+Objetivo:
+
+Los tanques deben tener una presencia más creíble y una escala visual más cercana a su tamaño real en relación con los soldados.
+
+La escala debe aplicarse correctamente a:
+
+- Modelo.
+- Componentes.
+- Puntos de montaje.
+- Colisiones.
+- Interacción.
+- Cámara cuando corresponda.
+- Posiciones de ocupantes.
+- Animaciones.
+
+No aumentar solamente el tamaño visual del modelo dejando las colisiones o componentes desfasados.
+
+Verificar que el aumento del 18 % no genere problemas de navegación, clipping, deformaciones o incompatibilidad con el terreno.
+
+---
+
+8. COLISIONES ENTRE SOLDADOS
+
+Mejorar profundamente el sistema de colisiones entre soldados y personajes.
+
+Actualmente se deben revisar posibles problemas donde los soldados se atraviesen entre sí, se fusionen, se superpongan o se desplacen de manera anormal.
+
+Implementar o corregir:
+
+- Colisión entre NPC.
+- Colisión entre jugador y NPC.
+- Separación física.
+- Distancia mínima razonable.
+- Evitar superposición de cuerpos.
+- Evitar atravesamientos durante carreras.
+- Evitar atravesamientos durante combate.
+- Evitar atravesamientos durante animaciones.
+- Evitar que los soldados se amontonen en puertas.
+- Evitar que una escuadra se convierta en una sola masa de personajes.
+- Evitar bloqueos permanentes.
+- Evitar que los soldados empujen al jugador de manera exagerada.
+
+La solución debe ser compatible con la IA, la navegación, el sistema de animación y las físicas actuales.
+
+Utilizar un sistema apropiado de colisiones, separación, avoidance o resolución física según el motor.
+
+Priorizar un comportamiento natural, fluido y estable.
+
+---
+
+9. MG08: MODELO, REALISMO Y VISIÓN EN PRIMERA PERSONA
+
+Investiga dentro de los recursos del repositorio si existe un modelo de MG08, Maxim, ametralladora alemana o modelo equivalente.
+
+Si hay modelos disponibles:
+
+- Inspeccionarlos.
+- Evaluar su calidad.
+- Elegir el más apropiado.
+- Adaptarlo.
+- Mejorar su apariencia.
+- Corregir su escala.
+- Corregir sus materiales.
+- Corregir su posición.
+- Corregir sus animaciones.
+
+Si no hay un modelo apropiado, utilizar las herramientas disponibles para crear o adaptar uno, manteniendo compatibilidad con el juego.
+
+Modelado
+
+Mejorar:
+
+- Cañón.
+- Recámara.
+- Caja de mecanismos.
+- Culata.
+- Empuñaduras.
+- Trípode o soporte si corresponde.
+- Elementos de refrigeración.
+- Detalles metálicos.
+- Componentes de madera.
+- Cinta de munición.
+- Mecanismos visibles.
+- Proporciones.
+- Texturas.
+- Materiales.
+
+No exagerar detalles innecesarios que afecten el rendimiento.
+
+Primera persona
+
+Revisar completamente la experiencia de uso de la MG08.
+
+Mejorar:
+
+- Posición del arma.
+- Altura.
+- Ángulo.
+- Distancia de cámara.
+- Visibilidad.
+- Apuntado.
+- Línea de mira.
+- Retroceso.
+- Animaciones.
+- Movimiento al caminar.
+- Movimiento al apuntar.
+- Disparo.
+- Recarga.
+- Manipulación.
+- Efectos de fuego.
+- Humo.
+- Sonido.
+
+La MG08 no debe tapar demasiado la pantalla ni quedar demasiado baja, demasiado alta, demasiado cerca o fuera del campo de visión.
+
+Mejorar el sistema de apuntado y la presentación visual al usarla en primera persona.
+
+Debe sentirse como una ametralladora pesada, con peso, estabilidad, retroceso y manipulación apropiados.
+
+---
+
+10. SERVIDORES DE CAÑÓN ANTITANQUE
+
+Revisar todos los NPC que operan cañones antitanque.
+
+Actualmente corregir el problema de servidores que aparecen sin arma o que llevan el arma de manera incorrecta.
+
+Equipamiento
+
+Los servidores deben:
+
+- Tener el arma correspondiente cuando estén operando.
+- No aparecer con las manos vacías si deberían estar equipados.
+- No aparecer con armas duplicadas.
+- No llevar armas atravesadas en el cuerpo.
+- Llevar el fusil correctamente en la espalda cuando no estén usando el cañón y la misión lo permita.
+- Tener posición correcta de manos.
+- Tener posición correcta del arma.
+- Tener animaciones apropiadas.
+
+Cañón antitanque
+
+Aumentar ligeramente el tamaño del cañón antitanque y revisar su escala respecto de:
+
+- Soldados.
+- Artilleros.
+- Munición.
+- Ruedas.
+- Mecanismos.
+- Terreno.
+- Vehículos.
+
+El cañón debe tener una presencia visual más contundente y una escala coherente.
+
+Funcionamiento
+
+Mejorar:
+
+- Preparación.
+- Apuntado.
+- Disparo.
+- Retroceso.
+- Recarga.
+- Manipulación de proyectiles.
+- Tiempo entre disparos.
+- Efectos.
+- Sonido.
+- Impactos.
+- Movimiento del cañón.
+- Reacción de operadores.
+
+La recarga debe ser más realista, con una secuencia coherente y sin animaciones instantáneas o movimientos robóticos.
+
+El disparo debe tener:
+
+- Retroceso apropiado.
+- Efectos de humo.
+- Efectos visuales.
+- Sonido potente.
+- Vibración o reacción del mecanismo.
+- Impacto coherente.
+
+Los operadores deben reaccionar de manera coordinada y no ejecutar animaciones simultáneas contradictorias.
+
+---
+
+11. MEJORAR COBERTURA Y AMBIENTACIÓN URBANA
+
+Inspeccionar todas las ciudades y sectores de combate.
+
+En zonas donde exista demasiado espacio vacío y sea prudente, agregar cobertura y elementos de ambientación.
+
+Utilizar recursos existentes siempre que sea posible:
+
+- Sacos.
+- Cajas.
+- Barriles.
+- Madera.
+- Muebles.
+- Escombros.
+- Vehículos abandonados.
+- Barricadas.
+- Material militar.
+- Elementos de suministro.
+- Objetos civiles.
+- Elementos destruidos.
+
+Crear una distribución orgánica.
+
+No llenar cada rincón.
+
+Cada elemento agregado debe cumplir al menos una función:
+
+1. Ambientación.
+2. Cobertura.
+3. Referencia visual.
+4. Interacción.
+5. Diseño de combate.
+6. Narrativa ambiental.
+
+Verificar que no afecten negativamente:
+
+- La navegación.
+- Las colisiones.
+- El rendimiento.
+- La visibilidad.
+- La misión.
+- El acceso a objetivos.
+
+---
+
+12. NIVEL DEL ZEPPELÍN: SOLO PISTOLA
+
+En la misión o nivel del Zepelín, el jugador debe llevar únicamente una pistola.
+
+Modificar el sistema de carga y selección de armas para que:
+
+- El jugador comience únicamente con una pistola.
+- No aparezcan fusiles.
+- No aparezcan subfusiles.
+- No aparezcan ametralladoras.
+- No aparezcan fusiles antitanque.
+- No se puedan equipar armas incompatibles con la misión.
+- El HUD muestre correctamente la pistola.
+- La munición sea apropiada.
+- Las animaciones funcionen.
+- El jugador no pueda recuperar armas prohibidas accidentalmente.
+- El sistema no genere errores al cambiar de misión.
+
+La restricción debe ser específica de esta misión y no alterar el armamento de las demás.
+
+Mantener la experiencia del Zepelín coherente con el diseño de la misión.
+
+---
+
+13. SISTEMA DE AUDIO: NUEVOS SONIDOS Y RECURSOS REUTILIZABLES
+
+Inspeccionar cuidadosamente el repositorio de audio, especialmente las carpetas de nuevos recursos y la carpeta de sonidos de armas.
+
+Buscar y analizar los recursos de:
+
+- Voz.
+- Armas.
+- Subfusiles.
+- Fusiles.
+- Ametralladoras.
+- Pistolas.
+- Recargas.
+- Disparos.
+- Impactos.
+- Explosiones.
+- Ambiente.
+- Vehículos.
+- Cañones.
+- Artillería.
+- Pasos.
+- Interacciones.
+- Equipamiento.
+
+Utilizar los nuevos recursos de sonido del repositorio y colocarlos donde mejor correspondan.
+
+Carpeta de sonidos de subfusiles
+
+La carpeta de subfusiles contiene variedad de recursos sonoros.
+
+Analiza todos los sonidos disponibles y realiza una selección inteligente.
+
+No usar siempre el mismo sonido para todas las armas.
+
+Asignar los recursos adecuados a cada arma teniendo en cuenta:
+
+- Tipo de arma.
+- Cadencia.
+- Calibre.
+- Distancia.
+- Interior o exterior.
+- Reverberación.
+- Ambiente.
+- Impactos.
+- Disparo.
+- Recarga.
+- Manipulación.
+
+Crear variedad sonora sin perder identidad entre las armas.
+
+Sistema reutilizable
+
+Dejar los sonidos como recursos reutilizables y organizados.
+
+Crear o mejorar un sistema de audio que permita reutilizar sonidos en distintas misiones y armas sin duplicar archivos innecesariamente.
+
+Implementar, cuando el sistema actual lo permita:
+
+- Bibliotecas de audio.
+- Presets.
+- Audio de armas reutilizable.
+- Audio de impactos reutilizable.
+- Audio de recargas reutilizable.
+- Audio ambiental reutilizable.
+- Variaciones aleatorias.
+- Volumen configurable.
+- Atenuación por distancia.
+- Posicionamiento espacial.
+- Reverberación.
+- Mezcla de audio.
+- Control de frecuencia de reproducción para evitar repetición excesiva.
+
+Compresión
+
+Optimizar los archivos de audio para el juego.
+
+Analizar:
+
+- Formato.
+- Bitrate.
+- Frecuencia de muestreo.
+- Tamaño.
+- Calidad.
+- Uso en memoria.
+- Tiempo de carga.
+
+Comprimir inteligentemente sin destruir la calidad ni volver irreconocibles los sonidos.
+
+No reemplazar archivos originales sin respaldo cuando sea necesario.
+
+---
+
+14. ANALIZAR IRON MOD Y REUTILIZAR LO ÚTIL
+
+Estudiar exhaustivamente la versión Iron Mod presente en el repositorio.
+
+No asumir que todo es compatible.
+
+Inspeccionar:
+
+- Código.
+- Modelos.
+- Texturas.
+- Animaciones.
+- Armas.
+- Sonidos.
+- Scripts.
+- IA.
+- Mecánicas.
+- Configuraciones.
+- Sistemas de combate.
+- HUD.
+- Interfaz.
+- Efectos.
+- Vehículos.
+- Recursos.
+- Optimizaciones.
+- Funciones nuevas.
+
+Crear un informe interno de compatibilidad.
+
+Clasificar cada recurso o mejora:
+
+A — Integrar directamente
+
+Compatible y útil para el proyecto actual.
+
+B — Adaptar
+
+Útil, pero requiere modificación, conversión o compatibilidad.
+
+C — Inspiración
+
+No copiar directamente, pero tomar ideas de diseño o mecánicas.
+
+D — Descartar
+
+Incompatible, innecesario, redundante o perjudicial.
+
+Integrar solamente las mejoras que realmente aporten valor.
+
+No romper el sistema de misiones, controles, armas, IA, HUD o arquitectura existente.
+
+---
+
+15. MEJORAR LOS PARACAIDISTAS DE LA MISIÓN TAIJIN
+
+Revisar específicamente los paracaidistas de la misión Taijin.
+
+Mejorar su comportamiento, apariencia, animaciones y funcionamiento.
+
+Comportamiento
+
+- Mejorar la IA durante el descenso.
+- Evitar paracaidistas que caen rígidos.
+- Evitar paracaídas que no se abren.
+- Evitar personajes que se desplazan de forma anormal.
+- Corregir las colisiones durante el descenso.
+- Corregir la separación entre paracaidistas.
+- Evitar superposición excesiva.
+- Mejorar las trayectorias.
+- Mejorar las velocidades de descenso.
+- Evitar aterrizajes absurdos.
+- Evitar personajes que quedan suspendidos.
+- Evitar personajes que atraviesan el suelo.
+- Evitar paracaídas que atraviesan edificios de manera incorrecta.
+- Mejorar las reacciones al viento o a las condiciones del escenario si el sistema lo permite.
+
+Animaciones
+
+Revisar:
+
+- Salto.
+- Caída.
+- Apertura del paracaídas.
+- Descenso.
+- Control en el aire.
+- Aterrizaje.
+- Liberación del paracaídas.
+- Levantarse.
+- Transición al combate.
+- Equipamiento de armas.
+
+Combate posterior al aterrizaje
+
+Una vez en tierra:
+
+- Reorganizarse.
+- Buscar compañeros.
+- Buscar cobertura.
+- Evitar quedarse inmóviles.
+- Prepararse para combatir.
+- Identificar amenazas.
+- Avanzar hacia objetivos.
+- Utilizar la IA de combate mejorada.
+
+Mejorar las secuencias visuales y la sensación de operación aerotransportada sin crear una cinemática que impida jugar.
+
+---
+
+16. VERIFICACIÓN DE TODAS LAS MISIONES
+
+Después de implementar las mejoras, realizar una auditoría de todos los niveles.
+
+No limitarse a los niveles mencionados.
+
+Revisar:
+
+- Inicio de misión.
+- Carga.
+- HUD.
+- Brújula.
+- Objetivos.
+- Enemigos.
+- Aliados.
+- Armas.
+- Munición.
+- Sonidos.
+- Puertas.
+- Colisiones.
+- Navegación.
+- Vehículos.
+- Interacciones.
+- Reinicio.
+- Muerte.
+- Respawn si existe.
+- Finalización.
+- Transición a la siguiente misión.
+
+Buscar errores que puedan haberse introducido al modificar los sistemas compartidos.
+
+---
+
+17. OPTIMIZACIÓN
+
+Mantener una buena tasa de FPS.
+
+No implementar sistemas innecesariamente pesados.
+
+Optimizar:
+
+- Modelos.
+- Colisiones.
+- Audio.
+- IA.
+- Renderizado.
+- Efectos.
+- Animaciones.
+- Recursos.
+- Carga de niveles.
+- Cantidad de objetos.
+
+No crear miles de objetos innecesarios.
+
+Usar reutilización de recursos, pooling y optimizaciones compatibles con la arquitectura existente cuando sea conveniente.
+
+Priorizar:
+
+1. Funcionalidad.
+2. Estabilidad.
+3. Compatibilidad.
+4. Rendimiento.
+5. Calidad visual.
+
+---
+
+18. REGLAS OBLIGATORIAS DE IMPLEMENTACIÓN
+
+1. Inspeccionar el proyecto antes de modificarlo.
+2. Identificar el motor y las tecnologías reales.
+3. Localizar todos los recursos pertinentes.
+4. No inventar archivos ni asumir que los recursos existen.
+5. No eliminar contenido funcional.
+6. No sustituir sistemas completos si basta con corregirlos.
+7. No crear versiones duplicadas innecesarias.
+8. Mantener las misiones funcionales.
+9. Mantener el HUD.
+10. Mantener la brújula.
+11. Mantener los controles.
+12. Mantener la compatibilidad entre armas.
+13. Mantener las colisiones coherentes.
+14. Mantener las animaciones funcionales.
+15. Mantener los recursos reutilizables.
+16. No dejar placeholders cuando sea posible implementar el recurso real.
+17. No simular que se realizó una modificación si no se modificó realmente.
+18. No afirmar que algo fue probado si no fue ejecutado.
+19. Si una herramienta no está disponible, buscar una alternativa compatible con el proyecto.
+20. Si una modificación presenta riesgo, respaldar los archivos afectados antes de realizar cambios.
+21. Trabajar directamente sobre los archivos reales del proyecto.
+22. Realizar pruebas de regresión.
+23. Corregir los errores encontrados durante las pruebas.
+24. No finalizar solamente con recomendaciones: implementar todo lo que sea posible.
+
+---
+
+19. PROCEDIMIENTO DE TRABAJO
+
+FASE 1 — INVENTARIO
+
+Inspeccionar el repositorio completo y generar un inventario de:
+
+- Código.
+- Mapas.
+- Misiones.
+- NPC.
+- IA.
+- Armas.
+- Modelos.
+- Texturas.
+- Animaciones.
+- Audio.
+- Vehículos.
+- HUD.
+- Sistemas de colisión.
+- Recursos de Iron Mod.
+- Dependencias.
+
+FASE 2 — DIAGNÓSTICO
+
+Detectar:
+
+- Errores.
+- Problemas.
+- Sistemas incompletos.
+- Recursos sin uso.
+- Recursos duplicados.
+- Problemas de escala.
+- Problemas de colisión.
+- Problemas de navegación.
+- Problemas de audio.
+- Problemas de primera persona.
+- Problemas de misiones.
+
+FASE 3 — PLAN DE IMPLEMENTACIÓN
+
+Crear un plan ordenado por prioridad:
+
+- Prioridad crítica: errores que impiden jugar.
+- Prioridad alta: problemas de IA, colisiones, misiones y armas.
+- Prioridad media: arquitectura, cobertura, audio, animaciones y modelado.
+- Prioridad baja: detalles visuales y mejoras adicionales.
+
+FASE 4 — IMPLEMENTACIÓN
+
+Realizar las modificaciones directamente sobre el proyecto.
+
+Los agentes deben trabajar en sus áreas y el ingeniero principal debe integrar los resultados.
+
+FASE 5 — PRUEBAS
+
+Probar cada modificación.
+
+Si existe una herramienta de ejecución o preview:
+
+- Ejecutar el juego.
+- Recorrer las misiones.
+- Probar armas.
+- Probar puertas.
+- Probar IA.
+- Probar colisiones.
+- Probar audio.
+- Probar vehículos.
+- Probar las transiciones.
+
+Si no existe una prueba ejecutable para alguna característica, realizar una auditoría estática del código y dejar constancia de que no pudo verificarse en ejecución.
+
+FASE 6 — CORRECCIÓN
+
+Resolver todos los errores identificados.
+
+No entregar un proyecto con errores conocidos sin informar.
+
+FASE 7 — INFORME FINAL
+
+Al finalizar, entregar un informe detallado que incluya:
+
+Mejoras implementadas
+
+Lista de todos los cambios realizados.
+
+Archivos modificados
+
+Identificar los archivos y sistemas afectados.
+
+IA
+
+Explicar las mejoras realizadas al cerebro de NPC y su comportamiento.
+
+Niveles
+
+Explicar los cambios en Martillo de Hierro, Las Tres Cruces, Taijin y Zepelín.
+
+Armamento
+
+Explicar las mejoras de MG08, fusil antitanque y cañón antitanque.
+
+Física
+
+Explicar las colisiones, separación de soldados y cambios de escala.
+
+Audio
+
+Explicar los recursos utilizados, sonidos integrados, compresión y biblioteca reutilizable.
+
+Iron Mod
+
+Informar qué elementos fueron integrados, adaptados, utilizados como inspiración o descartados y por qué.
+
+Testing
+
+Indicar:
+
+- Qué se probó realmente.
+- Qué pruebas pasaron.
+- Qué errores se encontraron.
+- Qué errores se corrigieron.
+- Qué elementos no pudieron probarse.
+- Qué riesgos quedan.
+
+Rendimiento
+
+Informar posibles mejoras o impactos de rendimiento.
+
+Resultado final
+
+Presentar un resumen claro del estado final del juego.
+
+---
+
+ORDEN FINAL
+
+Comienza ahora inspeccionando el repositorio real.
+
+No te quedes en un análisis teórico ni en una lista de recomendaciones.
+
+Actúa como un equipo profesional de ingeniería y desarrollo de FPS, implementa las mejoras directamente, coordina los agentes, utiliza los recursos existentes de forma inteligente, preserva el juego y verifica cada cambio.
+
+Quiero una mejora real del juego existente: más sólido técnicamente, más creíble visualmente, con mejor IA, mejores niveles, mejores armas, mejor audio, colisiones funcionales y una experiencia de combate mucho más profesional.

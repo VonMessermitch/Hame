@@ -1,0 +1,21 @@
+{
+  "id": "prop_interior_pack",
+  "name": "Mobiliario interior (cajas, mesas, lámparas, literas)",
+  "category": "props",
+  "constructor": "DOORS_VGAI.populateInterior",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "levels": [
+    11,
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/props/prop_interior_pack.json",
+  "version": "V.GAI.1.0"
+}

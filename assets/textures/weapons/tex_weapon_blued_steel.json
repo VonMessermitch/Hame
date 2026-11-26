@@ -1,0 +1,21 @@
+{
+  "id": "tex_weapon_blued_steel",
+  "category": "weapons",
+  "width": 128,
+  "height": 128,
+  "palette": [
+    "#2a2e32",
+    "#4e545c",
+    "#6a4424"
+  ],
+  "pattern": "brushed_gunmetal",
+  "levels": [
+    1,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/textures/weapons/tex_weapon_blued_steel.json",
+  "version": "V.GAI.1.0"
+}

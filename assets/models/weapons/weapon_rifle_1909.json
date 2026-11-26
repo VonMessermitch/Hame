@@ -1,0 +1,42 @@
+{
+  "id": "weapon_rifle_1909",
+  "name": "Fusil de cerrojo Mannlicher / V98 1909",
+  "category": "weapons",
+  "constructor": "mkRifle",
+  "previewRender": "assets_graphics/renderes/rifle_1909.png",
+  "glbPlanned": "assets_graphics/weapons/rifle_1909.glb",
+  "scale": [
+    2.3,
+    2.3,
+    2.3
+  ],
+  "bounds": {
+    "w": 0.235,
+    "h": 2.77,
+    "d": 0.32
+  },
+  "levels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/weapons/weapon_rifle_1909.json",
+  "version": "V.GAI.1.0"
+}

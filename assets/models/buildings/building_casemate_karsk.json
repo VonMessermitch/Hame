@@ -1,0 +1,25 @@
+{
+  "id": "building_casemate_karsk",
+  "name": "Casamata costera de hormigón",
+  "category": "buildings",
+  "constructor": "casemate17 / casemate18",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "collider": {
+    "hw": 5.3,
+    "hd": 3.5,
+    "h": 3.2
+  },
+  "levels": [
+    13,
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/buildings/building_casemate_karsk.json",
+  "version": "V.GAI.1.0"
+}

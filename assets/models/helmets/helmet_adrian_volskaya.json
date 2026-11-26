@@ -1,0 +1,20 @@
+{
+  "id": "helmet_adrian_volskaya",
+  "name": "Casco campaña Volskaya",
+  "category": "helmets",
+  "constructor": "volsk32.helm",
+  "faction": "Volskaya",
+  "scale": [
+    1,
+    1,
+    1
+  ],
+  "levels": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "path": "assets/models/helmets/helmet_adrian_volskaya.json",
+  "version": "V.GAI.1.0"
+}
