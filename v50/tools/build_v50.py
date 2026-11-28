@@ -11,6 +11,10 @@ def main():
     html = SRC.read_text(encoding="utf-8")
     code = "\n".join("/* ==== v50/src/%s ==== */\n" % m + (ROOT / "v50" / "src" / m).read_text(encoding="utf-8") for m in MODULES)
     code = code.replace("</script>", "<\\/script>")
+    # v50.5 · ángulo de mira hacia arriba ampliado (antes −0,25 rad ≈ 14°; ahora −1,2 rad ≈ 69°)
+    import re
+    html = re.sub(r"(pitch=clamp\([^;]{0,60}?),-\.25,1\.1\)", r"\1,-1.2,1.1)", html)
+    html = html.replace("pitch=clamp(pitch,-.4,1.25)", "pitch=clamp(pitch,-1.2,1.25)").replace("Math.min(-.25,pitch)", "Math.min(-1.2,pitch)")
     i = html.rfind("</body>")
     if i < 0: raise SystemExit("No encuentro </body> en la base")
     out = html[:i] + "<script>\n/* ===== v50 · Edición Aethrion completa ===== */\n" + code + "\n</script>\n" + html[i:]

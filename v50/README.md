@@ -41,3 +41,11 @@
 - **Modelo nuevo «KbUr-L 22», 22×140 mm:** fusión del Kb Ur wz. 35 y el Lahti L-39, con cañón largo, freno de boca grande, cargador superior de 5, culata de madera, bípode plegado y miras.
 - **Arsenal:** el jugador ya no lo recibe solo. Hay una caja en la línea de las Tres Cruces (niveles 17 y 19) además del contenedor del puesto.
 - **MG 08 de la guarnición:** ahora suenan con la muestra «ametralladora», en ráfagas y con atenuación por distancia.
+
+## v50.5
+- **Nivel 17:**
+  - Blindados más ágiles: el tanque ligero va a 5,2 m/s (6,5 por camino) y el medio a 4,2 m/s (5,5 por camino). Los aliados llegan a la estación.
+  - Tanque medio de Veyrn al 96 % de su tamaño.
+  - Ametrallador tanquista de Veyrn asomado en la torreta con MG pesada: gira con la torreta, retrocede al disparar y suena con la muestra mg15.
+- **Mira hacia arriba ampliada** en todos los niveles: de −0,25 a −1,2 rad, para poder apuntar a los grifos.
+- **Vehículos de FRUST (nivel 18):** tractor, cañón autopropulsado, camión de munición, vehículo de observación y obús verificados. Cargan completos y con dotación.

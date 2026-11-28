@@ -226,3 +226,52 @@
     };
   }
 })();
+/* =============================================================================
+   v50.5 · blindados del nivel 17 y FRUST
+   - Clases más ágiles: ligero 5,2 m/s (camino 6,5), medio 4,2 (5,5): los aliados llegan a
+     la estación y los enemigos presionan la línea.
+   - Tanque medio de Veyrn al 96 % de su tamaño.
+   - Ametrallador tanquista de Veyrn (veyrn32 'crew') asomado en la torreta con MG pesada:
+     apunta con la torreta, retrocede al disparar y suena (muestra mg15), sincronizado con las
+     ráfagas de las ametralladoras del vehículo.
+   ============================================================================= */
+(function () {
+  'use strict';
+  if (typeof VEH32 === 'undefined') return;
+  const C = VEH32.cls || {};
+  if (C.light) Object.assign(C.light, { speed: 5.2, road: 6.5 });
+  if (C.medium) Object.assign(C.medium, { speed: 4.2, road: 5.5 });
+  const T = THREE, tb = new T.Box3(), tv = new T.Vector3();
+  function gunner(v) {
+    try {
+      const m0 = v.mounts && v.mounts[0]; if (!m0 || !m0.y || typeof mkSoldier !== 'function') return;
+      const o = { g: mkSoldier({}) }; if (typeof veyrn32 === 'function') try { veyrn32(o, 'crew') } catch (e) {}
+      const g = o.g, u = g.userData; tb.setFromObject(m0.y); tv.set((tb.min.x + tb.max.x) / 2, tb.max.y - .55, (tb.min.z + tb.max.z) / 2); m0.y.worldToLocal(tv);
+      g.position.set(0, .2, -.25); m0.y.add(g);
+      for (const a of [u.aR, u.aL]) if (a) a.rotation.x = -1.35;
+      const mg = new T.Group(); const s = new T.MeshLambertMaterial({ color: 0x222426 });
+      const b = new T.Mesh(new T.BoxGeometry(.12, .16, .62), s); b.position.set(0, 0, .1); mg.add(b);
+      const br = new T.Mesh(new T.CylinderGeometry(.03, .03, .7, 8), s); br.rotation.x = Math.PI / 2; br.position.set(0, .02, .7); mg.add(br);
+      const sh = new T.Mesh(new T.BoxGeometry(.5, .32, .03), s); sh.position.set(0, .05, .38); mg.add(sh);
+      mg.position.set(0, 1.42, .55); g.add(mg);
+      v.gun50 = { g, mg, t: 0, rec: 0 };
+    } catch (e) { console.warn('v50 gunner', e); }
+  }
+  const _s = vehSpawn32;
+  vehSpawn32 = function (v) {
+    const r = _s.apply(this, arguments);
+    try { if (v && v.kind === 'tank_medium' && v.side === 'veyrn') { v.g.scale.multiplyScalar(.96); gunner(v); } } catch (e) {}
+    return r;
+  };
+  const _u = update;
+  update = function (dt) {
+    const r = _u(dt);
+    if (VEH32.list) for (const v of VEH32.list) {
+      const G = v.gun50; if (!G || !v.alive) { if (G && !v.alive && G.g.visible) G.g.visible = false; continue; }
+      const firing = v.mounts.some(m => m.kind === 'mg' && m.burst > 0);
+      G.t -= dt; if (firing && G.t <= 0) { G.t = .1; G.rec = 1; if (typeof samp34 === 'function') samp34('mg15', .8, 1, v.g.position.x, v.g.position.z, { reach: 28, max: 240 }); }
+      G.rec = Math.max(0, G.rec - dt * 14); G.mg.position.z = .55 - G.rec * .06; G.g.position.y += 0;
+    }
+    return r;
+  };
+})();

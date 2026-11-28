@@ -465,13 +465,13 @@ const sc=[146.83,155.56,185,196,220,233.08,277.18];
 const jz=$('jz'),js=$('js');
 function updJ(x,y){const r=jz.getBoundingClientRect();let dx=x-(r.left+r.width/2),dy=y-(r.top+r.height/2);const d=Math.hypot(dx,dy);if(d>50){dx=dx/d*50;dy=dy/d*50}js.style.transform=`translate(${dx}px,${dy}px)`;tm.x=dx/50;tm.y=dy/50}
 jz.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tmID=t.identifier;tmOn=true;updJ(t.clientX,t.clientY);e.preventDefault()},{passive:false});
-addEventListener('touchmove',e=>{for(const t of e.changedTouches){if(t.identifier===tmID)updJ(t.clientX,t.clientY);else if(t.identifier===tlID){const dx=t.clientX-lx,dy=t.clientY-ly;yaw-=dx*.005*G.sens;pitch=clamp(pitch+dy*.005*G.sens,-.25,1.1);lx=t.clientX;ly=t.clientY}}e.preventDefault()},{passive:false});
+addEventListener('touchmove',e=>{for(const t of e.changedTouches){if(t.identifier===tmID)updJ(t.clientX,t.clientY);else if(t.identifier===tlID){const dx=t.clientX-lx,dy=t.clientY-ly;yaw-=dx*.005*G.sens;pitch=clamp(pitch+dy*.005*G.sens,-1.2,1.1);lx=t.clientX;ly=t.clientY}}e.preventDefault()},{passive:false});
 addEventListener('touchend',e=>{for(const t of e.changedTouches){if(t.identifier===tmID){tmID=null;tmOn=false;tm.x=tm.y=0;js.style.transform='translate(0,0)'}if(t.identifier===tlID)tlID=null}});
 $('tl').addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(tlID===null){tlID=t.identifier;lx=t.clientX;ly=t.clientY}e.preventDefault()},{passive:false});
 const tb=(id,f)=>$(id).addEventListener('touchstart',e=>{f();e.preventDefault()},{passive:false});
 $('bf').addEventListener('touchstart',e=>{firing=true;fire();e.preventDefault()},{passive:false});$('bf').addEventListener('touchend',()=>firing=false);$('bf').addEventListener('touchcancel',()=>firing=false);
 tb('br',()=>reload());tb('bro',()=>roll());tb('bj',()=>jump());tb('bm',()=>melee());tb('bg',()=>throwG());tb('bw',()=>swap());tb('bi',()=>interact());tb('bv',()=>fpv=!fpv);
-rend.domElement.addEventListener('mousemove',e=>{if(!playing||document.pointerLockElement!==rend.domElement)return;yaw-=e.movementX*.0022*G.sens;pitch=clamp(pitch+e.movementY*.0022*G.sens,-.25,1.1)});
+rend.domElement.addEventListener('mousemove',e=>{if(!playing||document.pointerLockElement!==rend.domElement)return;yaw-=e.movementX*.0022*G.sens;pitch=clamp(pitch+e.movementY*.0022*G.sens,-1.2,1.1)});
 rend.domElement.addEventListener('mousedown',()=>{if(!playing)return;if(document.pointerLockElement!==rend.domElement){rend.domElement.requestPointerLock();return}firing=true;fire()});
 addEventListener('mouseup',()=>firing=false);
 addEventListener('keydown',e=>{keys[e.code]=true;if(!playing)return;if(e.code==='KeyR')reload();if(e.code==='Space'){jump();e.preventDefault()}if(e.code==='KeyC')roll();if(e.code==='KeyE')interact();if(e.code==='KeyF')melee();if(e.code==='KeyQ')swap();if(e.code==='KeyG')throwG();if(e.code==='KeyV')fpv=!fpv});
@@ -896,7 +896,7 @@ const o=P.g.position.clone();o.y=P.g.position.y+1.4;o.x+=Math.sin(P.face)*.8-Mat
 const v=tg.sub(o).normalize();{const k=(smg?.06:0)+pSpread();if(k>0){v.x+=(R()-.5)*k;v.y+=(R()-.5)*k*.5;v.z+=(R()-.5)*k;v.normalize()}}v.multiplyScalar(smg?75:rev?70:65);
 const m=new T.Mesh(bG,bM);m.position.copy(o);m.lookAt(o.clone().add(v));scene.add(m);bullets.push({m,v,life:1.3,dmg:w.dmg});
 mLight.position.copy(o);mLight.intensity=rev?9:smg?2.5:4;muzzleFX(o,v,rev);if(rev){if(side>0)P.rc=1;else P.rl=1}else{P.rc=smg?.35:1;if(!smg)P.bolt=.4}
-shake=Math.max(shake,rev?.95:smg?.15:.4);pitch=clamp(pitch-(rev?.035:smg?.005:.012),-.25,1.1);
+shake=Math.max(shake,rev?.95:smg?.15:.4);pitch=clamp(pitch-(rev?.035:smg?.005:.012),-1.2,1.1);
 if(rev){burst(P.g.position.x,P.g.position.y+.1,P.g.position.z,0xd9b97a,5,.4,3);burst(o.x,o.y,o.z,0xd4a017,3,.9,3.5);weaponSfx('revolver');snd(70,.3,'sawtooth',.12)}else{weaponSfx(smg?'smg':'rifle');snd(smg?170:140,smg?.07:.16,smg?'square':'sawtooth',smg?.035:.05)}}
 function melee(){if(P.cur==='rifle')bayAtk();else swordAtk()}
 function throwG(){if(!playing||P.grenades<=0||P.gcd>0)return;P.grenades--;P.gcd=.8;const dir=new T.Vector3(-Math.sin(yaw),0,-Math.cos(yaw)),pos=P.g.position.clone();pos.y=1.6;pos.x+=dir.x*.5;pos.z+=dir.z*.5;
@@ -2366,7 +2366,7 @@ retex(grainT,32,64,(c,w,h)=>{c.fillStyle='#8a5a34';c.fillRect(0,0,w,h);for(let x
 /* Fusil Mannlicher-Mauser 8,98×66: cargador extraíble de 10 tipo Enfield, más daño, penetración y retroceso */
 Object.assign(P.weapons.rifle,{mag:10,max:10,reserve:60,cd:.6,dmg:62,reload:2.6,fov:7});
 {const q=PB();pBox(q,.076,.25,.15,0x2a2d30,0,-.06,-.15);pBox(q,.082,.03,.16,0x141414,0,-.195,-.15);for(let i=0;i<3;i++)pBox(q,.079,.012,.152,0x3a3d40,0,-.13+i*.05,-.15);pBox(q,.05,.03,.06,0xb8963a,0,.08,-.04);pbMesh(q,pW.rifle,VCV)}
-const _fire17=fire;fire=function(){const cur=P.cur,n0=bullets.length,gun=P.gun9;if(gun){gunFire9();return}_fire17();if(cur==='rifle'&&!P.mg&&bullets.length>n0){const b=bullets[bullets.length-1];b.pen=1;b.v.multiplyScalar(1.22);shake=Math.max(shake,.8);pitch=clamp(pitch-.028,-.25,1.1);V16.kick=(V16.kick||0)+.32;fovKick=9;P.mvx=(P.mvx||0)*.8;P.mvz=(P.mvz||0)*.8;snd(46,.5,'sawtooth',.11);setTimeout(()=>snd(70,.9,'sine',.035),160);burst(b.m.position.x,b.m.position.y,b.m.position.z,0xffcc66,3,.12,6)}};
+const _fire17=fire;fire=function(){const cur=P.cur,n0=bullets.length,gun=P.gun9;if(gun){gunFire9();return}_fire17();if(cur==='rifle'&&!P.mg&&bullets.length>n0){const b=bullets[bullets.length-1];b.pen=1;b.v.multiplyScalar(1.22);shake=Math.max(shake,.8);pitch=clamp(pitch-.028,-1.2,1.1);V16.kick=(V16.kick||0)+.32;fovKick=9;P.mvx=(P.mvx||0)*.8;P.mvz=(P.mvz||0)*.8;snd(46,.5,'sawtooth',.11);setTimeout(()=>snd(70,.9,'sine',.035),160);burst(b.m.position.x,b.m.position.y,b.m.position.z,0xffcc66,3,.12,6)}};
 const _rl17=reload;reload=function(){if(P.cur==='rifle'&&!P.mg){const w=P.weapons.rifle;w.reload=w.mag>0?2.3:3.1}_rl17()};
 /* MP38 con cargador de tambor de 50 (modelo nuevo, el tambor es la pieza animada en la recarga) */
 function mkMP38d(){const w=new T.Group(),q=PB(),st=0x2e3134,dk=0x141414,bk=0x3a2416;
@@ -5018,7 +5018,7 @@ function turFire12(){const U=L12.tu;if(!U||L12.tcd>0||L12.trel>0)return;if(L12.t
  L12.tbelt--;L12.theat=Math.min(1,L12.theat+.0062);shake=Math.max(shake,.12);fovKick=.5;pitch+=(R()-.4)*.003;yaw+=(R()-.5)*.003;if(R()<.4)burst(o.x-v.x*.012,o.y-.2,o.z-v.z*.012,0xc8a040,1,.6,2);if(L12.theat>=1){L12.tjam=3;say('¡RECALENTADA! La MG doble echa vapor…',1.8)}}
 function turUpd12(dt){if(!L12.tu)return;L12.tcd=Math.max(0,L12.tcd-dt);if(L12.trel>0){L12.trel-=dt;if(L12.trel<=0){L12.tbox--;L12.tbelt=500;say('Caja lista.',1)}}if(L12.tjam>0)L12.tjam-=dt;L12.theat=Math.max(0,L12.theat-dt*(firing&&L12.tur?.05:.18));
  const U=L12.tu;if(L12.tur){U.yawG.rotation.y=yaw+Math.PI;U.pit.rotation.x=pitch;P.g.position.set(X12+.9,1.5,18.3);P.vy=0}else{U.yawG.rotation.y+=dt*.15;U.pit.rotation.x=.2}}
-function turCam12(){const U=L12.tu;pitch=clamp(pitch,-.4,1.25);const cp=Math.cos(pitch),d=V12c.set(-Math.sin(yaw)*cp,-Math.sin(pitch),-Math.cos(yaw)*cp);U.yawG.rotation.y=yaw+Math.PI;U.pit.rotation.x=pitch;const e=V12b.set(U.pos.x,U.pos.y-.45+.4,U.pos.z).addScaledVector(d,-.85);const sh=shake*.2;cam.position.set(e.x+(R()-.5)*sh,e.y+(R()-.5)*sh,e.z);cam.lookAt(cam.position.x+d.x,cam.position.y+d.y,cam.position.z+d.z);if(L12.roll)cam.rotateZ(L12.roll)}
+function turCam12(){const U=L12.tu;pitch=clamp(pitch,-1.2,1.25);const cp=Math.cos(pitch),d=V12c.set(-Math.sin(yaw)*cp,-Math.sin(pitch),-Math.cos(yaw)*cp);U.yawG.rotation.y=yaw+Math.PI;U.pit.rotation.x=pitch;const e=V12b.set(U.pos.x,U.pos.y-.45+.4,U.pos.z).addScaledVector(d,-.85);const sh=shake*.2;cam.position.set(e.x+(R()-.5)*sh,e.y+(R()-.5)*sh,e.z);cam.lookAt(cam.position.x+d.x,cam.position.y+d.y,cam.position.z+d.z);if(L12.roll)cam.rotateZ(L12.roll)}
 /* ---------- cabina de mando en proa: puerta, dos pilotos, timón, rueda de profundidad, telégrafo y mapa ---------- */
 function mkCabin12(G){const X=X12,F=1.5,Wc=2.6,z0=-22,z1=-27.6,zc=(z0+z1)/2,L=z0-z1,q=PB(),st=ZC.iron,ob=[];
  pBox(q,Wc*2+.2,.3,L,0x3a3028,X,F-.15,zc);for(let z=z1+.4;z<z0;z+=1.1)pBox(q,Wc*2-.2,.02,.06,0x2a2018,X,F+.01,z);pBox(q,Wc*2,1.2,L,ZC.gray,X,F-.9,zc);pa(q,gCone(Wc,1.8,10),ZC.gray,X,F-.9,z1-.9,-1.5708,0,0,1,.45,1);
@@ -13743,7 +13743,7 @@ function joy37(en,x,y){const R=H37.R;let dx=x-en.bx,dy=y-en.by,d=Math.hypot(dx,d
  const kd=Math.min(d,R),kx=d>0?en.bx+dx/d*kd:en.bx,ky=d>0?en.by+dy/d*kd:en.by;joyDraw37(en.bx,en.by,kx,ky);$('jk37').classList.toggle('run37',arm||mo>=1)}
 function look37(en,x,y,ts){const dx=x-en.x,dy=y-en.y;en.x=x;en.y=y;if(!dx&&!dy)return;const dt=Math.max(.004,Math.min(.1,(ts-en.t)/1000));en.t=ts;const vm=Math.min(H37.W,H37.H)||400;
  en.v=en.v*.55+Math.hypot(dx,dy)/vm/dt*.45;let k=2.06/vm*(+G.sens||1)*(+S37.sens||1);if(+S37.acc)k*=.82+.62*sst37(.35,2.6,en.v);if(H37.ads)k*=+S37.adsM||.6;if(+S37.aa&&H37.near&&en.v<1.7)k*=.6;
- yaw-=dx*k;const lo=Math.min(-.25,pitch),hi=Math.max(1.1,pitch);pitch=clamp(pitch+dy*k*(+S37.invY?-1:1),lo,hi);H37.dbg.look++}
+ yaw-=dx*k;const lo=Math.min(-1.2,pitch),hi=Math.max(1.1,pitch);pitch=clamp(pitch+dy*k*(+S37.invY?-1:1),lo,hi);H37.dbg.look++}
 function fireSync37(){let f=false;for(const en of H37.tc.values())if(en.k==='fire'){f=true;break}firing=f}
 function rel37(id,cancel){const en=H37.tc.get(id);if(!en)return;H37.tc.delete(id);
  if(en.k==='joy'){H37.joy=null;const arm=H37.arm&&!cancel;H37.arm=false;if(arm)lock37(true);else if(!H37.lock){tmOn=false;tm.x=tm.y=0}joyIdle37()}
@@ -35430,6 +35430,55 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       return _n.apply(this, arguments);
     };
   }
+})();
+/* =============================================================================
+   v50.5 · blindados del nivel 17 y FRUST
+   - Clases más ágiles: ligero 5,2 m/s (camino 6,5), medio 4,2 (5,5): los aliados llegan a
+     la estación y los enemigos presionan la línea.
+   - Tanque medio de Veyrn al 96 % de su tamaño.
+   - Ametrallador tanquista de Veyrn (veyrn32 'crew') asomado en la torreta con MG pesada:
+     apunta con la torreta, retrocede al disparar y suena (muestra mg15), sincronizado con las
+     ráfagas de las ametralladoras del vehículo.
+   ============================================================================= */
+(function () {
+  'use strict';
+  if (typeof VEH32 === 'undefined') return;
+  const C = VEH32.cls || {};
+  if (C.light) Object.assign(C.light, { speed: 5.2, road: 6.5 });
+  if (C.medium) Object.assign(C.medium, { speed: 4.2, road: 5.5 });
+  const T = THREE, tb = new T.Box3(), tv = new T.Vector3();
+  function gunner(v) {
+    try {
+      const m0 = v.mounts && v.mounts[0]; if (!m0 || !m0.y || typeof mkSoldier !== 'function') return;
+      const o = { g: mkSoldier({}) }; if (typeof veyrn32 === 'function') try { veyrn32(o, 'crew') } catch (e) {}
+      const g = o.g, u = g.userData; tb.setFromObject(m0.y); tv.set((tb.min.x + tb.max.x) / 2, tb.max.y - .55, (tb.min.z + tb.max.z) / 2); m0.y.worldToLocal(tv);
+      g.position.set(0, .2, -.25); m0.y.add(g);
+      for (const a of [u.aR, u.aL]) if (a) a.rotation.x = -1.35;
+      const mg = new T.Group(); const s = new T.MeshLambertMaterial({ color: 0x222426 });
+      const b = new T.Mesh(new T.BoxGeometry(.12, .16, .62), s); b.position.set(0, 0, .1); mg.add(b);
+      const br = new T.Mesh(new T.CylinderGeometry(.03, .03, .7, 8), s); br.rotation.x = Math.PI / 2; br.position.set(0, .02, .7); mg.add(br);
+      const sh = new T.Mesh(new T.BoxGeometry(.5, .32, .03), s); sh.position.set(0, .05, .38); mg.add(sh);
+      mg.position.set(0, 1.42, .55); g.add(mg);
+      v.gun50 = { g, mg, t: 0, rec: 0 };
+    } catch (e) { console.warn('v50 gunner', e); }
+  }
+  const _s = vehSpawn32;
+  vehSpawn32 = function (v) {
+    const r = _s.apply(this, arguments);
+    try { if (v && v.kind === 'tank_medium' && v.side === 'veyrn') { v.g.scale.multiplyScalar(.96); gunner(v); } } catch (e) {}
+    return r;
+  };
+  const _u = update;
+  update = function (dt) {
+    const r = _u(dt);
+    if (VEH32.list) for (const v of VEH32.list) {
+      const G = v.gun50; if (!G || !v.alive) { if (G && !v.alive && G.g.visible) G.g.visible = false; continue; }
+      const firing = v.mounts.some(m => m.kind === 'mg' && m.burst > 0);
+      G.t -= dt; if (firing && G.t <= 0) { G.t = .1; G.rec = 1; if (typeof samp34 === 'function') samp34('mg15', .8, 1, v.g.position.x, v.g.position.z, { reach: 28, max: 240 }); }
+      G.rec = Math.max(0, G.rec - dt * 14); G.mg.position.z = .55 - G.rec * .06; G.g.position.y += 0;
+    }
+    return r;
+  };
 })();
 
 </script>
