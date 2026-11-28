@@ -24,3 +24,14 @@
   - Desde la 3.ª oleada entra un blindado o tanque de Veyrn extra por la otra punta de la línea.
   - El contraataque (IV) encuentra 3 blindados más defendiendo la estación: 5 en total.
   - La cinemática de «IV · Contraataque de hierro» pasa a tener 5 planos: vista aérea, el tren, los camiones, el tanque y la estación al norte, con artillería a lo lejos.
+
+## v50.3
+- **Antitanque del nivel 17:**
+  - 36 proyectiles listos en lugar de 14.
+  - Cadencia práctica de 4,6 s por disparo apuntado, unos 13 por minuto.
+  - Órdenes del apuntador («¡Fuego!») y del cargador («¡Cargado!»).
+- **`DRIVER50`** (recurso reutilizable): conductores de camión que son tanquistas de Veyrn.
+  - Si el antitanque les apunta o el camión está dañado, aceleran y huyen, o se bajan a combatir (2 por camión, tipo `crew`).
+  - Aplicado a los camiones de Veyrn del nivel 17.
+- **Contraataque:** el tanque aliado baja del tren por una rampa de madera.
+- **Fusil antitanque AT-18:** en el arsenal desde el inicio en los niveles 17–20; se cambia con ARMA.

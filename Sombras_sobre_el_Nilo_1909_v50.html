@@ -35285,6 +35285,93 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     };
   }
 })();
+/* =============================================================================
+   v50.3
+   - Cañón antitanque del nivel 17 más realista: 36 proyectiles listos (el armón y las
+     cajas de una pieza de 37 mm en posición), cadencia práctica de ~13 disparos/min
+     (4,6 s por disparo apuntado), voces de orden y carga, y recarga desde las cajas.
+   - Conductor de camión (recurso reutilizable DRIVER50): tanquista de Veyrn que acelera
+     y huye, o se baja y combate antes de que el antitanque destruya el camión.
+   - Contraataque: el tanque aliado baja del tren por una rampa.
+   - Fusil antitanque AT-18 en el arsenal desde el inicio en los niveles 17–20.
+   ============================================================================= */
+(function () {
+  'use strict';
+  /* ---- antitanque: munición, cadencia y órdenes ---- */
+  if (typeof atFire17 === 'function' && typeof N17 !== 'undefined') {
+    const _f = atFire17;
+    atFire17 = function () {
+      const a = N17.at; if (!a) return _f.apply(this, arguments);
+      if (!a.v50) { a.v50 = 1; if (a.ammo === 14) a.ammo = 36; }
+      const n0 = a.ammo; const r = _f.apply(this, arguments);
+      if (a.ammo < n0) {
+        a.cd = 4.6;
+        if (typeof say === 'function') say('Apuntador: «¡FUEGO!» · Cargador: abre el cierre, saca la vaina, mete el proyectil… (' + a.ammo + ' restantes)', 2.2);
+        setTimeout(() => { if (N17.at === a && typeof say === 'function') say('Cargador: «¡CARGADO!»', 1.1); }, 4300);
+      }
+      return r;
+    };
+  }
+  /* ---- DRIVER50: conductores de camión de Veyrn ---- */
+  const DRV = window.DRIVER50 = {
+    /* opts: spawn(lx,z,i) → soldado; aimedAt(v) → bool; flee(v) ; bail(v) */
+    tick(v, st, o) {
+      if (!v || !v.alive || st.done) return;
+      const hurt = v.maxhp && v.hp < v.maxhp * 0.72, aimed = o.aimedAt && o.aimedAt(v);
+      if (!hurt && !aimed) return;
+      const nearStop = st.stop && Math.hypot(v.g.position.x - o.wx(st.stop[0]), v.g.position.z - st.stop[1]) < 28;
+      if (aimed && !nearStop && !st.fled && Math.random() < 0.5) { st.fled = 1; o.flee(v); return; }
+      st.done = 1; o.bail(v);
+    }
+  };
+  if (typeof N17 !== 'undefined' && typeof sp17 === 'function') {
+    const XL = typeof XL17 !== 'undefined' ? XL17 : 160000, wx = x => x + XL;
+    const aimedAt = v => {
+      const a = N17.at; if (!a || typeof cam === 'undefined') return false;
+      const d = new THREE.Vector3(); cam.getWorldDirection(d);
+      const p = v.g.position, dx = p.x - cam.position.x, dz = p.z - cam.position.z, L = Math.hypot(dx, dz);
+      return L < 260 && (dx * d.x + dz * d.z) / L > Math.cos(0.09);
+    };
+    const flee = v => { const p = v.g.position, lx = p.x - XL; try { path17(v, [[lx + (lx > 0 ? 35 : -35), p.z + 50], [lx + (lx > 0 ? 60 : -60), p.z + 170]], 15) } catch (e) {} if (typeof feed === 'function') feed('El conductor de Veyrn acelera y se escapa'); };
+    const bail = v => {
+      v.hold = true; const p = v.g.position, lx = p.x - XL;
+      for (let i = 0; i < 2; i++) { try { const e = sp17('mosin', lx + (i ? 2.2 : -2.2), p.z + 1.5, { tag: 'drv', kind: 'crew' }); if (e) e.cv = { x: p.x + (i ? 6 : -6), z: p.z + 4 }; } catch (er) {} }
+      if (typeof radio28 === 'function') radio28('Brask', '¡Los conductores saltan del camión! ¡Ojo, que vienen a pie!', 2);
+    };
+    let t = 0;
+    const _u = update;
+    update = function (dt) {
+      const r = _u(dt);
+      if (level === 17 && N17.trucks && (t += dt) > 0.25) { t = 0; for (const tr of N17.trucks) { tr.d50 = tr.d50 || { stop: tr.stop }; DRV.tick(tr.v, tr.d50, { wx, aimedAt, flee, bail }); } }
+      return r;
+    };
+  }
+  /* ---- el tanque aliado baja del tren en el contraataque ---- */
+  if (typeof cineArr17 === 'function') {
+    const _c = cineArr17;
+    cineArr17 = function () {
+      const r = _c.apply(this, arguments);
+      try {
+        const LN = KL17('line'), rz = LN[1][1] - 30, W = WG17;
+        const ramp = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.25, 4.5), new THREE.MeshLambertMaterial({ color: 0x5a4632 }));
+        ramp.position.set(W(-20) + 3.8, 0.55, rz); ramp.rotation.z = -0.28; scene.add(ramp); setTimeout(() => scene.remove(ramp), 60000);
+        setTimeout(() => { const v = N17.tank; if (!v || !v.g) return; const home = [LN[1][0] - 12, LN[1][1] - 30]; v.g.position.set(W(-20) + 1.2, 1.25, rz); try { path17(v, [[-20 + 6.5, rz], home], 3); } catch (e) {} }, 4200);
+      } catch (e) { console.warn('v50 ramp', e); }
+      return r;
+    };
+  }
+  /* ---- AT-18 en el arsenal desde el inicio (17–20) ---- */
+  let gv = -1;
+  const _u2 = update;
+  update = function (dt) {
+    const r = _u2(dt);
+    if (level >= 17 && level <= 20 && gv !== level && window.WEAPONS_VGAI && typeof WEAPONS_VGAI.giveAtRifle === 'function' && P && P.weapons) {
+      const armed = (level === 17 && typeof N17 !== 'undefined') ? N17.arm && N17.arm.length : true;
+      if (armed) { gv = level; const cur = P.cur; try { WEAPONS_VGAI.giveAtRifle(); P.cur = cur; } catch (e) {} }
+    }
+    return r;
+  };
+})();
 
 </script>
 </body></html>
