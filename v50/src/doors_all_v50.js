@@ -349,7 +349,7 @@
     if (typeof o !== 'function' || o._d50) return;
     var w = function () {
       explicitDepth++;
-      try { try { fn.apply(this, arguments); } catch (e) { DA.lastErr = name + ': ' + (e && e.message); } return o.apply(this, arguments); }
+      try { var a = arguments; try { var r = fn.apply(this, arguments); if (r && r.length) a = r; } catch (e) { DA.lastErr = name + ': ' + (e && e.message); } return o.apply(this, a); }
       finally { explicitDepth--; }
     };
     w._d50 = true; w._d50orig = o;
@@ -416,9 +416,13 @@
     // Karsk / Varnholt: puertas de los edificios con kit (interiores reales o pintadas)
     wrap('door17', function (K, o, face, al, dw, open) {
       regKitDoor(K, o, face, al, dw, open, typeof X17 !== 'undefined' ? X17 : 160000, 0, 'door17');
+      /* v50.2: la hoja nueva reemplaza la placa marrón (o el hueco oscuro) del constructor viejo */
+      var a = Array.prototype.slice.call(arguments); a[5] = 2; return a;
     });
     wrap('door18', function (K, o, face, al, dw, open) {
       regKitDoor(K, o, face, al, dw, open, typeof X18 !== 'undefined' ? X18 : 200000, typeof Y18 !== 'undefined' ? (+Y18 || 0) : 0, 'door18');
+      /* v50.2: la hoja nueva reemplaza la placa marrón (o el hueco oscuro) del constructor viejo */
+      var a = Array.prototype.slice.call(arguments); a[5] = 2; return a;
     });
     wrapSilent('house17'); wrapSilent('house18');
     // casamatas: vano trasero real (la hoja estática la suprime V.GAI) → acero interactivo
