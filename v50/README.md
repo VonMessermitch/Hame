@@ -35,3 +35,9 @@
   - Aplicado a los camiones de Veyrn del nivel 17.
 - **Contraataque:** el tanque aliado baja del tren por una rampa de madera.
 - **Fusil antitanque AT-18:** en el arsenal desde el inicio en los niveles 17–20; se cambia con ARMA.
+
+## v50.4
+- **Fusil antitanque:** arreglado el cuelgue al equiparlo. El registro de su modelo en primera persona no traía los campos que espera la animación.
+- **Modelo nuevo «KbUr-L 22», 22×140 mm:** fusión del Kb Ur wz. 35 y el Lahti L-39, con cañón largo, freno de boca grande, cargador superior de 5, culata de madera, bípode plegado y miras.
+- **Arsenal:** el jugador ya no lo recibe solo. Hay una caja en la línea de las Tres Cruces (niveles 17 y 19) además del contenedor del puesto.
+- **MG 08 de la guarnición:** ahora suenan con la muestra «ametralladora», en ráfagas y con atenuación por distancia.

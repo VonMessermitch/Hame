@@ -155,15 +155,74 @@
       return r;
     };
   }
-  /* ---- AT-18 en el arsenal desde el inicio (17–20) ---- */
-  let gv = -1;
-  const _u2 = update;
+})();
+
+/* v50.4 · arreglo del fusil antitanque en 1.ª persona: el registro VM32.R.AT no traía
+   hip/aim ni los campos que espera vmUpd13 → se completan con los del fusil */
+(function(){
+  function fixAT(){try{const R=VM32&&VM32.R,A=R&&R.AT,B=R&&(R.Rf||VM13.Rf);if(!A||!B||A.fix50)return;A.fix50=1;
+    if(!A.hip)A.hip=(A.k&&A.k.p)||[.19,-.18,-.28];if(!A.aim)A.aim=(A.k&&A.k.ap)||[.03,-.115,-.24];
+    for(const k in B)if(A[k]===undefined&&k!=='root'&&k!=='piv'&&k!=='gun')A[k]=Array.isArray(B[k])?B[k].slice():(typeof B[k]==='object'&&B[k]&&!B[k].isObject3D?Object.assign({},B[k]):B[k]);
+    if(!A.gun)A.gun=A.piv;}catch(e){}}
+  const _u=update;update=function(dt){if(level>=17)fixAT();return _u(dt)};
+  if(typeof vmCur13==='function'){const _c=vmCur13;vmCur13=function(){fixAT();const w=_c.apply(this,arguments);return w&&w.hip?w:(VM13.Rf||w)}}
+})();
+/* =============================================================================
+   v50.4 · Fusil antitanque «KbUr-L 22» (fusión Kb Ur wz. 35 × Lahti L-39, 22×140 mm)
+   - Modelo nuevo en 1.ª persona sobre el registro VM32.R.AT (cañón largo, freno de boca
+     grande, cargador superior de 5, culata de madera fina, bípode plegado y miras).
+   - Se recoge en una caja en la línea de las Tres Cruces (además del contenedor del puesto);
+     el jugador ya no lo recibe automáticamente.
+   - Sonido de MG 08 para las ametralladoras de la guarnición (npcShot 'mg').
+   ============================================================================= */
+(function () {
+  'use strict';
+  const T = THREE;
+  function remodel() {
+    try {
+      const A = VM32 && VM32.R && VM32.R.AT; if (!A || A.m50 || !A.piv) return; A.m50 = 1;
+      const piv = A.piv; for (let i = piv.children.length - 1; i >= 0; i--) piv.children[i].visible = false;
+      const G = new T.Group(); G.position.set(0, .01, -.34); G.scale.setScalar(.72); piv.add(G);
+      const st = new T.MeshLambertMaterial({ color: 0x2b2d2f }), st2 = new T.MeshLambertMaterial({ color: 0x45484b }), wd = new T.MeshLambertMaterial({ color: 0x6b3f1f }), bk = new T.MeshLambertMaterial({ color: 0x151515 });
+      const B = (w, h, d, m, x, y, z, rx) => { const o = new T.Mesh(new T.BoxGeometry(w, h, d), m); o.position.set(x, y, z); if (rx) o.rotation.x = rx; G.add(o); return o; };
+      const C = (r, l, m, x, y, z, seg) => { const o = new T.Mesh(new T.CylinderGeometry(r, r, l, seg || 10), m); o.rotation.x = Math.PI / 2; o.position.set(x, y, z); G.add(o); return o; };
+      B(.072, .085, .5, st, 0, -.02, -.05);            // cajón de mecanismos
+      C(.019, 1.3, st, 0, .0, -.92);                    // cañón largo 22 mm
+      C(.03, .36, st2, 0, .0, -.42, 12);                // camisa de refrigeración
+      C(.048, .15, st, 0, .0, -1.6, 12);                // freno de boca (Lahti)
+      for (const s of [-1, 1]) B(.012, .07, .1, bk, s * .045, 0, -1.6);
+      B(.055, .17, .1, st2, 0, .115, -.1, -.22);        // cargador superior de 5
+      B(.058, .11, .38, wd, 0, -.04, .32);              // culata fina (wz. 35)
+      B(.064, .15, .035, bk, 0, -.035, .52);            // cantonera
+      B(.04, .1, .05, wd, 0, -.1, .06, .35);            // empuñadura
+      B(.008, .035, .02, st, 0, .045, -1.48);           // punto de mira
+      B(.03, .02, .03, st, 0, .05, -.02);               // alza
+      const bolt = B(.02, .02, .09, st2, .05, .02, .0); bolt.rotation.y = .6; A.bolt = bolt; // palanca de cerrojo
+      for (const s of [-1, 1]) { const l = C(.008, .42, st, s * .05, -.1, -.82, 6); l.rotation.set(Math.PI / 2 - .25, 0, s * .12); } // bípode plegado
+    } catch (e) { console.warn('v50 AT model', e); }
+  }
+  if (window.WEAPONS_VGAI && typeof WEAPONS_VGAI.giveAtRifle === 'function') {
+    const _g = WEAPONS_VGAI.giveAtRifle;
+    WEAPONS_VGAI.giveAtRifle = function () {
+      const r = _g.apply(this, arguments);
+      try { Object.assign(P.weapons.atrifle, { mag: 5, max: 5, reserve: 20, cd: 1.1, dmg: 260, reload: 4.2, ap: true }); for (const n of ['WN17','WN18','WN']) try { const o = eval(n); if (o) o.atrifle = 'FUSIL ANTITANQUE KbUr-L 22 · 22×140'; } catch (e) {} remodel();
+        if (typeof feed === 'function') feed('★ Fusil antitanque KbUr-L 22 (22×140 mm) · cargador de 5'); } catch (e) {}
+      return r;
+    };
+  }
+  let lv = -1;
+  const _u = update;
   update = function (dt) {
-    const r = _u2(dt);
-    if (level >= 17 && level <= 20 && gv !== level && window.WEAPONS_VGAI && typeof WEAPONS_VGAI.giveAtRifle === 'function' && P && P.weapons) {
-      const armed = (level === 17 && typeof N17 !== 'undefined') ? N17.arm && N17.arm.length : true;
-      if (armed) { gv = level; const cur = P.cur; try { WEAPONS_VGAI.giveAtRifle(); P.cur = cur; } catch (e) {} }
-    }
+    const r = _u(dt);
+    if (level !== lv) { lv = level; if ((level === 17 || level === 19) && window.WEAPONS_VGAI && WEAPONS_VGAI.buildATContainer) { try { WEAPONS_VGAI.buildATContainer(level, (typeof X17 !== 'undefined' ? X17 : 160000) + 14, -260, 0); } catch (e) {} } }
+    if (level >= 17) remodel();
     return r;
   };
+  if (typeof npcShot === 'function') {
+    const _n = npcShot;
+    npcShot = function (kind, x, z) {
+      if (kind === 'mg' && typeof samp34 === 'function') { for (let i = 0; i < 3; i++) if (samp34('ametralladora', .9, 1, x, z, { delay: i * .09, reach: 30, max: 260 })) {} else return _n.apply(this, arguments); return; }
+      return _n.apply(this, arguments);
+    };
+  }
 })();
