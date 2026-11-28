@@ -1,3 +1,90 @@
+# Sombras sobre el Nilo — 1909 · Aethrion
+
+Repositorio de un FPS HTML5/Three.js r128 de un solo archivo (Android y PC), con la campaña del Nilo (1909), la de Eisenmark (1922) y las de Volskaya/Veyrn en el mundo de **Aethrion**. Alrededor del juego hay un motor cognitivo de NPC, un pipeline de modelos 3D por IA, voces locales y una biblioteca de agentes.
+
+> Estado revisado el 2026-11-28. La sección «Historial por versión» (más abajo) conserva el detalle de cada versión desde la v16.
+
+## 1. Qué abrir
+
+| Archivo | Qué es | Base |
+|---|---|---|
+| `Sombras_sobre_el_Nilo_1909_V.GAI.1.0.html` (raíz y `V.GAI.1.0/`) | **Versión más nueva.** Niveles 1–20, incluidos XIX «Operación Rompeolas» (Karsk) y XX «Bastión de Hierro» (Varnholt), más puertas 3D, IA táctica, audio contextual y fusil antitanque AT-18. Es la que sirve `server.js`. | v41 + módulos `vGAI/src/` |
+| `Sombras_sobre_el_Nilo_1909_v41.html` (raíz y `v41/`) | v40 con modelos más detallados (correas, cartucheras, MG 08, props). | v40 + `v40/src/modelos_v40.js` |
+| `Sombras_sobre_el_Nilo_1909_v40.html` (raíz y `v40/`) | v39 + **cerebro Aethrion** en cada soldado de infantería, panel ⬢ AETHRION (tecla K), creación de NPC por descripción, voces Kokoro y carga de GLB con respaldo procedural. | v39 + `v40/src/` |
+| `Sombras_sobre_el_Nilo_1909_v39.html` | Última versión del pipeline clásico (`src/build.py`): Three.js embebido y gráficos avanzados. | `src/v16…v39` |
+| `Iron_V1_Demo.html` | **Iron v1**: demo autónoma del motor cognitivo (28 habitantes biológicos en Borgñon, 1922). | `iron-v1-demo/` |
+| `v16…v38.html` | Versiones históricas. No se modifican. | — |
+
+Todas son autónomas: Three.js va embebido, no necesitan internet. `npm start` sirve la V.GAI en `http://localhost:3000`.
+
+## 2. Cadena de construcción (de la más vieja a la más nueva)
+
+1. `python3 src/build.py` → `v39` (original_v15.html + módulos `src/v16.js … v39`, Three.js desde `vendor/three.r128.min.js`).
+2. `python3 v40/tools/build_v40.py [--version 41]` → `v40` o `v41`: sobre la v39 inyecta `v40/src/aethrion_v40.js`, `aethrion_soldiers.js`, `assets_glb.js`, `modelos_v40.js`, voces y catálogo de assets.
+3. `python3 vGAI/tools/build_vgai.py` → `V.GAI.1.0` sobre la v41, con los 13 módulos de `vGAI/src/`: core, registry, audio, hud_compass, doors, missions_veyrn, ai_tactical, levels_arch, weapons, vehicles_at, paratroopers, battlefield y perf.
+
+**Cuidado:** un cambio en `src/` solo llega a V.GAI si se reconstruye la cadena entera, en orden v39 → v41 → V.GAI.
+
+## 3. Sistemas principales
+
+| Área | Dónde | Resumen |
+|---|---|---|
+| Campaña y niveles | `src/v16…v38*`, `vGAI/src/missions_veyrn_vgai.js` | 20 niveles. Desplazamientos de mundo X13=40000 … X17=160000, X18=200000. Los niveles 19 y 20 reutilizan los mapas de Karsk (X17) y Varnholt (X18). |
+| IA de combate | `src/v33_ai.js`, `v33_ally.js`, `vGAI/src/ai_tactical_vgai.js` | Percepción por cono, oído y niebla; memoria de la última posición conocida (LKP); coberturas reservadas; escuadras; anti fuego amigo; recarga a cubierto; colisión global entre soldados. |
+| Cerebro Aethrion | `iron-v1-demo/ai/**`, `v40/src/aethrion_*.js` | Ciclo percepción → memoria → emoción → plan → acción. Genética y fenotipo, anatomía y lesiones, 15 emociones, 16 rasgos de personalidad, cultura, GOAP de 36 acciones, LOD cognitivo. En el FPS modula el miedo, las dudas, la disciplina y el contagio de bajas. La evaluación de qué integrar está en `DOCUMENTATION/IRON_MOD_EVALUATION.md`. |
+| Vehículos | `src/v32_veh.js`, `v37_veh.js`, `v38_lib.js`, `vGAI/src/vehicles_at_vgai.js` | VEH32 por clases; dotaciones (`gunCrew32`); FRUST con remolque (`tow38`, `unlimber38`); tanques Sokol/Vrak. |
+| Aviación y criaturas | `src/v23.js`, `src/v38_air.js` | Cepelín, cazas y dracos (nivel 12); cazas V-19 A/B/D y grifos con caballero (AIR38). |
+| Personajes | `src/v32_lib.js`, `src/v38_lib.js`, `v40/src/modelos_v40.js` | `volsk32` y `veyrn32` con tipos por rol; `knight38`; banderas `flag38`. |
+| Primera persona | `src/v32_vm.js`, `vGAI/src/weapons_vgai.js` | Manos, cerrojo, recargas, vainas; MG 08 con vista propia; fusil antitanque AT-18. |
+| Puertas e interiores | `vGAI/src/doors_vgai.js` | Tres familias de puertas, colisión por bisagra, uso por la IA, mobiliario. |
+| Audio | `src/v34–v36`, `vGAI/src/audio_vgai.js`, `assets/audio/` | Muestras con variación y distancia, motores, pasos, ambiente; 53 clips normalizados a −16 LUFS. |
+| Voces | `tools/voz/`, `assets/voz/` | **Kokoro-82M local** (sin nube, Apache 2.0): `guion.json` → MP3 → `voz40.js` engancha `talk()` y `say()`. |
+| Modelos 3D por IA | `hf-space/`, `tools/assets/trellis_assets.py`, `vendor/GLTFLoader.r128.js`, `v40/src/assets_glb.js` | Space de Hugging Face con **TRELLIS.2** (imagen → GLB PBR). El juego monta el modelo procedural y lo cambia por el GLB solo si carga. Catálogo en `assets/catalog/` y `assets/models/`. |
+| HUD y controles | `src/v37_hud.js`, `vGAI/src/hud_compass_vgai.js` | Controles para dos pulgares; brújula sincronizada con la cámara en los niveles 1–20. |
+| Gráficos | `src/v32.js` | Presets de Ultra baja a Extrema; supersampling, filtro y calidad de texturas, profundidad de color, curvas y límite de FPS. |
+| Agentes | `.claude/agents/aethrion-*.md` (12), `docs/agentes/`, `docs/Agentes_Aethrion.pdf` | Ingeniero principal más 11 especialistas: arquitecto, mapas, personajes, vehículos, aviación, IA, misión, primera persona, sonido, HUD y QA. |
+| Auditorías | `DOCUMENTATION/*.md` | Técnica, puertas, brújula, niveles, rendimiento, catálogo de modelos y texturas, pruebas. |
+
+## 4. Lore de Aethrion (resumen canónico)
+
+- **Mundo:** dos soles y dos lunas, año de 410 días, día de 25 horas. Tecnología de 1888–1922 con criaturas (dragones, dracos, grifos). La religión mayoritaria es la **Fe del Hacedor**, con santos (Bran, Corvus, Ogmar, Veren, Alda, Ilse, Nerea, Vesna).
+- **Etnias** (motor cognitivo): montañesa volskaya, ribereña de Borgñon, namari pantanosa, varendi selvática, ormi de la taiga, serevana de la pradera, eirhama costera.
+- **Nilo, 1909:** Austria-Hungría contra los Hierofantes del Sol, con orcos, minotauros y el portal de Qal'at al-Nasr.
+- **Eisenmark, 1922:** Tokovsky, Cielo de Acero, Los que quedaron atrás, El último bastión, El fiordo de los condenados y Nachtfall, contra el Principado de Praga y Zheng-Hua.
+- **Volskaya contra Veyrn:**
+  - Golfo de Hierro: 2.º Regimiento de Infantería Fronteriza, Karsk, 1922.
+  - Martillo de Nieve: 12.º Regimiento de Infantería de Campo y FRUST en Falkenbrück, 1923, con los cazas V-19 contra los grifos de Rauth.
+  - Campaña de Veyrn: XIX Rompeolas y XX Bastión de Hierro.
+
+## 5. Pruebas (estado al 2026-11-28)
+
+| Prueba | Resultado |
+|---|---|
+| `node vGAI/tests/vgai_unit.test.mjs` | 14/14 OK |
+| `node iron-v1-demo/tests/engine_tests.js` | **Falla al arrancar:** `package.json` ahora declara `"type": "module"` y esta prueba usa `require`. Arreglo: renombrar las pruebas de Iron a `.cjs` o agregar un `package.json` `{"type":"commonjs"}` dentro de `iron-v1-demo/`. |
+| Recorridos completos con Playwright (`nf.js` nivel 16, `nf17.js` nivel 17) | Pasaban en la v39. No se volvieron a correr sobre la v40, la v41 ni la V.GAI. |
+
+## 6. Pendientes conocidos
+
+- **Martillo de Nieve (nivel 18):** los 7 actos están escritos, pero falta el recorrido completo y la misión todavía no coloca los vehículos FRUST del Acto III.
+- **Mapa de Varnholt:** pesado en calidad Media (~1 M de vértices).
+- **Limpieza:** falta quitar el menú viejo y el código sin uso.
+- **Batalla 3D masiva y vehículos jugables de la v40:** pendientes (ver `v40/docs/INFORME_V40.md`).
+- **Ramas sin unificar:** `iron-v1-demo` tiene parte de esta historia.
+
+## 7. Próximas posibilidades
+
+1. **Modelos propios con esqueleto.** Desde un soldado en pose T (GLB/FBX/OBJ), se agrega esqueleto automático con Meshy o se usa uno propio. Después se **retargetea** a las articulaciones que el juego ya anima (`hd ch b l1 l2 k1 k2 aR aL eR eL`), así todas las animaciones actuales siguen sirviendo. El cargador GLTF y el respaldo procedural ya existen.
+2. **Modelos por IA en serie** con TRELLIS.2 (tu Space), Meshy o Higgsfield 3D: vehículos, grifos, edificios y armas, con LOD y catálogo.
+3. **Cerebro Aethrion a escala:** batalla por sectores en 3D, NPC civiles con vida propia en Falkenbrück y diálogos con voz Kokoro generados desde el estado mental.
+4. **Campaña de Veyrn y Martillo de Nieve:** cerrar el nivel 18 y pulir el 19 y el 20, con objetivos secundarios encadenados entre capítulos.
+5. **Plataforma de creación:** un editor de escenarios que use la creación de NPC por descripción.
+6. **Calidad:** volver a correr las regresiones de Playwright sobre V.GAI, unificar las tres cadenas de build en una sola y arreglar las pruebas de Iron.
+
+---
+
+# Historial por versión
+
 # Sombras sobre el Nilo — 1909 · v16 EDICIÓN DEFINITIVA
 
 Remasterización y expansión del juego HTML5/Three.js (r128) original `v15`, centrada en el
